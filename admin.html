@@ -1,46 +1,101 @@
-<div id="editor-section" class="admin-box" style="display:none; text-align: right;">
-    <h3>نشر مقال جديد بصورة 🖼️</h3>
-    <input type="text" id="post-title" placeholder="عنوان المقال الكبير">
-    <input type="text" id="post-img" placeholder="رابط صورة المقال (اختياري)">
-    <textarea id="post-content" rows="10" placeholder="اكتب المقال التحليلي هنا بالتفصيل..."></textarea>
-    <button onclick="publishPost()" style="width: 100%;">نشر الآن واعتماد المقال</button>
-    <br><br>
-    <button onclick="logout()" style="background: #e74c3c; color: #fff;">تسجيل خروج وتأمين اللوحة</button>
-</div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم القبطان - EMOSHA</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .admin-box { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #f1c40f; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 20px rgba(241, 196, 15, 0.2); }
+        h2 { color: #f1c40f; }
+        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
+        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; width: auto; padding: 8px 20px; }
+    </style>
+</head>
+<body>
 
-<script type="module">
-    // ... التعريفات السابقة ...
-    
-    // وظيفة الخروج
-    window.logout = async function() {
-        await auth.signOut();
-        location.reload();
-    };
+    <h2>لوحة تحكم إيموشا ⚓</h2>
 
-    // وظيفة النشر مع رسالة تأكيد
-    window.publishPost = async function() {
-        const title = document.getElementById('post-title').value;
-        const content = document.getElementById('post-content').value;
-        const img = document.getElementById('post-img').value;
+    <div id="login-section" class="admin-box">
+        <h3>تسجيل الدخول للأدمن</h3>
+        <input type="email" id="email" placeholder="بريدك الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">دخول القبطان</button>
+    </div>
 
-        if(title && content) {
+    <div id="editor-section" class="admin-box" style="display:none;">
+        <h3>نشر تقرير جديد</h3>
+        <input type="text" id="post-title" placeholder="عنوان المقال">
+        <input type="text" id="post-img" placeholder="رابط صورة المقال (اختياري)">
+        <textarea id="post-content" rows="8" placeholder="اكتب تفاصيل التقرير هنا..."></textarea>
+        <button onclick="publishPost()">نشر الآن على الموقع</button>
+        <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+            authDomain: "shrouk-ehab.firebaseapp.com",
+            projectId: "shrouk-ehab",
+            storageBucket: "shrouk-ehab.firebasestorage.app",
+            messagingSenderId: "1015714183835",
+            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // تسجيل الدخول
+        window.login = async function() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
             try {
-                await addDoc(collection(db, "posts"), {
-                    title: title,
-                    content: content,
-                    image: img || "", // لو مفيش صورة هيسيبها فاضية
-                    date: new Date()
-                });
-                alert("تم النشر بنجاح يا قبطان! مقالك الآن على الموقع.");
-                // مسح الخانات بعد النشر
-                document.getElementById('post-title').value = "";
-                document.getElementById('post-content').value = "";
-                document.getElementById('post-img').value = "";
-            } catch (e) {
-                alert("حدث خطأ في الاتصال: " + e.message);
+                await signInWithEmailAndPassword(auth, email, pass);
+                alert("أهلاً بك يا قبطان إيهاب");
+            } catch (e) { alert("خطأ في البيانات: " + e.message); }
+        };
+
+        // مراقبة الدخول
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('editor-section').style.display = 'block';
+            } else {
+                document.getElementById('login-section').style.display = 'block';
+                document.getElementById('editor-section').style.display = 'none';
             }
-        } else {
-            alert("لازم تكتب العنوان والمحتوى يا قبطان!");
-        }
-    };
-</script>
+        });
+
+        // النشر
+        window.publishPost = async function() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const img = document.getElementById('post-img').value;
+
+            if(title && content) {
+                try {
+                    await addDoc(collection(db, "posts"), {
+                        title: title,
+                        content: content,
+                        image: img || "",
+                        date: new Date()
+                    });
+                    alert("تم النشر بنجاح!");
+                    document.getElementById('post-title').value = "";
+                    document.getElementById('post-content').value = "";
+                    document.getElementById('post-img').value = "";
+                } catch (e) { alert("خطأ: " + e.message); }
+            } else { alert("اكمل البيانات"); }
+        };
+
+        // الخروج
+        window.logout = () => signOut(auth).then(() => location.reload());
+    </script>
+</body>
+</html>
