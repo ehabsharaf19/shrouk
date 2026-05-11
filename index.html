@@ -95,7 +95,18 @@
             <span class="card-unit">جنيه مصري / جرام</span>
         </div>
 
-    
+        <div class="gold-card">
+            <span class="card-label">عيار 18</span>
+            <span class="card-price" id="price18">5,517</span>
+            <span class="card-unit">جنيه مصري / جرام</span>
+        </div>
+
+        <div class="gold-card">
+            <span class="card-label">الأونصة العالمية</span>
+            <span class="card-price" id="priceXAU">2,380$</span>
+            <span class="card-unit">دولار أمريكي</span>
+        </div>
+    </div>
 
     <script>
         async function updateMarket() {
@@ -115,4 +126,18 @@
                 const base24 = (globalPrice / 31.1035) * currentDollarRate;
                 
                 // تحديث القيم في الواجهة
-                document.getElementById('price24').innerText
+                document.getElementById('price24').innerText = Math.round(base24).toLocaleString();
+                document.getElementById('price21').innerText = Math.round(base24 * 0.875).toLocaleString();
+                document.getElementById('price18').innerText = Math.round(base24 * 0.75).toLocaleString();
+
+            } catch (error) {
+                console.log("إعادة المحاولة خلال ثوانٍ...");
+            }
+        }
+
+        // تحديث كل 10 ثوانٍ لضمان الدقة الكاملة
+        updateMarket();
+        setInterval(updateMarket, 10000);
+    </script>
+</body>
+</html>
