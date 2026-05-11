@@ -19,12 +19,14 @@
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; display: block; }
         .articles-section { margin-top: 30px; width: 100%; border-top: 1px solid #333; padding-top: 20px; }
         .section-title { color: #f1c40f; font-size: 22px; margin-bottom: 20px; text-align: right; border-right: 4px solid #f1c40f; padding-right: 10px; }
-        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; }
-        .article-title { color: #f1c40f; font-size: 18px; margin: 10px 0; font-weight: bold; }
-        .article-excerpt { color: #ccc; font-size: 14px; line-height: 1.6; }
+        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; overflow: hidden; }
+        .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; }
+        .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
+        .article-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; display: block; }
         footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
-        .admin-login-btn { margin-top: 20px; background: none; border: 1px solid #333; color: #444; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .admin-login-btn { margin-top: 20px; background: none; border: 1px solid #333; color: #444; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .admin-login-btn:hover { color: #f1c40f; border-color: #f1c40f; }
     </style>
 </head>
 <body>
@@ -52,10 +54,7 @@
         <div class="articles-section">
             <div class="section-title">أخبار وتحليلات الذهب</div>
             <div id="posts-container">
-                 <div class="article-card">
-                    <div class="article-title">تحليل السوق اليومي</div>
-                    <p class="article-excerpt">الأسعار المعروضة يتم تحديثها تلقائياً بناءً على السعر العالمي للأونصة وسعر صرف الدولار الرسمي.</p>
-                </div>
+                <p style="text-align:center; color: #666;">جاري تحميل أحدث التقارير...</p>
             </div>
         </div>
     </div>
@@ -83,28 +82,29 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // توجيه لصفحة الإدارة
         window.goToLogin = function() {
             window.location.href = "admin.html";
         };
 
-        // جلب المقالات من Firebase وعرضها
         async function loadPosts() {
             const q = query(collection(db, "posts"), orderBy("date", "desc"));
             const querySnapshot = await getDocs(q);
             const container = document.getElementById('posts-container');
             
             if (!querySnapshot.empty) {
-                container.innerHTML = ""; // مسح المحتوى القديم
+                container.innerHTML = ""; 
                 querySnapshot.forEach((doc) => {
                     const post = doc.data();
                     container.innerHTML += `
                         <div class="article-card">
+                            ${post.image ? `<img src="${post.image}" class="article-img">` : ""}
                             <div class="article-title">${post.title}</div>
                             <p class="article-excerpt">${post.content}</p>
                         </div>
                     `;
                 });
+            } else {
+                container.innerHTML = "<p style='text-align:center; color:#666;'>لا توجد مقالات منشورة حالياً.</p>";
             }
         }
         loadPosts();
