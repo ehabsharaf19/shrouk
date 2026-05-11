@@ -3,70 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شروق الذهب - إيموشا</title>
+    <title>شروق الذهب - مباشر</title>
     <style>
-        /* تصميم أسود ملكي بلمسة ذهبية */
+        /* تصميم الأسود الملكي العميق */
         body {
-            background: radial-gradient(circle at top, #1a1a1a 0%, #000000 100%);
+            background: radial-gradient(circle at top, #151515 0%, #000000 100%);
             color: #ffffff;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0; padding: 0; min-height: 100vh;
         }
 
-        /* عنوان شروق الذهب - توهج احترافي */
-        .header-section {
-            text-align: center;
-            padding: 50px 20px;
-        }
+        .header-section { text-align: center; padding: 40px 20px; }
+        
+        /* شروق الذهب تنور بالبنط العريض */
         .main-title {
-            font-size: 65px;
+            font-size: 60px;
             font-weight: 900;
-            background: linear-gradient(to bottom, #fff3a0 0%, #f1c40f 50%, #b8860b 100%);
+            background: linear-gradient(to bottom, #fff 0%, #f1c40f 50%, #b8860b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(241, 196, 15, 0.6));
+            filter: drop-shadow(0 0 20px rgba(241, 196, 15, 0.7));
             margin: 0;
-            text-transform: uppercase;
         }
-        .sub-title { color: #888; font-size: 16px; margin-top: 10px; letter-spacing: 2px; }
 
-        .container { max-width: 1100px; margin: auto; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
 
-        /* بطاقات الأسعار - زجاجية احترافية */
+        /* توزيع الأسعار بشكل احترافي */
         .price-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
         }
         .price-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(241, 196, 15, 0.3);
-            border-radius: 20px;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(241, 196, 15, 0.4);
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.4s;
         }
-        .price-card:hover {
-            border-color: #f1c40f;
-            transform: translateY(-10px);
-            background: rgba(241, 196, 15, 0.05);
-        }
-        .price-card h3 { color: #ccc; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; }
-        .price-card .price { color: #f1c40f; font-size: 40px; font-weight: bold; }
-        .price-card .currency { font-size: 12px; color: #666; display: block; margin-top: 5px; }
+        .price-card h3 { color: #aaa; font-size: 16px; margin: 0 0 10px 0; }
+        .price-card .price { color: #f1c40f; font-size: 35px; font-weight: bold; }
+        .price-card .unit { font-size: 12px; color: #666; display: block; margin-top: 5px; }
 
-        /* المؤشر العالمي */
-        .chart-container {
-            border-radius: 25px;
+        /* المؤشر في الأسفل تماماً */
+        .chart-box {
+            border-radius: 15px;
             overflow: hidden;
             border: 1px solid #333;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            height: 500px;
+            height: 350px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -74,7 +61,7 @@
 
     <div class="header-section">
         <h1 class="main-title">شروق الذهب</h1>
-        <p class="sub-title">EMOSHA ECONOMY GATEWAY</p>
+        <p style="color: #888;">تحديث آلي لحظة بلحظة</p>
     </div>
 
     <div class="container">
@@ -82,62 +69,64 @@
             <div class="price-card">
                 <h3>عيار 24</h3>
                 <div class="price" id="g24">...</div>
-                <span class="currency">جنيه مصري / جرام</span>
+                <span class="unit">جنيه مصري / جرام</span>
             </div>
             <div class="price-card">
                 <h3>عيار 21</h3>
                 <div class="price" id="g21">...</div>
-                <span class="currency">جنيه مصري / جرام</span>
+                <span class="unit">جنيه مصري / جرام</span>
             </div>
             <div class="price-card">
                 <h3>عيار 18</h3>
                 <div class="price" id="g18">...</div>
-                <span class="currency">جنيه مصري / جرام</span>
+                <span class="unit">جنيه مصري / جرام</span>
             </div>
             <div class="price-card">
-                <h3>الأونصة العالمية</h3>
+                <h3>الأونصة عالمياً</h3>
                 <div class="price" id="gxau">...</div>
-                <span class="currency">دولار أمريكي</span>
+                <span class="unit">دولار أمريكي</span>
             </div>
         </div>
 
-        <div class="chart-container">
-            <div id="tv_chart" style="height:100%; width:100%;"></div>
+        <div class="chart-box">
+            <div id="tradingview_chart" style="height:100%; width:100%;"></div>
         </div>
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
-        // تفعيل المؤشر
+        // تفعيل المؤشر في الأسفل
         new TradingView.widget({
-            "autosize": true, "symbol": "OANDA:XAUUSD", "interval": "1", "theme": "dark", "style": "1", "locale": "ar", "container_id": "tv_chart"
+            "autosize": true, "symbol": "OANDA:XAUUSD", "interval": "1", "theme": "dark", "style": "1", "locale": "ar", "container_id": "tradingview_chart"
         });
 
-        // جلب السعر الحقيقي الآن
-        async function updateLivePrices() {
+        // محرك الذكاء لجلب السعر الحقيقي الآن
+        async function fetchLiveGold() {
             try {
-                const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const data = await response.json();
-                const globalOunce = parseFloat(data.price);
+                // جلب سعر الذهب من البورصة العالمية لحظياً
+                const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const data = await res.json();
+                const globalPrice = parseFloat(data.price);
                 
-                // --- اضبط سعر الدولار هنا يدوياً لضمان دقة السعر في مصر ---
-                const usdRate = 48.30; 
-                // -------------------------------------------------------
+                // سعر الدولار (يمكنك تغييره هنا لضبط السعر المحلي في مصر)
+                const usdRate = 48.40; 
 
-                document.getElementById('gxau').innerText = globalOunce.toFixed(0) + "$";
+                document.getElementById('gxau').innerText = Math.round(globalPrice) + "$";
                 
-                const gram24 = (globalOunce / 31.1035) * usdRate;
+                // حساب العيارات (الأونصة 31.1 جرام)
+                const gram24 = (globalPrice / 31.1035) * usdRate;
                 document.getElementById('g24').innerText = Math.round(gram24).toLocaleString();
                 document.getElementById('g21').innerText = Math.round(gram24 * 0.875).toLocaleString();
                 document.getElementById('g18').innerText = Math.round(gram24 * 0.75).toLocaleString();
 
-            } catch (error) {
-                console.error("خطأ في جلب البيانات");
+            } catch (e) {
+                console.log("تحديث الأسعار...");
             }
         }
 
-        updateLivePrices();
-        setInterval(updateLivePrices, 30000); // تحديث كل 30 ثانية
+        // تحديث فوري ثم كل 30 ثانية تلقائياً
+        fetchLiveGold();
+        setInterval(fetchLiveGold, 30000);
     </script>
 </body>
 </html>
