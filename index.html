@@ -51,9 +51,11 @@
 
         <div class="articles-section">
             <div class="section-title">أخبار وتحليلات الذهب</div>
-            <div class="article-card">
-                <div class="article-title">تحليل السوق اليومي</div>
-                <p class="article-excerpt">الأسعار المعروضة يتم تحديثها تلقائياً بناءً على السعر العالمي للأونصة وسعر صرف الدولار الرسمي في البنوك المصرية.</p>
+            <div id="posts-container">
+                 <div class="article-card">
+                    <div class="article-title">تحليل السوق اليومي</div>
+                    <p class="article-excerpt">الأسعار المعروضة يتم تحديثها تلقائياً بناءً على السعر العالمي للأونصة وسعر صرف الدولار الرسمي.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -67,30 +69,45 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // الـ Config الخاص بك يا قبطان
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
-            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
             projectId: "shrouk-ehab",
             storageBucket: "shrouk-ehab.firebasestorage.app",
             messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e",
-            measurementId: "G-FK3KNWZZ15"
+            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
         };
 
-        // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // توجيه لصفحة الإدارة
         window.goToLogin = function() {
-            // هنا هنوجه المستخدم لصفحة تسجيل الدخول اللي هنعملها الخطوة الجاية
-            alert("جاهز يا قبطان؟ الخطوة الجاية هنعمل صفحة الدخول");
+            window.location.href = "admin.html";
         };
+
+        // جلب المقالات من Firebase وعرضها
+        async function loadPosts() {
+            const q = query(collection(db, "posts"), orderBy("date", "desc"));
+            const querySnapshot = await getDocs(q);
+            const container = document.getElementById('posts-container');
+            
+            if (!querySnapshot.empty) {
+                container.innerHTML = ""; // مسح المحتوى القديم
+                querySnapshot.forEach((doc) => {
+                    const post = doc.data();
+                    container.innerHTML += `
+                        <div class="article-card">
+                            <div class="article-title">${post.title}</div>
+                            <p class="article-excerpt">${post.content}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+        loadPosts();
     </script>
 
     <script>
@@ -111,11 +128,8 @@
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) {
-                console.log("تحديث البيانات...");
-            }
+            } catch (e) { console.log("تحديث الأسعار..."); }
         }
-
         updatePrices();
         setInterval(updatePrices, 30000);
     </script>
