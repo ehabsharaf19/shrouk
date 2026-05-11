@@ -1,4 +1,27 @@
-<style>
+<style>/* تنسيق قسم المحتوى الإضافي */
+.info-section {
+    margin-top: 40px !important;
+    text-align: right;
+}
+.content-box {
+    background: rgba(255, 255, 255, 0.03);
+    border-right: 4px solid #f1c40f; /* خط ذهبي جانبي */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    line-height: 1.8;
+}
+.content-box h3 {
+    color: #f1c40f;
+    margin-top: 0;
+    font-size: 20px;
+}
+.content-box p {
+    color: #ccc;
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
   .post-container {
     max-width: 800px;
     margin: 20px auto;
