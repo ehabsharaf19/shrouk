@@ -8,7 +8,7 @@
         body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
-        .container { width: 100%; max-width: 450px; }
+        .container { width: 100%; max-width: 500px; }
         
         /* شريط المؤشرات العالمية */
         .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
@@ -16,14 +16,21 @@
         .stat-label { color: #888; font-size: 11px; display: block; }
         .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
 
+        /* بطاقات الأسعار */
         .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; }
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-label { color: #aaa; font-size: 15px; display: block; }
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; display: block; }
         
-        .info-section { background: #0a0a0a; padding: 20px; border-radius: 15px; margin-top: 20px; border: 1px dashed #f1c40f; text-align: right; }
-        .info-section h2 { color: #f1c40f; font-size: 18px; margin-top: 0; }
-        .info-section p { color: #ccc; font-size: 14px; line-height: 1.6; }
+        /* قسم المقالات الاحترافي */
+        .articles-section { margin-top: 30px; width: 100%; border-top: 1px solid #333; padding-top: 20px; }
+        .section-title { color: #f1c40f; font-size: 22px; margin-bottom: 20px; text-align: right; border-right: 4px solid #f1c40f; padding-right: 10px; }
+        
+        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; transition: 0.3s; }
+        .article-card:hover { border-right-color: #f1c40f; background: #161616; }
+        .article-date { color: #666; font-size: 12px; }
+        .article-title { color: #f1c40f; font-size: 18px; margin: 10px 0; font-weight: bold; }
+        .article-excerpt { color: #ccc; font-size: 14px; line-height: 1.6; }
 
         footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
@@ -47,22 +54,24 @@
     </div>
 
     <div class="container">
-        <div class="gold-card">
-            <span class="card-label">عيار 24</span>
-            <span class="card-price" id="p24">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 21</span>
-            <span class="card-price" id="p21">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 18</span>
-            <span class="card-price" id="p18">...</span>
-        </div>
+        <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
+        <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
+        <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
 
-        <div class="info-section">
-            <h2>دليل الاستثمار والشفافية</h2>
-            <p>نحن في <b>إيموشا</b> نؤمن بالشفافية؛ لذا نعرض لك سعر الأونصة العالمي وسعر الدولار المعتمد في الحساب لتتمكن من متابعة مدخراتك بدقة متناهية.</p>
+        <div class="articles-section">
+            <div class="section-title">أخبار وتحليلات الذهب</div>
+
+            <div class="article-card">
+                <span class="article-date">الإثنين، 11 مايو 2026</span>
+                <div class="article-title">لماذا يرتفع الذهب الآن؟</div>
+                <p class="article-excerpt">نشهد حالياً تحركات قوية في البورصة العالمية نتيجة التوترات الاقتصادية، مما يجعل الذهب الملاذ الآمن الأول للمستثمرين في مصر حالياً.</p>
+            </div>
+
+            <div class="article-card">
+                <span class="article-date">الأحد، 10 مايو 2026</span>
+                <div class="article-title">نصائح القبطان للادخار في الذهب</div>
+                <p class="article-excerpt">الذهب استثمار طويل الأمد، ننصح دائماً بشراء السبائك لتقليل فاقد المصنعية والحفاظ على قيمة مدخراتك لسنوات قادمة.</p>
+            </div>
         </div>
     </div>
 
@@ -73,23 +82,18 @@
     </footer>
 
     <script>
-        const dollarRate = 52.65; // السعر الذي تعتمده في موقعك
-        document.getElementById('usd-rate').innerText = dollarRate + " ج.م";
-
+        const dollarRate = 52.65;
         async function fetchGold() {
             try {
                 const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const data = await res.json();
                 const globalPrice = parseFloat(data.price);
-                
-                // تحديث سعر الأونصة في الشريط العلوي
                 document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
-
                 const price24 = (globalPrice / 31.1035) * dollarRate;
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("تحديث..."); }
+            } catch (e) { console.log("جاري التحديث..."); }
         }
         fetchGold();
         setInterval(fetchGold, 10000);
