@@ -3,108 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <title>شروق الذهب</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #111;
-    color: white;
-    text-align: center;
-}
-
-header {
-    padding: 20px;
-    background: #1c1c1c;
-    border-bottom: 2px solid gold;
-}
-
-h1 {
-    color: gold;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 40px;
-    flex-wrap: wrap;
-}
-
-.card {
-    background: #1a1a1a;
-    border: 1px solid gold;
-    padding: 20px;
-    width: 180px;
-    border-radius: 12px;
-}
-
-.price {
-    font-size: 24px;
-    color: gold;
-    margin-top: 10px;
-}
-
-button {
-    margin-top: 30px;
-    padding: 10px 20px;
-    background: gold;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
 <header>
-    <h1>شروق الذهب</h1>
-    <p>تحديث أسعار الذهب</p>
+  <h1>شروق الذهب</h1>
+  <p>أسعار الذهب لحظية</p>
 </header>
 
-<div class="container">
-    <div class="card">
-        <h3>24</h3>
-        <div class="price" id="g24">--</div>
-    </div>
-
-    <div class="card">
-        <h3>21</h3>
-        <div class="price" id="g21">--</div>
-    </div>
-
-    <div class="card">
-        <h3>18</h3>
-        <div class="price" id="g18">--</div>
-    </div>
+<div class="cards">
+  <div>عيار 24: <span id="g24">--</span></div>
+  <div>عيار 21: <span id="g21">--</span></div>
+  <div>عيار 18: <span id="g18">--</span></div>
 </div>
 
-<button onclick="update()">تحديث</button>
+<canvas id="chart"></canvas>
 
-<script>
-function update() {
-    try {
-        // بيانات تجريبية (بدون API عشان مفيش مشاكل)
-        let data = {
-            g24: 4200,
-            g21: 3670,
-            g18: 3150
-        };
-
-        document.getElementById("g24").innerText = data.g24 + " جنيه";
-        document.getElementById("g21").innerText = data.g21 + " جنيه";
-        document.getElementById("g18").innerText = data.g18 + " جنيه";
-
-    } catch (e) {
-        console.log("error:", e);
-    }
-}
-
-update();
-setInterval(update, 60000);
-</script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
