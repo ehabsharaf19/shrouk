@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم القبطان - EMOSHA</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .admin-box { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #f1c40f; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 20px rgba(241, 196, 15, 0.2); }
-        h2 { color: #f1c40f; }
+        h2 { color: #f1c40f; margin-bottom: 20px; }
         input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
-        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; transition: 0.3s; }
+        button:hover { background: #d4ac0d; }
         .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; width: auto; padding: 8px 20px; }
+        .logout-btn:hover { background: #c0392b; }
     </style>
 </head>
 <body>
@@ -25,12 +27,13 @@
     </div>
 
     <div id="editor-section" class="admin-box" style="display:none;">
-        <h3>نشر تقرير جديد</h3>
+        <h3>نشر تقرير جديد بصورة</h3>
         <input type="text" id="post-title" placeholder="عنوان المقال">
         <input type="text" id="post-img" placeholder="رابط صورة المقال (اختياري)">
-        <textarea id="post-content" rows="8" placeholder="اكتب تفاصيل التقرير هنا..."></textarea>
+        <textarea id="post-content" rows="8" placeholder="اكتب تفاصيل التقرير هنا بالتفصيل..."></textarea>
         <button onclick="publishPost()">نشر الآن على الموقع</button>
-        <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+        <br>
+        <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
     </div>
 
     <script type="module">
@@ -38,6 +41,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // الـ Config الخاص بك يا قبطان
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
@@ -51,34 +55,39 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // تسجيل الدخول
+        // وظيفة تسجيل الدخول
         window.login = async function() {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('password').value;
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
                 alert("أهلاً بك يا قبطان إيهاب");
-            } catch (e) { alert("خطأ في البيانات: " + e.message); }
+            } catch (e) { 
+                alert("خطأ في بيانات الدخول: " + e.message); 
+            }
         };
 
-        // مراقبة الدخول
+        // مراقبة حالة الدخول
         onAuthStateChanged(auth, (user) => {
+            const loginSec = document.getElementById('login-section');
+            const editSec = document.getElementById('editor-section');
             if (user) {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('editor-section').style.display = 'block';
+                loginSec.style.display = 'none';
+                editSec.style.display = 'block';
             } else {
-                document.getElementById('login-section').style.display = 'block';
-                document.getElementById('editor-section').style.display = 'none';
+                loginSec.style.display = 'block';
+                editSec.style.display = 'none';
             }
         });
 
-        // النشر
+        // وظيفة النشر الاحترافية
         window.publishPost = async function() {
             const title = document.getElementById('post-title').value;
             const content = document.getElementById('post-content').value;
             const img = document.getElementById('post-img').value;
 
             if(title && content) {
+                alert("جاري إرسال التقرير للموقع.. انتظر ثواني");
                 try {
                     await addDoc(collection(db, "posts"), {
                         title: title,
@@ -86,16 +95,27 @@
                         image: img || "",
                         date: new Date()
                     });
-                    alert("تم النشر بنجاح!");
+                    alert("✅ تم النشر بنجاح والمقال الآن متاح للزوار!");
+                    // تفريغ الحقول بعد النجاح
                     document.getElementById('post-title').value = "";
                     document.getElementById('post-content').value = "";
                     document.getElementById('post-img').value = "";
-                } catch (e) { alert("خطأ: " + e.message); }
-            } else { alert("اكمل البيانات"); }
+                } catch (e) { 
+                    console.error(e);
+                    alert("❌ فشل النشر! تأكد من إعدادات Rules في Firebase. السبب: " + e.message); 
+                }
+            } else { 
+                alert("يا قبطان، لازم تكتب العنوان والمحتوى الأول!"); 
+            }
         };
 
-        // الخروج
-        window.logout = () => signOut(auth).then(() => location.reload());
+        // وظيفة تسجيل الخروج
+        window.logout = () => {
+            signOut(auth).then(() => {
+                alert("تم تسجيل الخروج وتأمين لوحة التحكم");
+                location.reload();
+            });
+        };
     </script>
 </body>
 </html>
