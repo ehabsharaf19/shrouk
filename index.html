@@ -8,18 +8,103 @@
 body {
     margin: 0;
     font-family: Arial;
-    background: linear-gradient(135deg, #111, #1c1c1c);
+    background: #111;
     color: white;
     text-align: center;
 }
 
-/* الهيدر */
 header {
     padding: 20px;
-    background: rgba(255, 215, 0, 0.08);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid gold;
+    background: #1c1c1c;
+    border-bottom: 2px solid gold;
 }
 
 h1 {
-    color:
+    color: gold;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #1a1a1a;
+    border: 1px solid gold;
+    padding: 20px;
+    width: 180px;
+    border-radius: 12px;
+}
+
+.price {
+    font-size: 24px;
+    color: gold;
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background: gold;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>شروق الذهب</h1>
+    <p>تحديث أسعار الذهب</p>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h3>24</h3>
+        <div class="price" id="g24">--</div>
+    </div>
+
+    <div class="card">
+        <h3>21</h3>
+        <div class="price" id="g21">--</div>
+    </div>
+
+    <div class="card">
+        <h3>18</h3>
+        <div class="price" id="g18">--</div>
+    </div>
+</div>
+
+<button onclick="update()">تحديث</button>
+
+<script>
+function update() {
+    try {
+        // بيانات تجريبية (بدون API عشان مفيش مشاكل)
+        let data = {
+            g24: 4200,
+            g21: 3670,
+            g18: 3150
+        };
+
+        document.getElementById("g24").innerText = data.g24 + " جنيه";
+        document.getElementById("g21").innerText = data.g21 + " جنيه";
+        document.getElementById("g18").innerText = data.g18 + " جنيه";
+
+    } catch (e) {
+        console.log("error:", e);
+    }
+}
+
+update();
+setInterval(update, 60000);
+</script>
+
+</body>
+</html>
