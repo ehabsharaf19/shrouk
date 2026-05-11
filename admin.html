@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم القبطان - EMOSHA</title>
+    <title>لوحة القبطان إيهاب - EMOSHA</title>
     <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .admin-box { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #f1c40f; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 20px rgba(241, 196, 15, 0.2); }
-        h2 { color: #f1c40f; margin-bottom: 20px; }
-        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
-        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; transition: 0.3s; }
-        button:hover { background: #d4ac0d; }
-        .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; width: auto; padding: 8px 20px; }
-        .logout-btn:hover { background: #c0392b; }
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
+        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top:10px; }
+        label { display: block; margin-top: 10px; color: #f1c40f; font-size: 14px; text-align: right; margin-right: 5%; }
     </style>
 </head>
 <body>
 
     <h2>لوحة تحكم إيموشا ⚓</h2>
 
-    <div id="login-section" class="admin-box">
-        <h3>تسجيل الدخول للأدمن</h3>
-        <input type="email" id="email" placeholder="بريدك الإلكتروني">
+    <div id="login-section" class="box">
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
         <input type="password" id="password" placeholder="كلمة المرور">
         <button onclick="login()">دخول القبطان</button>
     </div>
 
-    <div id="editor-section" class="admin-box" style="display:none;">
-        <h3>نشر تقرير جديد بصورة</h3>
+    <div id="editor-section" class="box" style="display:none;">
         <input type="text" id="post-title" placeholder="عنوان المقال">
-        <input type="text" id="post-img" placeholder="رابط صورة المقال (اختياري)">
-        <textarea id="post-content" rows="8" placeholder="اكتب تفاصيل التقرير هنا بالتفصيل..."></textarea>
-        <button onclick="publishPost()">نشر الآن على الموقع</button>
-        <br>
-        <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
+        
+        <label>اختر صورة من جهازك:</label>
+        <input type="file" id="post-file" accept="image/*">
+        
+        <textarea id="post-content" rows="5" placeholder="تفاصيل التحليل..."></textarea>
+        <button id="btn-publish" onclick="publishPost()">نشر الآن بالصورة</button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        // الـ Config الخاص بك يا قبطان
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
             projectId: "shrouk-ehab",
-            storageBucket: "shrouk-ehab.firebasestorage.app",
+            storageBucket: "shrouk-ehab.appspot.com",
             messagingSenderId: "1015714183835",
             appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
         };
@@ -54,67 +50,57 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
-        // وظيفة تسجيل الدخول
         window.login = async function() {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
-                alert("أهلاً بك يا قبطان إيهاب");
-            } catch (e) { 
-                alert("خطأ في بيانات الدخول: " + e.message); 
-            }
+                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
+            } catch (e) { alert("خطأ في الدخول: " + e.message); }
         };
 
-        // مراقبة حالة الدخول
         onAuthStateChanged(auth, (user) => {
-            const loginSec = document.getElementById('login-section');
-            const editSec = document.getElementById('editor-section');
             if (user) {
-                loginSec.style.display = 'none';
-                editSec.style.display = 'block';
-            } else {
-                loginSec.style.display = 'block';
-                editSec.style.display = 'none';
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('editor-section').style.display = 'block';
             }
         });
 
-        // وظيفة النشر الاحترافية
         window.publishPost = async function() {
+            const btn = document.getElementById('btn-publish');
             const title = document.getElementById('post-title').value;
             const content = document.getElementById('post-content').value;
-            const img = document.getElementById('post-img').value;
+            const file = document.getElementById('post-file').files[0];
 
-            if(title && content) {
-                alert("جاري إرسال التقرير للموقع.. انتظر ثواني");
-                try {
-                    await addDoc(collection(db, "posts"), {
-                        title: title,
-                        content: content,
-                        image: img || "",
-                        date: new Date()
-                    });
-                    alert("✅ تم النشر بنجاح والمقال الآن متاح للزوار!");
-                    // تفريغ الحقول بعد النجاح
-                    document.getElementById('post-title').value = "";
-                    document.getElementById('post-content').value = "";
-                    document.getElementById('post-img').value = "";
-                } catch (e) { 
-                    console.error(e);
-                    alert("❌ فشل النشر! تأكد من إعدادات Rules في Firebase. السبب: " + e.message); 
+            if(!title || !content) return alert("اكتب العنوان والمحتوى!");
+
+            btn.innerText = "جاري رفع الصورة والنشر...";
+            btn.disabled = true;
+
+            let imageUrl = "";
+
+            try {
+                // 1. رفع الصورة لو موجودة
+                if (file) {
+                    const storageRef = ref(storage, 'posts/' + Date.now() + "_" + file.name);
+                    const snapshot = await uploadBytes(storageRef, file);
+                    imageUrl = await getDownloadURL(snapshot.ref);
                 }
-            } else { 
-                alert("يا قبطان، لازم تكتب العنوان والمحتوى الأول!"); 
-            }
-        };
 
-        // وظيفة تسجيل الخروج
-        window.logout = () => {
-            signOut(auth).then(() => {
-                alert("تم تسجيل الخروج وتأمين لوحة التحكم");
-                location.reload();
-            });
+                // 2. حفظ المقال في Firestore
+                await addDoc(collection(db, "posts"), {
+                    title: title,
+                    content: content,
+                    image: imageUrl,
+                    timestamp: serverTimestamp()
+                });
+
+                alert("✅ تمام يا قبطان! الصورة والمقال اتنشروا بنجاح");
+                location.reload(); 
+            } catch (e) { 
+                alert("فشل النشر! تأكد من تفعيل Storage و Rules. الخطأ: " + e.message);
+                btn.innerText = "نشر الآن بالصورة";
+                btn.disabled = false;
+            }
         };
     </script>
 </body>
