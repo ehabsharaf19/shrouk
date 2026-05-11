@@ -9,29 +9,19 @@
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         .container { width: 100%; max-width: 500px; }
-        
-        /* شريط المؤشرات العالمية */
         .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
         .stat-item { text-align: center; flex: 1; }
         .stat-label { color: #888; font-size: 11px; display: block; }
         .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
-
-        /* بطاقات الأسعار */
         .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; }
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-label { color: #aaa; font-size: 15px; display: block; }
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; display: block; }
-        
-        /* قسم المقالات الاحترافي */
         .articles-section { margin-top: 30px; width: 100%; border-top: 1px solid #333; padding-top: 20px; }
         .section-title { color: #f1c40f; font-size: 22px; margin-bottom: 20px; text-align: right; border-right: 4px solid #f1c40f; padding-right: 10px; }
-        
-        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; transition: 0.3s; }
-        .article-card:hover { border-right-color: #f1c40f; background: #161616; }
-        .article-date { color: #666; font-size: 12px; }
+        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; }
         .article-title { color: #f1c40f; font-size: 18px; margin: 10px 0; font-weight: bold; }
         .article-excerpt { color: #ccc; font-size: 14px; line-height: 1.6; }
-
         footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
     </style>
@@ -48,8 +38,8 @@
         </div>
         <div style="width: 1px; background: #333; margin: 0 10px;"></div>
         <div class="stat-item">
-            <span class="stat-label">سعر الدولار المحلي</span>
-            <span class="stat-value" id="usd-rate">52.65 ج.م</span>
+            <span class="stat-label">سعر الدولار الرسمي</span>
+            <span class="stat-value" id="usd-rate">جاري الجلب...</span>
         </div>
     </div>
 
@@ -60,17 +50,9 @@
 
         <div class="articles-section">
             <div class="section-title">أخبار وتحليلات الذهب</div>
-
             <div class="article-card">
-                <span class="article-date">الإثنين، 11 مايو 2026</span>
-                <div class="article-title">لماذا يرتفع الذهب الآن؟</div>
-                <p class="article-excerpt">نشهد حالياً تحركات قوية في البورصة العالمية نتيجة التوترات الاقتصادية، مما يجعل الذهب الملاذ الآمن الأول للمستثمرين في مصر حالياً.</p>
-            </div>
-
-            <div class="article-card">
-                <span class="article-date">الأحد، 10 مايو 2026</span>
-                <div class="article-title">نصائح القبطان للادخار في الذهب</div>
-                <p class="article-excerpt">الذهب استثمار طويل الأمد، ننصح دائماً بشراء السبائك لتقليل فاقد المصنعية والحفاظ على قيمة مدخراتك لسنوات قادمة.</p>
+                <div class="article-title">تحليل السوق اليومي</div>
+                <p class="article-excerpt">الأسعار المعروضة يتم تحديثها تلقائياً بناءً على السعر العالمي للأونصة وسعر صرف الدولار الرسمي في البنوك المصرية.</p>
             </div>
         </div>
     </div>
@@ -78,25 +60,36 @@
     <footer>
         <p style="color: #fff;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
         <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا واتساب 💬</a>
-        <p style="color: #444; font-size: 10px; margin-top: 20px;">© 2026 EMOSHA Gold</p>
     </footer>
 
     <script>
-        const dollarRate = 52.65;
-        async function fetchGold() {
+        async function updatePrices() {
             try {
-                const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const data = await res.json();
-                const globalPrice = parseFloat(data.price);
+                // جلب سعر الدولار الرسمي (تلقائياً)
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+
+                // جلب سعر الأونصة العالمي
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const globalPrice = parseFloat(goldData.price);
+                
                 document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
-                const price24 = (globalPrice / 31.1035) * dollarRate;
+
+                // الحسابات
+                const price24 = (globalPrice / 31.1035) * currentUSD;
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("جاري التحديث..."); }
+            } catch (e) {
+                console.log("تحديث البيانات...");
+            }
         }
-        fetchGold();
-        setInterval(fetchGold, 10000);
+
+        updatePrices();
+        setInterval(updatePrices, 30000); // تحديث كل 30 ثانية
     </script>
 </body>
 </html>
