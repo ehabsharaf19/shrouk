@@ -1,28 +1,27 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<title>شروق الذهب</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<body>
-
-<header>
-  <h1>شروق الذهب</h1>
-  <p>أسعار الذهب لحظية</p>
-</header>
-
-<div class="cards">
-  <div>عيار 24: <span id="g24">--</span></div>
-  <div>عيار 21: <span id="g21">--</span></div>
-  <div>عيار 18: <span id="g18">--</span></div>
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container" style="height:500px; width:100%;">
+  <div id="tradingview_gold_chart" style="height:calc(100% - 32px);width:100%;"></div>
+  <div class="tradingview-widget-copyright">
+    <a href="https://ar.tradingview.com/" rel="noopener nofollow" target="_blank">
+      <span class="blue-text">مخطط الذهب مباشر</span>
+    </a>
+  </div>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+  new TradingView.widget({
+    "autosize": true,
+    "symbol": "OANDA:XAUUSD",
+    "interval": "D",
+    "timezone": "Africa/Cairo",
+    "theme": "dark",
+    "style": "1",
+    "locale": "ar",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "hide_side_toolbar": false,
+    "allow_symbol_change": true,
+    "container_id": "tradingview_gold_chart"
+  });
+  </script>
 </div>
-
-<canvas id="chart"></canvas>
-
-<script type="module" src="app.js"></script>
-
-</body>
-</html>
+<!-- TradingView Widget END -->
