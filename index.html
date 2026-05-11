@@ -1,27 +1,45 @@
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container" style="height:500px; width:100%;">
-  <div id="tradingview_gold_chart" style="height:calc(100% - 32px);width:100%;"></div>
-  <div class="tradingview-widget-copyright">
-    <a href="https://ar.tradingview.com/" rel="noopener nofollow" target="_blank">
-      <span class="blue-text">مخطط الذهب مباشر</span>
-    </a>
-  </div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget({
-    "autosize": true,
-    "symbol": "OANDA:XAUUSD",
-    "interval": "D",
-    "timezone": "Africa/Cairo",
-    "theme": "dark",
-    "style": "1",
-    "locale": "ar",
-    "toolbar_bg": "#f1f3f6",
-    "enable_publishing": false,
-    "hide_side_toolbar": false,
-    "allow_symbol_change": true,
-    "container_id": "tradingview_gold_chart"
-  });
-  </script>
-</div>
-<!-- TradingView Widget END -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إيموشا - عالم الذهب والاقتصاد</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: white; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; text-align: center; }
+        header { padding: 20px; border-bottom: 2px solid #f1c40f; margin-bottom: 30px; }
+        h1 { color: #f1c40f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Emosha Gold & Economy</h1>
+            <p>تحديثات الذهب والتحليلات الاقتصادية لحظة بلحظة</p>
+        </header>
+
+        <div style="height:550px; width:100%; background-color: #1e222d; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div id="tradingview_gold" style="height:100%; width:100%;"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+            <script type="text/javascript">
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": "OANDA:XAUUSD",
+                "interval": "H",
+                "timezone": "Africa/Cairo",
+                "theme": "dark",
+                "style": "1",
+                "locale": "ar",
+                "toolbar_bg": "#f1f3f6",
+                "enable_publishing": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "container_id": "tradingview_gold"
+            });
+            </script>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
