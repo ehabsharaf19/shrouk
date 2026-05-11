@@ -3,59 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إيموشا - أسعار الذهب اللحظية</title>
+    <title>شروق الذهب - Emosha</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #000; color: white; margin: 0; padding: 10px; text-align: center; }
-        .gold-container { max-width: 1100px; margin: auto; }
-        .price-card { background: #1a1a1a; border: 1px solid #f1c40f; border-radius: 12px; padding: 15px; margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .price-item { padding: 10px; border-bottom: 1px solid #333; }
-        .price-item span { display: block; color: #f1c40f; font-weight: bold; font-size: 20px; margin-top: 5px; }
-        h1 { color: #f1c40f; font-size: 24px; }
+        :root { --gold: #f1c40f; --dark-bg: #0a0a0a; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--dark-bg); color: white; margin: 0; padding: 0; }
+        
+        /* الهيدر الاحترافي */
+        header { text-align: center; padding: 40px 20px; border-bottom: 2px solid var(--gold); background: linear-gradient(to bottom, #1a1a1a, var(--dark-bg)); }
+        .logo-text { color: var(--gold); font-size: 45px; font-weight: bold; text-shadow: 2px 2px 10px rgba(241, 196, 15, 0.5); margin-bottom: 10px; }
+        .sub-text { color: #ccc; font-size: 18px; letter-spacing: 1px; }
+
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+
+        /* لوحة الأسعار المباشرة */
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .price-card { background: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 15px; text-align: center; transition: 0.3s; border-top: 4px solid var(--gold); }
+        .price-card:hover { transform: translateY(-5px); border-color: white; }
+        .price-card h3 { color: #888; margin: 0; font-size: 16px; }
+        .price-card .price { color: var(--gold); font-size: 28px; font-weight: bold; margin: 10px 0; }
+        .price-card .unit { font-size: 14px; color: #666; }
+
+        /* المؤشر العالمي */
+        .chart-section { background: #1a1a1a; padding: 10px; border-radius: 15px; border: 1px solid #333; height: 500px; overflow: hidden; margin-bottom: 30px; }
+        
+        footer { text-align: center; padding: 30px; color: #555; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
 
-<div class="gold-container">
-    <h1>مخطط الذهب العالمي ومحلي مباشر</h1>
-    
-    <div style="height:450px; width:100%; border-radius: 10px; overflow: hidden;">
-        <div id="tradingview_gold"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-        <script type="text/javascript">
+    <header>
+        <div class="logo-text">شروق الذهب</div>
+        <div class="sub-text">تحديثات الذهب والتحليلات الاقتصادية لحظة بلحظة</div>
+    </header>
+
+    <div class="container">
+        
+        <div class="price-grid">
+            <div class="price-card">
+                <h3>عيار 24</h3>
+                <div class="price" id="gold24">...</div>
+                <div class="unit">جنيه مصري / جرام</div>
+            </div>
+            <div class="price-card">
+                <h3>عيار 21</h3>
+                <div class="price" id="gold21">...</div>
+                <div class="unit">جنيه مصري / جرام</div>
+            </div>
+            <div class="price-card">
+                <h3>عيار 18</h3>
+                <div class="price" id="gold18">...</div>
+                <div class="unit">جنيه مصري / جرام</div>
+            </div>
+            <div class="price-card">
+                <h3>الأونصة العالمية</h3>
+                <div class="price" id="goldXAU">...</div>
+                <div class="unit">دولار أمريكي</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div id="tradingview_chart" style="height:100%; width:100%;"></div>
+        </div>
+
+    </div>
+
+    <footer>
+        تطوير إيهاب شرف - جميع الحقوق محفوظة لـ Emosha &copy; 2026
+    </footer>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+        // تفعيل الرسم البياني العالمي
         new TradingView.widget({
-            "autosize": true, "symbol": "OANDA:XAUUSD", "interval": "1", "timezone": "Africa/Cairo",
-            "theme": "dark", "style": "1", "locale": "ar", "container_id": "tradingview_gold"
+            "autosize": true,
+            "symbol": "OANDA:XAUUSD",
+            "interval": "H",
+            "timezone": "Africa/Cairo",
+            "theme": "dark",
+            "style": "1",
+            "locale": "ar",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "hide_side_toolbar": false,
+            "container_id": "tradingview_chart"
         });
-        </script>
-    </div>
 
-    <div class="price-card">
-        <div class="price-item">عيار 24 <span>جاري التحديث...</span></div>
-        <div class="price-item">عيار 21 <span>جاري التحديث...</span></div>
-        <div class="price-item">عيار 18 <span>جاري التحديث...</span></div>
-        <div class="price-item">الأونصة عالمياً <span>جاري التحديث...</span></div>
-    </div>
-    
-    <div style="margin-top: 20px;">
-        <iframe src="https://www.gold-feed.com/widgets/gpt-gold-price-ticker-sh.php" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:40px;" allowtransparency="true"></iframe>
-    </div>
-</div>
-
-<script>
-    // هذه الوظيفة تجلب الأسعار الحقيقية من API خارجي وتحدثها في الصفحة
-    async function updateGoldPrices() {
-        try {
-            // ملاحظة: لجعل هذا يعمل بدقة 100% يفضل ربطه بـ API مثل Metals-API 
-            // حالياً سنقوم بوضع كود برمجي بسيط يظهر شكل الأسعار
-            const response = await fetch('https://api.metals.dev/v1/latest?api_key=YOUR_API_KEY&currency=EGP&unit=g');
-            const data = await response.json();
-            // تحديث القيم في الصفحة (هنا يتم الربط البرمجي)
-        } catch (e) {
-            console.log("سيتم ربط بيانات الـ API في الخطوة التالية لضمان الدقة");
+        // دالة لجلب الأسعار وتحديثها (محاكاة الربط المباشر حالياً لضمان الشكل)
+        // لتفعيل السعر الحقيقي بدقة 100% سنربطه بـ API في الخطوة التالية
+        function fetchPrices() {
+            // سنضع أسعار تقريبية الآن لتشاهد التصميم الاحترافي
+            document.getElementById('gold24').innerText = "4,200";
+            document.getElementById('gold21').innerText = "3,675";
+            document.getElementById('gold18').innerText = "3,150";
+            document.getElementById('goldXAU').innerText = "2,350$";
         }
-    }
-    updateGoldPrices();
-</script>
-
+        fetchPrices();
+    </script>
 </body>
 </html>
