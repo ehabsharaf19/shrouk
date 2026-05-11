@@ -2,29 +2,88 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم - نشر الأخبار</title>
-    <link rel="stylesheet" href="style.css">
+    <title>لوحة تحكم إيموشا - EMOSHA</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .post-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
-        h2 { color: #2c3e50; text-align: center; margin-bottom: 25px; }
-        .input-group { margin-bottom: 20px; }
-        input, textarea { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        .btn-send { background: #d4af37; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 18px; cursor: pointer; transition: 0.3s; font-weight: bold; }
-        .btn-send:hover { background: #b8962e; transform: translateY(-2px); }
+        body { background: #111; color: #fff; font-family: sans-serif; padding: 20px; text-align: center; }
+        .admin-box { background: #222; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; border: 1px solid #f1c40f; }
+        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+        button { background: #f1c40f; color: #000; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .post-card { background: #333; margin-top: 10px; padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
-    <div class="post-card">
-        <h2>📝 انشر تحليلاً جديداً</h2>
-        <div class="input-group">
-            <input type="text" placeholder="عنوان المنشور الاقتصادي...">
-        </div>
-        <div class="input-group">
-            <textarea rows="5" placeholder="اكتب رؤيتك لحركة الذهب والعملات هنا..."></textarea>
-        </div>
-        <button class="btn-send">نشر المنشور الآن</button>
+
+    <h2>لوحة تحكم القبطان إيهاب ⚓</h2>
+    
+    <div id="login-section" class="admin-box">
+        <h3>تسجيل الدخول</h3>
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">دخول</button>
     </div>
+
+    <div id="editor-section" class="admin-box" style="display:none;">
+        <h3>نشر مقال جديد</h3>
+        <input type="text" id="post-title" placeholder="عنوان المقال">
+        <textarea id="post-content" rows="5" placeholder="اكتب تفاصيل المقال هنا..."></textarea>
+        <button onclick="publishPost()">نشر الآن</button>
+        <hr>
+        <div id="my-posts"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // الـ Config الخاص بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+            authDomain: "shrouk-ehab.firebaseapp.com",
+            projectId: "shrouk-ehab",
+            storageBucket: "shrouk-ehab.firebasestorage.app",
+            messagingSenderId: "1015714183835",
+            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // وظيفة تسجيل الدخول
+        window.login = async function() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                alert("أهلاً بك يا قبطان");
+            } catch (e) {
+                alert("خطأ في البيانات!");
+            }
+        };
+
+        // مراقبة حالة المستخدم
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('editor-section').style.display = 'block';
+            }
+        });
+
+        // وظيفة النشر
+        window.publishPost = async function() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            if(title && content) {
+                await addDoc(collection(db, "posts"), {
+                    title: title,
+                    content: content,
+                    date: new Date()
+                });
+                alert("تم النشر بنجاح!");
+                location.reload();
+            }
+        };
+    </script>
 </body>
 </html>
