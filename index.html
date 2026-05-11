@@ -6,25 +6,27 @@
     <title>شروق الذهب - EMOSHA</title>
     <style>
         body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
-        .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 30px; }
+        .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
+        .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         .container { width: 100%; max-width: 450px; }
-        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 25px; margin-bottom: 15px; text-align: center; position: relative; }
-        .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
-        .card-label { color: #aaa; font-size: 16px; display: block; margin-bottom: 5px; }
-        .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
-        .live-indicator { font-size: 13px; color: #2ecc71; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         
-        /* قسم المحتوى الثابت والمفيد */
-        .info-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
-        .info-section h2 { color: #f1c40f; font-size: 20px; margin-top: 0; }
-        .info-section p { color: #ccc; font-size: 14px; line-height: 1.8; margin-bottom: 15px; }
+        /* شريط المؤشرات العالمية */
+        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-label { color: #888; font-size: 11px; display: block; }
+        .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
 
-        footer { margin-top: 50px; padding: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
-        .admin-box { background: #111; padding: 20px; border-radius: 15px; }
-        .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 15px 30px; border-radius: 40px; text-decoration: none; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; }
+        .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
+        .card-label { color: #aaa; font-size: 15px; display: block; }
+        .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; display: block; }
+        
+        .info-section { background: #0a0a0a; padding: 20px; border-radius: 15px; margin-top: 20px; border: 1px dashed #f1c40f; text-align: right; }
+        .info-section h2 { color: #f1c40f; font-size: 18px; margin-top: 0; }
+        .info-section p { color: #ccc; font-size: 14px; line-height: 1.6; }
+
+        footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
+        .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -32,8 +34,16 @@
     <div class="main-title">شروق الذهب</div>
     <div class="gateway-text">EMOSHA</div>
 
-    <div class="live-indicator">
-        <div class="dot"></div> تحديث آلي للسوق المصري (لحظة بلحظة)
+    <div class="market-stats">
+        <div class="stat-item">
+            <span class="stat-label">الأونصة عالمياً</span>
+            <span class="stat-value" id="global-ounce">$...</span>
+        </div>
+        <div style="width: 1px; background: #333; margin: 0 10px;"></div>
+        <div class="stat-item">
+            <span class="stat-label">سعر الدولار المحلي</span>
+            <span class="stat-value" id="usd-rate">52.65 ج.م</span>
+        </div>
     </div>
 
     <div class="container">
@@ -51,33 +61,35 @@
         </div>
 
         <div class="info-section">
-            <h2>دليل استثمار الذهب في مصر</h2>
-            <p>يعد الذهب الملاذ الآمن الأول للحفاظ على قيمة الأموال في مصر. توفر منصة <b>شروق الذهب</b> بيانات دقيقة تعتمد على سعر الأونصة العالمي وسعر صرف الدولار المحلي لضمان الشفافية.</p>
-            <p><b>لماذا تتابعنا؟</b> نحن نعتمد تقنيات التحديث اللحظي لأسعار عيارات 24 و21 و18، مما يساعدك في اتخاذ قرار الشراء أو البيع في الوقت المناسب بناءً على تحركات البورصة.</p>
+            <h2>دليل الاستثمار والشفافية</h2>
+            <p>نحن في <b>إيموشا</b> نؤمن بالشفافية؛ لذا نعرض لك سعر الأونصة العالمي وسعر الدولار المعتمد في الحساب لتتمكن من متابعة مدخراتك بدقة متناهية.</p>
         </div>
     </div>
 
     <footer>
-        <div class="admin-box">
-            <h3 style="color: #f1c40f; margin-bottom: 10px;">عن المنصة</h3>
-            <p style="color: #fff; margin: 15px 0;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
-            <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
-        </div>
-        <p style="color: #444; font-size: 11px; margin-top: 30px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
+        <p style="color: #fff;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
+        <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا واتساب 💬</a>
+        <p style="color: #444; font-size: 10px; margin-top: 20px;">© 2026 EMOSHA Gold</p>
     </footer>
 
     <script>
+        const dollarRate = 52.65; // السعر الذي تعتمده في موقعك
+        document.getElementById('usd-rate').innerText = dollarRate + " ج.م";
+
         async function fetchGold() {
             try {
                 const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const data = await res.json();
                 const globalPrice = parseFloat(data.price);
-                const dollarRate = 52.65; 
+                
+                // تحديث سعر الأونصة في الشريط العلوي
+                document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
+
                 const price24 = (globalPrice / 31.1035) * dollarRate;
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("تحديث الأسعار..."); }
+            } catch (e) { console.log("تحديث..."); }
         }
         fetchGold();
         setInterval(fetchGold, 10000);
