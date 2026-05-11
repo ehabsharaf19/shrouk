@@ -2,22 +2,43 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>لوحة التحكم</title>
+<title>لوحة التحكم - شروق الذهب</title>
 </head>
 
-<body>
+<body style="background:#111;color:white;text-align:center;font-family:Arial">
 
-<h2>تعديل أسعار الذهب</h2>
+<h2 style="color:gold">لوحة التحكم</h2>
 
-<input id="p24" placeholder="24">
-<input id="p21" placeholder="21">
-<input id="p18" placeholder="18">
+<input id="g24" placeholder="سعر 24"><br><br>
+<input id="g21" placeholder="سعر 21"><br><br>
+<input id="g18" placeholder="سعر 18"><br><br>
 
-<button onclick="save()">حفظ</button>
+<button onclick="save()" style="padding:10px 20px;background:gold;border:none">
+حفظ
+</button>
 
-<script>
-function save() {
-  alert("هنربطه بFirebase في الخطوة الجاية 🔥");
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+  authDomain: "shrouk-ehab.firebaseapp.com",
+  databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
+  projectId: "shrouk-ehab"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.save = function () {
+  set(ref(db, "gold"), {
+    24: document.getElementById("g24").value,
+    21: document.getElementById("g21").value,
+    18: document.getElementById("g18").value
+  });
+
+  alert("تم الحفظ 🔥");
 }
 </script>
 
