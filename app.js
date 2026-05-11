@@ -1,35 +1,12 @@
-let chart;
+const activities = [
+    "جرّب تتعلم جملة جديدة باليابانية 🇯🇵",
+    "اعمل كوباية قهوة بطريقة أول مرة تجربها ☕",
+    "اقرأ 5 صفحات من كتاب مركون عندك 📚",
+    "اتفرج على فيديو وثائقي عن الفضاء 🌌",
+    "قوم اعمل 10 ضغط وفوق كدا! 💪"
+];
 
-function initChart() {
-  const ctx = document.getElementById("chart");
-
-  chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: [],
-      datasets: [{
-        label: "سعر عيار 21",
-        data: [],
-        borderColor: "gold",
-        tension: 0.4
-      }]
-    }
-  });
+function suggestActivity() {
+    const choice = activities[Math.floor(Math.random() * activities.length)];
+    alert("ايه رأيك في ده: " + choice);
 }
-
-function updateChart(value) {
-  let time = new Date().toLocaleTimeString();
-
-  chart.data.labels.push(time);
-  chart.data.datasets[0].data.push(value);
-
-  if (chart.data.labels.length > 20) {
-    chart.data.labels.shift();
-    chart.data.datasets[0].data.shift();
-  }
-
-  chart.update();
-}
-
-initChart();
-updateChart(data[21]);
