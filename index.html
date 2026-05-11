@@ -13,10 +13,10 @@
             font-size: 50px; font-weight: bold; color: #f1c40f;
             text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px;
         }
+        /* تم تعديل الكلمة لتصبح EMOSHA فقط */
         .gateway-text { color: #666; font-size: 12px; letter-spacing: 2px; margin-bottom: 30px; }
         .container { width: 100%; max-width: 450px; }
         
-        /* بطاقات الأسعار الذهبية */
         .gold-card {
             background: #111; border: 1px solid #333; border-radius: 15px;
             padding: 25px; margin-bottom: 15px; text-align: center; position: relative;
@@ -25,18 +25,16 @@
         .card-label { color: #aaa; font-size: 16px; display: block; margin-bottom: 5px; }
         .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
         
-        /* قسم المقال المتجدد للربح */
         .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
         .article-content { color: #ccc; font-size: 16px; line-height: 1.8; }
 
-        /* التذييل ومعلومات التواصل */
         footer { margin-top: 50px; padding: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .admin-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
         .whatsapp-btn {
             display: inline-block; background: #25d366; color: #fff; padding: 15px 30px;
             border-radius: 40px; text-decoration: none; font-weight: bold; margin-top: 15px;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); transition: 0.3s;
+            transition: 0.3s;
         }
         .whatsapp-btn:hover { transform: scale(1.05); background: #128c7e; }
         
@@ -45,69 +43,3 @@
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
     </style>
 </head>
-<body>
-
-    <div class="main-title">شروق الذهب</div>
-    <div class="gateway-text">EMOSHA ECONOMY GATEWAY</div>
-
-    <div class="live-indicator">
-        <div class="dot"></div> تحديث آلي للسوق المصري (لحظة بلحظة)
-    </div>
-
-    <div class="container">
-        <div class="gold-card">
-            <span class="card-label">عيار 24</span>
-            <span class="card-price" id="p24">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 21</span>
-            <span class="card-price" id="p21">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 18</span>
-            <span class="card-price" id="p18">...</span>
-        </div>
-
-        <div class="article-section">
-            <h2>توقعات الذهب في مصر اليوم</h2>
-            <div class="article-content">
-                <p>يعتبر الذهب هو الملاذ الآمن الأول في مصر. نتابع في منصة <b>شروق الذهب</b> تحركات البورصة العالمية لحظة بلحظة لنوفر لك السعر الأدق قبل الذهاب للصاغة.</p>
-                <p><b>رؤية اليوم:</b> استقرار نسبي في الأسعار العالمية مع ترقب لبيانات اقتصادية جديدة، مما يجعل الوقت الحالي مناسباً جداً للادخار طويل الأجل في السبائك والعملات الذهبية.</p>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="admin-box">
-            <h3 style="color: #f1c40f; margin-bottom: 10px;">عن المنصة</h3>
-            <p style="color: #888; font-size: 14px; line-height: 1.6;">شروق الذهب هي خدمة متخصصة تابعة لمشروع EMOSHA تهدف لتوفير الشفافية في أسعار الذهب.</p>
-            <p style="color: #fff; margin: 15px 0;"><b>المشرف العام:</b> إيهاب أبو رتال (القبطان)</p>
-            <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
-        </div>
-        <p style="color: #444; font-size: 11px; margin-top: 30px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
-    </footer>
-
-    <script>
-        async function fetchGold() {
-            try {
-                // جلب السعر العالمي الحقيقي من البورصة
-                const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const data = await res.json();
-                const globalPrice = parseFloat(data.price);
-                
-                // سعر الدولار في الصاغة (قابلة للتعديل لضبط السعر المحلي)
-                const dollarRate = 52.65; 
-
-                const price24 = (globalPrice / 31.1035) * dollarRate;
-                
-                // تحديث الشاشة
-                document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("تحديث الأسعار..."); }
-        }
-        fetchGold();
-        setInterval(fetchGold, 10000); // تحديث كل 10 ثوانٍ تلقائياً
-    </script>
-</body>
-</html>
