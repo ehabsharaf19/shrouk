@@ -1,123 +1,80 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شروق الذهب - EMOSHA Gold</title>
-    <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
-        .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 30px; }
-        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
-        .stat-item { text-align: center; flex: 1; }
-        .stat-label { color: #888; font-size: 11px; display: block; }
-        .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
-        .container { width: 100%; max-width: 450px; }
-        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 25px; margin-bottom: 15px; text-align: center; position: relative; }
-        .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
-        .card-label { color: #aaa; font-size: 16px; display: block; margin-bottom: 5px; }
-        .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
-        .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
-        .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-        .article-card { border-bottom: 1px solid #222; padding: 15px 0; }
-        .article-image { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
-        .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
-        .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
-        #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
-        .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
-        .btn-gold { background: #f1c40f; color: #000; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <div class="main-title">شروق الذهب</div>
-    <div class="gateway-text">EMOSHA</div>
-    
-    <div class="market-stats">
-        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
-    </div>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
-    <div class="container">
-        <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
-        <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
-        <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
-        
-        <div class="article-section">
-            <h2>أحدث تقارير القبطان</h2>
-            <div id="posts-container">
-                <div class="article-card">
-                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان: نصيحة اليوم</div>
-                    <img src="https://images.unsplash.com/photo-1589758438368-2151aa295265?q=80&w=500&auto=format&fit=crop" class="article-image">
-                    <p style="color:#ccc; font-size:14px;">الذهب زينة وخزينة، استثمر بذكاء مع شروق الذهب.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<script>
+    // بيانات الفايربيس الخاصة بك يا قبطان
+    const firebaseConfig = {
+        databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/"
+    };
 
-    <div style="text-align: center; margin-top: 30px;">
-        <span onclick="openSecretPanel()" style="cursor: pointer; color: #222; font-size: 12px;">إدارة المحتوى</span>
-    </div>
+    // تهيئة الفايربيس
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-    <div id="admin-panel-emosha">
-        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير بالصورة</h3>
-        <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
-        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة (URL)...">
-        <textarea id="post-content" class="input-style" rows="4" placeholder="المحتوى..."></textarea>
-        <button class="btn-gold" onclick="addPost()">انشر الآن</button>
-    </div>
-
-    <div class="footer-gold">
-        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="color: #444; font-size: 11px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
-    </div>
-
-    <script>
-        async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                const price24 = (globalPrice / 31.1035) * currentUSD;
-                document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("خطأ في التحديث"); }
+    // جلب المقالات وعرضها فوراً
+    database.ref('posts').on('value', (snapshot) => {
+        const postsContainer = document.getElementById('posts-container');
+        postsContainer.innerHTML = ''; 
+        const data = snapshot.val();
+        for (let id in data) {
+            const post = data[id];
+            const imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
+            const html = `<div class="article-card">
+                            <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
+                            ${imgHtml}
+                            <p style="color:#ccc; font-size:14px;">${post.content}</p>
+                          </div>`;
+            postsContainer.innerHTML = html + postsContainer.innerHTML;
         }
+    });
 
-        // الحيلة الذكية هنا يا كابتن عشان نخفي الباسورد
-        function openSecretPanel() {
-            var pass = prompt("أدخل رمز الوصول الخاص بالقبطان:");
-            var keyPart1 = 1000;
-            var keyPart2 = 230;
-            
-            // الباسورد هو مجموع الرقمين (1230) بس مش مكتوب صريح
-            if (parseInt(pass) === (keyPart1 + keyPart2)) {
-                document.getElementById('admin-panel-emosha').style.display = 'block';
-                window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                alert("الرمز غير صحيح!");
-            }
-        }
+    // تحديث الأسعار التلقائي
+    async function updatePrices() {
+        try {
+            const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+            const usdData = await usdRes.json();
+            const currentUSD = usdData.rates.EGP;
+            document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+            const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+            const goldData = await goldRes.json();
+            const globalPrice = parseFloat(goldData.price);
+            document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
+            const price24 = (globalPrice / 31.1035) * currentUSD;
+            document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
+            document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
+            document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
+        } catch (e) { console.log("خطأ في التحديث"); }
+    }
 
-        function addPost() {
-            var t = document.getElementById('post-title').value;
-            var img = document.getElementById('post-image').value;
-            var c = document.getElementById('post-content').value;
-            if(t && c) {
-                var imgHtml = img ? `<img src="${img}" class="article-image">` : "";
-                var html = `<div class="article-card"><div style="color:#f1c40f; font-weight:bold;">${t}</div>${imgHtml}<p style="color:#ccc; font-size:14px;">${c}</p></div>`;
-                document.getElementById('posts-container').innerHTML = html + document.getElementById('posts-container').innerHTML;
-                document.getElementById('admin-panel-emosha').style.display = 'none';
-                alert("تم النشر بنجاح!");
-            }
+    // فتح لوحة التحكم بالرمز المخفي
+    function openSecretPanel() {
+        var pass = prompt("أدخل رمز الوصول الخاص بالقبطان:");
+        if (parseInt(pass) === (1000 + 230)) {
+            document.getElementById('admin-panel-emosha').style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+        } else { alert("الرمز غير صحيح!"); }
+    }
+
+    // نشر المقال وحفظه في القاعدة للأبد
+    function addPost() {
+        var t = document.getElementById('post-title').value;
+        var img = document.getElementById('post-image').value;
+        var c = document.getElementById('post-content').value;
+
+        if(t && c) {
+            database.ref('posts').push({
+                title: t,
+                image: img,
+                content: c
+            });
+            document.getElementById('admin-panel-emosha').style.display = 'none';
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-image').value = '';
+            document.getElementById('post-content').value = '';
+            alert("تم الحفظ في القاعدة يا قبطان!");
         }
-        updatePrices();
-        setInterval(updatePrices, 30000);
-    </script>
-</body>
-</html>
+    }
+
+    updatePrices();
+    setInterval(updatePrices, 30000);
+</script>
