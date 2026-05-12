@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شروق الذهب - EMOSHA</title>
     <style>
-        /* كل التنسيقات بتاعتك زي ما هي بدون أي تغيير */
+        /* جوهر الموقع: نفس ألوانك وتصميمك الأصلي */
         body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
@@ -23,9 +23,9 @@
         .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; overflow: hidden; text-align: right; }
         .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; }
         .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
+        .article-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; display: block; }
         footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
-        .admin-login-btn { margin-top: 20px; background: none; border: 1px solid #333; color: #444; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -51,21 +51,9 @@
         <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
 
         <div class="articles-section">
-            <div class="section-title">أخبار وتحليلات الذهب</div>
-            
-            <div class="article-card">
-                <div class="article-title">تحليل السوق اليوم ⚓</div>
-                <p class="article-excerpt">استقرار ملحوظ في أسعار الذهب محلياً مع ترقب لحركة الأونصة عالمياً. ننصح المتابعين بالهدوء وعدم التسرع في البيع، فالذهب دائماً هو الملاذ الآمن طويل الأمد.</p>
-            </div>
-
-            <div class="article-card">
-                <div class="article-title">رؤية القبطان للاستثمار</div>
-                <p class="article-excerpt">الاستثمار في السبائك والعملات الذهبية هو الدرع الواقي لمدخراتك. حاول دائماً الشراء عند التراجعات البسيطة لتعزيز محفظتك الاستثمارية وتأمين مستقبل عائلتك.</p>
-            </div>
-
-            <div class="article-card">
-                <div class="article-title">إيموشا: بوصلتك في عالم الذهب</div>
-                <p class="article-excerpt">نحن هنا لنقدم لك أدق الأسعار والتحليلات بناءً على معطيات السوق الحقيقية. تابعنا دائماً لتكون على دراية بكل جديد في عالم المعدن الأصفر.</p>
+            <div class="section-title">أحدث التقارير والتحليلات</div>
+            <div id="blogger-posts">
+                <p style="text-align:center; color: #666;">جاري سحب تحليلات القبطان...</p>
             </div>
         </div>
     </div>
@@ -73,12 +61,46 @@
     <footer>
         <p style="color: #fff;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
         <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا واتساب 💬</a>
-        <br>
-        <button class="admin-login-btn" onclick="location.href='admin.html'">لوحة التحكم</button>
     </footer>
 
     <script>
-        // كود تحديث الأسعار التلقائي المضمون اللي في كودك
+        // الربط المباشر بمدونتك emosh20.blogspot.com
+        function fetchBloggerPosts() {
+            const script = document.createElement('script');
+            script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=handlePosts`;
+            document.body.appendChild(script);
+        }
+
+        window.handlePosts = function(data) {
+            const container = document.getElementById('blogger-posts');
+            container.innerHTML = "";
+            const entries = data.feed.entry || [];
+            
+            entries.slice(0, 5).forEach(entry => {
+                const title = entry.title.$t;
+                const content = entry.content ? entry.content.$t : entry.summary.$t;
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = content;
+                
+                // سحب الصورة
+                const firstImg = tempDiv.querySelector('img');
+                const imgUrl = firstImg ? firstImg.src : "";
+                
+                // تنظيف النص من أكواد HTML
+                const textOnly = tempDiv.innerText.replace(/\s+/g, ' ').trim().substring(0, 180) + "...";
+
+                container.innerHTML += `
+                    <div class="article-card">
+                        ${imgUrl ? `<img src="${imgUrl}" class="article-img">` : ""}
+                        <div class="article-title">${title}</div>
+                        <p class="article-excerpt">${textOnly}</p>
+                    </div>
+                `;
+            });
+        };
+        fetchBloggerPosts();
+
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -89,14 +111,13 @@
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
-                
                 document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
 
                 const price24 = (globalPrice / 31.1035) * currentUSD;
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("جاري تحديث الأسعار..."); }
+            } catch (e) {}
         }
         updatePrices();
         setInterval(updatePrices, 30000);
