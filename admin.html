@@ -1,89 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+</head>
+<body>
+
+<h1>Admin Test</h1>
+
+<input id="email" placeholder="email">
+<input id="password" placeholder="password">
+
+<button onclick="test()">Test</button>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  onAuthStateChanged, 
-  signOut 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
-  authDomain: "shrouk-ehab.firebaseapp.com",
-  projectId: "shrouk-ehab",
-  storageBucket: "shrouk-ehab.appspot.com",
-  messagingSenderId: "1015714183835",
-  appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e3"
+  apiKey: "TEST",
+  authDomain: "TEST",
+  projectId: "TEST"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
-onAuthStateChanged(auth, (user) => {
-  document.getElementById('login-form').style.display = user ? 'none' : 'block';
-  document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
-});
-
-window.login = async () => {
-  const email = emailInput.value;
-  const password = passwordInput.value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (e) {
-    alert("❌ خطأ في تسجيل الدخول");
-  }
+window.test = () => {
+  alert("JS شغال تمام 👍");
 };
 
-window.logout = async () => {
-  await signOut(auth);
-  alert("تم تسجيل الخروج");
-};
+</script>
 
-window.publish = async () => {
-
-  const title = document.getElementById('title').value.trim();
-  const content = document.getElementById('content').value.trim();
-  const image = document.getElementById('image').value.trim();
-  const btn = document.getElementById('pub-btn');
-
-  if (!title || !content) {
-    return alert("املأ العنوان والمحتوى");
-  }
-
-  btn.disabled = true;
-  btn.innerText = "⏳ جاري النشر...";
-
-  try {
-    await addDoc(collection(db, "posts"), {
-      title,
-      content,
-      image: image || "",
-      createdAt: serverTimestamp()
-    });
-
-    alert("✅ تم نشر المقال بنجاح");
-
-    document.getElementById('title').value = "";
-    document.getElementById('content').value = "";
-    document.getElementById('image').value = "";
-
-  } catch (e) {
-    console.log(e);
-    alert("❌ فشل النشر: " + e.message);
-  }
-
-  btn.disabled = false;
-  btn.innerText = "نشر الآن";
-};
-
-  </script>
+</body>
+</html>
