@@ -1,4 +1,4 @@
-<style>/* تنسيق قسم المحتوى الإضافي */
+
 .info-section {
     margin-top: 40px !important;
     text-align: right;
@@ -54,50 +54,11 @@
     transition: 0.3s;
   }
   .btn-publish:hover { background-color: #2ecc71; }
-</style>
 
-<div class="post-container">
+
   <h2>📝 انشر تحليلك الاقتصادي اليوم</h2>
   <input type="text" class="post-input" placeholder="عنوان المنشور (مثلاً: توقعات الذهب لليوم)...">
   <textarea class="post-input" rows="6" placeholder="اكتب تفاصيل التحليل هنا..."></textarea>
   <button class="btn-publish">نشر الآن</button>
-</div>
 
-footer {
-    background-color: #1a1a1a;
-    color: #ffd700; /* لون ذهبي */
-    text-align: center;
-    padding: 30px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-}
 
-.footer-links a {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 14px;
-}
-
-.footer-links a:hover {
-    color: #ffd700;
-}
-
-/* تنسيق روابط الفوتر */
-footer a {
-    color: #ffd700 !important; /* ده اللون الذهبي */
-    text-decoration: none;    /* ده بيشيل الخط اللي تحت الكلام */
-    margin: 0 15px;           /* بيبعد الروابط عن بعضها */
-    font-size: 16px;          /* بيكبر الخط شوية عشان يبقى واضح */
-    font-weight: bold;        /* بيخلي الخط عريض */
-}
-
-/* التنسيق لما تلمس الرابط بالماوس */
-footer a:hover {
-    color: #ffffff !important; /* بيخلي اللون يقلب أبيض لما تقف عليه */
-}
-a {
-    color: #ffd700 !important;
-    text-decoration: none !important;
-}
