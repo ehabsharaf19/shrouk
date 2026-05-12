@@ -3,26 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إيموشا - EMOSHA | تحليل الذهب</title>
+    <title>إيموشا - EMOSHA</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
-        .header { border-bottom: 2px solid #f1c40f; padding-bottom: 10px; margin-bottom: 30px; }
-        .post-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto; text-align: right; }
-        .post-card img { width: 100%; border-radius: 10px; margin-bottom: 15px; display: none; } /* مخفية لو مفيش صورة */
-        .post-card h2 { color: #f1c40f; margin-top: 0; }
-        .post-card p { line-height: 1.6; color: #ccc; white-space: pre-wrap; }
-        .date { font-size: 12px; color: #666; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: auto; padding: 20px; text-align: center; }
+        .logo { font-size: 35px; color: #f1c40f; margin: 20px 0; }
+        .post { background: #111; border: 1px solid #f1c40f; border-radius: 15px; padding: 20px; margin-bottom: 30px; text-align: right; }
+        .post img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .post h2 { color: #f1c40f; margin-top: 0; }
+        .post p { line-height: 1.8; color: #eee; }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <h1>إيموشا ⚓</h1>
+    <div class="container">
+        <div class="logo">إيموشا ⚓</div>
         <p>بوصلة الاستثمار في الذهب</p>
-    </div>
-
-    <div id="posts-container">
-        <p>جاري تحميل أحدث التحليلات...</p>
+        <hr style="border: 1px solid #f1c40f; margin-bottom: 30px;">
+        <div id="posts-container">
+            </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -34,35 +32,22 @@
             authDomain: "shrouk-ehab.firebaseapp.com",
             projectId: "shrouk-ehab"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // جلب المقالات وترتيبها من الأحدث للأقدم
         db.collection("posts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
             const container = document.getElementById('posts-container');
-            container.innerHTML = ""; // مسح رسالة التحميل
-
-            if (snapshot.empty) {
-                container.innerHTML = "<p>لا يوجد مقالات منشورة حالياً يا قبطان.</p>";
-                return;
-            }
-
+            container.innerHTML = "";
             snapshot.forEach((doc) => {
                 const post = doc.data();
-                const postHTML = `
-                    <div class="post-card">
-                        ${post.image ? `<img src="${post.image}" style="display:block;">` : ""}
+                container.innerHTML += `
+                    <div class="post">
+                        ${post.image ? `<img src="${post.image}">` : ""}
                         <h2>${post.title}</h2>
                         <p>${post.content}</p>
-                        <div class="date">${post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString('ar-EG') : ""}</div>
                     </div>
                 `;
-                container.innerHTML += postHTML;
             });
-        }, (error) => {
-            console.error("خطأ في جلب البيانات:", error);
-            document.getElementById('posts-container').innerHTML = "<p>حدث خطأ أثناء جلب البيانات. تأكد من إعدادات Firestore.</p>";
         });
     </script>
 </body>
