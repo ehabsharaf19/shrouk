@@ -195,21 +195,10 @@
     </script>
 
 
-<style>
-
-<div id="admin-area" style="display: none;"> <div class="post-section">
 
 <script>
   // وظيفة التأكد من كلمة السر
-  function checkAdmin() {
-    var password = prompt("أدخل كلمة سر المشرف للنشر:");
-    if (password === "1234") { // غير 1234 لأي كلمة سر تختارها
-      document.getElementById('admin-area').style.display = 'block';
-      alert("أهلاً بك يا كابتن إيهاب.. يمكنك النشر الآن");
-    } else {
-      alert("كلمة السر خطأ!");
-    }
-  }
+
 
   // هنا هنحط كود الـ Firebase لاحقاً عشان يرفع البيانات فعلياً
   function publishPost() {
