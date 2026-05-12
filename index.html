@@ -22,9 +22,12 @@
         .article-card { border-bottom: 1px solid #222; padding: 15px 0; position: relative; }
         .article-image { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
         .article-content { color: #ccc; font-size: 14px; white-space: pre-wrap; line-height: 1.6; }
-        .delete-btn { display: none; background: #e74c3c; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 10px; }
+        /* كود جعل المقدمة (أول سطر) عريض */
+        .article-content::first-line { font-weight: bold; color: #fff; font-size: 16px; }
+        .admin-btns { display: none; margin-top: 10px; gap: 10px; }
+        .delete-btn { background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
+        .edit-btn { background: #3498db; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
         .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
-        .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
         #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
         .btn-gold { background: #f1c40f; color: #000; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
@@ -46,9 +49,7 @@
         
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
-            <div id="posts-container">
-                <p style="text-align:center; color:#666;">جاري تحميل التقارير...</p>
-            </div>
+            <div id="posts-container">جاري التحميل...</div>
         </div>
     </div>
 
@@ -57,16 +58,16 @@
     </div>
 
     <div id="admin-panel-emosha">
-        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <h3 id="panel-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <input type="hidden" id="edit-id">
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
-        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة (اختياري)...">
-        <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا بفقرات مريحة..."></textarea>
-        <button class="btn-gold" onclick="addPost()">انشر التقرير الآن</button>
+        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
+        <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا..."></textarea>
+        <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
     </div>
 
     <div class="footer-gold">
-        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="color: #444; font-size: 11px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
+        <p>جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -76,65 +77,75 @@
         const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        let isAdmin = false;
+        let currentStatus = false;
 
-        // جلب وعرض التقارير مع دعم الفقرات وزر الحذف
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
             const data = snapshot.val();
             if(data) {
-                const keys = Object.keys(data).reverse(); // عشان الجديد يظهر فوق
-                keys.forEach(id => {
+                Object.keys(data).reverse().forEach(id => {
                     const post = data[id];
-                    const imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
-                    const delBtn = isAdmin ? `<button class="delete-btn" style="display:block;" onclick="deletePost('${id}')">حذف هذا التقرير</button>` : "";
-                    const html = `
+                    const displayStyle = currentStatus ? 'flex' : 'none';
+                    container.innerHTML += `
                         <div class="article-card">
                             <div style="color:#f1c40f; font-weight:bold; font-size:18px;">${post.title}</div>
-                            ${imgHtml}
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div class="article-content">${post.content}</div>
-                            ${delBtn}
+                            <div class="admin-btns" style="display:${displayStyle}">
+                                <button class="edit-btn" onclick="startEdit('${id}', '${encodeURI(post.title)}', '${encodeURI(post.content)}', '${post.image || ''}')">تعديل</button>
+                                <button class="delete-btn" onclick="deletePost('${id}')">حذف</button>
+                            </div>
                         </div>`;
-                    container.innerHTML += html;
                 });
-            } else {
-                container.innerHTML = '<p style="text-align:center; color:#666;">لا توجد تقارير حالياً.</p>';
             }
         });
 
         function addPost() {
-            var t = document.getElementById('post-title').value;
-            var img = document.getElementById('post-image').value;
-            var c = document.getElementById('post-content').value;
+            const t = document.getElementById('post-title').value;
+            const img = document.getElementById('post-image').value;
+            const c = document.getElementById('post-content').value;
+            const id = document.getElementById('edit-id').value;
+
             if(t && c) {
-                database.ref('posts').push({ title: t, image: img, content: c }).then(() => {
-                    alert("تم نشر التقرير بنجاح!");
-                    document.getElementById('post-title').value = "";
-                    document.getElementById('post-image').value = "";
-                    document.getElementById('post-content').value = "";
+                const ref = id ? database.ref('posts').child(id) : database.ref('posts').push();
+                ref.set({ title: t, image: img, content: c }).then(() => {
+                    alert(id ? "تم التحديث!" : "تم النشر!");
+                    resetForm();
                 });
             }
         }
 
-        function deletePost(id) {
-            if(confirm("هل أنت متأكد من حذف هذا التقرير نهائياً؟")) {
-                database.ref('posts').child(id).remove().then(() => {
-                    alert("تم الحذف بنجاح.");
-                });
-            }
+        function startEdit(id, t, c, img) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('post-title').value = decodeURI(t);
+            document.getElementById('post-content').value = decodeURI(c);
+            document.getElementById('post-image').value = img;
+            document.getElementById('panel-title').innerText = "تعديل التقرير";
+            document.getElementById('submit-btn').innerText = "حفظ التعديلات";
+            document.getElementById('admin-panel-emosha').style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
         }
+
+        function resetForm() {
+            document.getElementById('edit-id').value = "";
+            document.getElementById('post-title').value = "";
+            document.getElementById('post-content').value = "";
+            document.getElementById('post-image').value = "";
+            document.getElementById('panel-title').innerText = "إضافة تقرير جديد";
+            document.getElementById('submit-btn').innerText = "نشر الآن";
+            document.getElementById('admin-panel-emosha').style.display = 'none';
+        }
+
+        function deletePost(id) { if(confirm("حذف نهائي؟")) database.ref('posts').child(id).remove(); }
 
         function openSecretPanel() {
-            var pass = prompt("أدخل رمز القبطان:");
-            if (parseInt(pass) === (700 + 530)) { // 1230
-                isAdmin = true;
+            if (parseInt(prompt("رمز القبطان:")) === 1230) {
+                currentStatus = true;
                 document.getElementById('admin-panel-emosha').style.display = 'block';
-                // إظهار أزرار الحذف الموجودة
-                const btns = document.getElementsByClassName('delete-btn');
-                for(let b of btns) b.style.display = 'block';
-                window.scrollTo(0, document.body.scrollHeight);
-            } else { alert("الرمز خطأ!"); }
+                const btns = document.getElementsByClassName('admin-btns');
+                for(let b of btns) b.style.display = 'flex';
+            }
         }
 
         async function updatePrices() {
@@ -147,11 +158,11 @@
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
                 document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                const price24 = (globalPrice / 31.1035) * currentUSD;
-                document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("خطأ تحديث"); }
+                const p24 = (globalPrice / 31.1035) * currentUSD;
+                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+            } catch (e) {}
         }
         updatePrices();
         setInterval(updatePrices, 30000);
