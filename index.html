@@ -45,7 +45,8 @@
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
-                </div>
+                <p style="text-align:center; color:#666;">جاري جلب التقارير من القاعدة...</p>
+            </div>
         </div>
     </div>
 
@@ -70,14 +71,73 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // إعدادات Firebase الخاصة بك
+        // إعداد الربط بالرابط اللي بعته
         const firebaseConfig = {
             databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/"
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // وظيفة جلب الأسعار
+        // عرض التقارير
+        database.ref('posts').on('value', (snapshot) => {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            const data = snapshot.val();
+            if(data) {
+                for (let id in data) {
+                    const post = data[id];
+                    var imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
+                    var html = `
+                        <div class="article-card">
+                            <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
+                            ${imgHtml}
+                            <p style="color:#ccc; font-size:14px;">${post.content}</p>
+                        </div>`;
+                    container.innerHTML = html + container.innerHTML;
+                }
+            } else {
+                container.innerHTML = '<p style="text-align:center; color:#666;">لا توجد تقارير حالياً.</p>';
+            }
+        });
+
+        // وظيفة النشر الصحيحة
+        function addPost() {
+            var t = document.getElementById('post-title').value;
+            var img = document.getElementById('post-image').value;
+            var c = document.getElementById('post-content').value;
+            
+            if(t && c) {
+                database.ref('posts').push({
+                    title: t,
+                    image: img,
+                    content: c
+                }).then(() => {
+                    alert("تم النشر بنجاح يا قبطان!");
+                    document.getElementById('admin-panel-emosha').style.display = 'none';
+                    document.getElementById('post-title').value = "";
+                    document.getElementById('post-image').value = "";
+                    document.getElementById('post-content').value = "";
+                }).catch((e) => {
+                    alert("عفواً، فشل الاتصال بالقاعدة: " + e.message);
+                });
+            } else {
+                alert("اكتب العنوان والمحتوى الأول!");
+            }
+        }
+
+        // الحيلة المخفية للباسورد (1230)
+        function openSecretPanel() {
+            var pass = prompt("أدخل رمز القبطان:");
+            var secret = 600 + 630; // النتيجة 1230
+            if (parseInt(pass) === secret) {
+                document.getElementById('admin-panel-emosha').style.display = 'block';
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                alert("الرمز خطأ!");
+            }
+        }
+
+        // تحديث الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -92,61 +152,8 @@
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("خطأ في التحديث"); }
+            } catch (e) { console.log("خطأ تحديث"); }
         }
-
-        // الحيلة الذكية لإخفاء الباسورد
-        function openSecretPanel() {
-            var pass = prompt("أدخل رمز الوصول الخاص بالقبطان:");
-            var keyPart1 = 1000;
-            var keyPart2 = 230;
-            
-            if (parseInt(pass) === (keyPart1 + keyPart2)) {
-                document.getElementById('admin-panel-emosha').style.display = 'block';
-                window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                alert("الرمز غير صحيح!");
-            }
-        }
-
-        // حفظ المقال في Firebase
-        function addPost() {
-            var t = document.getElementById('post-title').value;
-            var img = document.getElementById('post-image').value;
-            var c = document.getElementById('post-content').value;
-            
-            if(t && c) {
-                database.ref('articles').push({
-                    title: t,
-                    image: img,
-                    content: c,
-                    timestamp: Date.now()
-                }).then(() => {
-                    alert("تم النشر بنجاح وثبات المقال!");
-                    document.getElementById('admin-panel-emosha').style.display = 'none';
-                    document.getElementById('post-title').value = "";
-                    document.getElementById('post-image').value = "";
-                    document.getElementById('post-content').value = "";
-                });
-            }
-        }
-
-        // جلب المقالات من Firebase وعرضها فوراً
-        database.ref('articles').on('value', (snapshot) => {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = "";
-            snapshot.forEach((childSnapshot) => {
-                const post = childSnapshot.val();
-                var imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
-                var html = `
-                    <div class="article-card">
-                        <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
-                        ${imgHtml}
-                        <p style="color:#ccc; font-size:14px;">${post.content}</p>
-                    </div>`;
-                container.innerHTML = html + container.innerHTML; // الجديد يظهر فوق
-            });
-        });
 
         updatePrices();
         setInterval(updatePrices, 30000);
