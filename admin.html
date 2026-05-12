@@ -10,11 +10,12 @@
         input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
         button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; font-size: 12px; width: auto; padding: 8px 20px; }
-        #admin-panel { display: none; } /* مخفي لحد ما تسجل دخول */
+        #admin-panel { display: none; } /* يظهر فقط بعد تسجيل الدخول */
     </style>
 </head>
 <body>
 
+    <!-- واجهة تسجيل الدخول -->
     <div id="login-form" class="box">
         <h3>تسجيل دخول القبطان ⚓</h3>
         <input type="email" id="email" placeholder="البريد الإلكتروني">
@@ -22,6 +23,7 @@
         <button onclick="login()">دخول</button>
     </div>
 
+    <!-- لوحة التحكم (مخفية افتراضياً) -->
     <div id="admin-panel" class="box">
         <h3>نشر مقال جديد - EMOSHA</h3>
         <input type="text" id="title" placeholder="عنوان المقال">
@@ -32,62 +34,85 @@
     </div>
 
     <script type="module">
+        // استيراد Firebase من CDN (إصدار v10 لضمان التوافق)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
+        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
             projectId: "shrouk-ehab",
             storageBucket: "shrouk-ehab.firebasestorage.app",
             messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
+            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e",
+            measurementId: "G-5NVYG4VND5"
         };
 
+        // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const analytics = getAnalytics(app);
 
-        // مراقبة حالة التسجيل (لو فاتح يفضل فاتح، ولو قفلت يطلب دخول)
+        // مراقبة حالة المستخدم (تسجيل دخول/خروج)
         onAuthStateChanged(auth, (user) => {
+            const loginForm = document.getElementById('login-form');
+            const adminPanel = document.getElementById('admin-panel');
+            
             if (user) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
+                loginForm.style.display = 'none';
+                adminPanel.style.display = 'block';
             } else {
-                document.getElementById('login-form').style.display = 'block';
-                document.getElementById('admin-panel').style.display = 'none';
+                loginForm.style.display = 'block';
+                adminPanel.style.display = 'none';
             }
         });
 
+        // وظيفة تسجيل الدخول
         window.login = async () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
-            try { await signInWithEmailAndPassword(auth, e, p); } 
-            catch (err) { alert("خطأ في بيانات الدخول يا قبطان!"); }
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (err) {
+                alert("خطأ في بيانات الدخول يا قبطان! تأكد من البريد وكلمة المرور.");
+            }
         };
 
-        window.logout = () => { signOut(auth); };
+        // وظيفة تسجيل الخروج
+        window.logout = () => {
+            signOut(auth).then(() => {
+                alert("تم الخروج وتأمين اللوحة.");
+            });
+        };
 
+        // وظيفة نشر المقال
         window.publish = async () => {
-            const t = document.getElementById('title').value;
-            const c = document.getElementById('content').value;
-            const i = document.getElementById('image').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const image = document.getElementById('image').value;
             const btn = document.getElementById('pub-btn');
 
-            if(!t || !c) return alert("اكمل البيانات أولاً");
+            if (!title || !content) {
+                return alert("يا قبطان، العنوان والمحتوى أساسيان!");
+            }
 
             btn.innerText = "جاري النشر المباشر...";
             btn.disabled = true;
 
             try {
                 await addDoc(collection(db, "posts"), {
-                    title: t,
-                    content: c,
-                    image: i,
-                    timestamp: serverTimestamp() // ده اللي هيخلي index.html يقرأ صح
+                    title: title,
+                    content: content,
+                    image: image,
+                    createdAt: new Date(), // للتوافق مع الكود الثاني
+                    timestamp: serverTimestamp() // لترتيب index.html بشكل صحيح
                 });
-                alert("✅ تم النشر بنجاح!");
+                alert("✅ تم النشر بنجاح على متن السفينة!");
                 location.reload();
             } catch (err) {
                 alert("فشل النشر: " + err.message);
