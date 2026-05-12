@@ -3,47 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شروق الذهب - EMOSHA Gold</title>
+    <title>شروق الذهب - EMOSHA</title>
     <style>
-        body {
-            background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
-        }
-        .main-title {
-            font-size: 50px; font-weight: bold; color: #f1c40f;
-            text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px;
-        }
-        .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 30px; }
-        .container { width: 100%; max-width: 450px; }
-        
-        .gold-card {
-            background: #111; border: 1px solid #333; border-radius: 15px;
-            padding: 25px; margin-bottom: 15px; text-align: center; position: relative;
-        }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
+        .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
+        .container { width: 100%; max-width: 500px; }
+        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-label { color: #888; font-size: 11px; display: block; }
+        .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
+        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; }
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
-        .card-label { color: #aaa; font-size: 16px; display: block; margin-bottom: 5px; }
-        .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
-        
-        /* تنسيق المقالات المسحوبة من بلوجر */
-        .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
-        .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-        .article-card { margin-bottom: 25px; border-bottom: 1px solid #222; padding-bottom: 15px; }
-        .article-card img { width: 100%; height: auto; border-radius: 10px; margin-bottom: 10px; display: block; }
-        .article-title { color: #f1c40f; font-size: 19px; font-weight: bold; margin-bottom: 8px; display: block; }
-        .article-content { color: #ccc; font-size: 15px; line-height: 1.6; }
-
-        footer { margin-top: 50px; padding: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
-        .admin-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
-        .whatsapp-btn {
-            display: inline-block; background: #25d366; color: #fff; padding: 15px 30px;
-            border-radius: 40px; text-decoration: none; font-weight: bold; margin-top: 15px;
-            transition: 0.3s;
-        }
-        .whatsapp-btn:hover { transform: scale(1.05); background: #128c7e; }
-        
-        .live-indicator { font-size: 13px; color: #2ecc71; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .card-label { color: #aaa; font-size: 15px; display: block; }
+        .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; display: block; }
+        .articles-section { margin-top: 30px; width: 100%; border-top: 1px solid #333; padding-top: 20px; }
+        .section-title { color: #f1c40f; font-size: 22px; margin-bottom: 20px; text-align: right; border-right: 4px solid #f1c40f; padding-right: 10px; }
+        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; overflow: hidden; text-align: right; }
+        .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; }
+        .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
+        .article-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; display: block; }
+        footer { margin-top: 40px; padding: 30px; border-top: 1px solid #222; width: 100%; text-align: center; background: #080808; border-radius: 20px 20px 0 0; }
+        .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.3s; }
+        .whatsapp-btn:hover { transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -51,93 +33,92 @@
     <div class="main-title">شروق الذهب</div>
     <div class="gateway-text">EMOSHA</div>
 
-    <div class="live-indicator">
-        <div class="dot"></div> تحديث آلي للسوق المصري (لحظة بلحظة)
+    <div class="market-stats">
+        <div class="stat-item">
+            <span class="stat-label">الأونصة عالمياً</span>
+            <span class="stat-value" id="global-ounce">$...</span>
+        </div>
+        <div style="width: 1px; background: #333; margin: 0 10px;"></div>
+        <div class="stat-item">
+            <span class="stat-label">سعر الدولار الرسمي</span>
+            <span class="stat-value" id="usd-rate">جاري الجلب...</span>
+        </div>
     </div>
 
     <div class="container">
-        <div class="gold-card">
-            <span class="card-label">عيار 24</span>
-            <span class="card-price" id="p24">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 21</span>
-            <span class="card-price" id="p21">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 18</span>
-            <span class="card-price" id="p18">...</span>
-        </div>
+        <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
+        <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
+        <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
 
-        <div class="article-section">
-            <h2>أحدث التقارير والتحليلات</h2>
-            <div id="blogger-content">
-                <p style="text-align:center; color: #666;">جاري سحب تحليلات القبطان...</p>
+        <div class="articles-section">
+            <div class="section-title">أحدث التقارير والتحليلات</div>
+            <div id="posts-container">
+                <p style="text-align:center; color: #666;">جاري جلب تحليلات القبطان من بلوجر...</p>
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="admin-box">
-            <h3 style="color: #f1c40f; margin-bottom: 10px;">عن المنصة</h3>
-            <p style="color: #888; font-size: 14px; line-height: 1.6;">شروق الذهب هي خدمة متخصصة تابعة لمشروع EMOSHA تهدف لتوفير الشفافية في أسعار الذهب.</p>
-            <p style="color: #fff; margin: 15px 0;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
-            <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
-        </div>
-        <p style="color: #444; font-size: 11px; margin-top: 30px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
+        <p style="color: #888; font-size: 14px; line-height: 1.6; max-width: 400px; margin: 0 auto 15px;">
+            شروق الذهب هي خدمة متخصصة تابعة لمشروع EMOSHA تهدف لتوفير الشفافية في أسعار الذهب.
+        </p>
+        <p style="color: #fff; margin-bottom: 15px;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
+        <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
+        <p style="color: #444; font-size: 11px; margin-top: 25px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
     </footer>
 
     <script>
-        // دالة سحب المقالات من بلوجر
+        // سحب المقالات من بلوجر
         function fetchBlogger() {
             const script = document.createElement('script');
-            // تم الربط بمدونتك مباشرة
-            script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=showPosts`;
+            script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=handlePosts`;
             document.body.appendChild(script);
         }
 
-        window.showPosts = function(data) {
-            const container = document.getElementById('blogger-content');
+        window.handlePosts = function(data) {
+            const container = document.getElementById('posts-container');
             container.innerHTML = "";
-            const posts = data.feed.entry || [];
-            
-            posts.slice(0, 3).forEach(post => {
-                const title = post.title.$t;
-                const content = post.content ? post.content.$t : post.summary.$t;
-                
+            const entries = data.feed.entry || [];
+            entries.slice(0, 5).forEach(entry => {
+                const title = entry.title.$t;
+                const content = entry.content ? entry.content.$t : entry.summary.$t;
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = content;
                 const firstImg = tempDiv.querySelector('img');
                 const imgUrl = firstImg ? firstImg.src : "";
-                const cleanText = tempDiv.innerText.replace(/\s+/g, ' ').trim().substring(0, 150) + "...";
+                const textOnly = tempDiv.innerText.replace(/\s+/g, ' ').trim().substring(0, 180) + "...";
 
                 container.innerHTML += `
                     <div class="article-card">
-                        ${imgUrl ? `<img src="${imgUrl}" alt="${title}">` : ""}
-                        <span class="article-title">${title}</span>
-                        <div class="article-content">${cleanText}</div>
-                    </div>
-                `;
+                        ${imgUrl ? `<img src="${imgUrl}" class="article-img">` : ""}
+                        <div class="article-title">${title}</div>
+                        <p class="article-excerpt">${textOnly}</p>
+                    </div>`;
             });
         };
         fetchBlogger();
 
-        // كود الأسعار الأصلي
-        async function fetchGold() {
+        // تحديث الأسعار
+        async function updatePrices() {
             try {
-                const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const data = await res.json();
-                const globalPrice = parseFloat(data.price);
-                const dollarRate = 52.65; 
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
 
-                const price24 = (globalPrice / 31.1035) * dollarRate;
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const globalPrice = parseFloat(goldData.price);
+                document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
+
+                const price24 = (globalPrice / 31.1035) * currentUSD;
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("تحديث الأسعار..."); }
+            } catch (e) {}
         }
-        fetchGold();
-        setInterval(fetchGold, 10000);
+        updatePrices();
+        setInterval(updatePrices, 30000);
     </script>
 </body>
 </html>
