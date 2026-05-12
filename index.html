@@ -237,75 +237,44 @@
 </footer>
 
 <style>
-  /* تنسيق صندوق النشر */
-  .post-section {
-    max-width: 800px;
-    margin: 40px auto;
-    background: #1e1e1e; 
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    direction: rtl;
-    border: 1px solid #333;
-  }
-  .post-section h2 { color: #f1c40f; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; }
-  .post-input {
-    width: 100%;
-    padding: 15px;
-    margin-top: 15px;
-    border: 1px solid #444;
-    border-radius: 10px;
-    font-size: 16px;
-    background: #2b2b2b;
-    color: white;
-  }
-  .btn-publish {
-    background-color: #f1c40f;
-    color: #000;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
-  }
 
-  /* تنسيق الفوتر الذهبي النهائي */
-  .final-gold-footer {
-    background-color: #111;
-    color: #ffd700;
-    text-align: center;
-    padding: 40px 20px;
-    margin-top: 60px;
-    border-top: 2px solid #ffd700;
-    direction: rtl;
-  }
-  .final-gold-footer a {
-    color: #ffd700 !important;
-    text-decoration: none !important;
-    margin: 0 15px;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .final-gold-footer a:hover { color: #ffffff !important; }
-</style>
-
-<div class="post-section">
-  <h2>📝 انشر تحليلك الاقتصادي اليوم</h2>
-  <input type="text" class="post-input" placeholder="عنوان المنشور...">
-  <textarea class="post-input" rows="5" placeholder="اكتب تفاصيل التحليل هنا..."></textarea>
-  <button class="btn-publish">نشر الآن</button>
+<div id="admin-area" style="display: none;"> <div class="post-section">
+    <h2>📝 لوحة تحكم المشرف (إضافة خبر)</h2>
+    <input type="text" id="post-title" class="post-input" placeholder="عنوان الخبر أو التحليل...">
+    <textarea id="post-content" class="post-input" rows="5" placeholder="تفاصيل الخبر..."></textarea>
+    <button class="btn-publish" onclick="publishPost()">نشر الخبر الآن</button>
+  </div>
 </div>
 
-<footer class="final-gold-footer">
-    <div class="footer-links">
-        <a href="about.html">من نحن</a>
-        <a href="contact.html">اتصل بنا</a>
-        <a href="privacy.html">سياسة الخصوصية</a>
-    </div>
-    <p style="margin-top: 20px; color: #888;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
-</footer>
+<div style="text-align: center; margin-top: 20px;">
+  <button onclick="checkAdmin()" style="background: none; border: none; color: #333; cursor: pointer;">.</button>
+</div>
+
+<script>
+  // وظيفة التأكد من كلمة السر
+  function checkAdmin() {
+    var password = prompt("أدخل كلمة سر المشرف للنشر:");
+    if (password === "1234") { // غير 1234 لأي كلمة سر تختارها
+      document.getElementById('admin-area').style.display = 'block';
+      alert("أهلاً بك يا كابتن إيهاب.. يمكنك النشر الآن");
+    } else {
+      alert("كلمة السر خطأ!");
+    }
+  }
+
+  // هنا هنحط كود الـ Firebase لاحقاً عشان يرفع البيانات فعلياً
+  function publishPost() {
+    const title = document.getElementById('post-title').value;
+    const content = document.getElementById('post-content').value;
+    
+    if(title && content) {
+      alert("تم استلام الخبر: " + title + "\nجاري الربط مع قاعدة البيانات...");
+      // هنا هنضيف سطر الـ Firebase اللي بيرفع الداتا
+    } else {
+      alert("يرجى كتابة العنوان والمحتوى");
+    }
+  }
+</script>
 
 </body>
 </html>
