@@ -9,7 +9,6 @@
         .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
         input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
         button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top:10px; }
-        label { display: block; margin-top: 10px; color: #f1c40f; font-size: 14px; text-align: right; margin-right: 5%; }
     </style>
 </head>
 <body>
@@ -21,10 +20,9 @@
     </div>
     <div id="editor-section" class="box" style="display:none;">
         <input type="text" id="post-title" placeholder="عنوان المقال">
-        <label>اختر صورة من جهازك:</label>
         <input type="file" id="post-file" accept="image/*">
         <textarea id="post-content" rows="5" placeholder="تفاصيل التحليل..."></textarea>
-        <button id="btn-publish" onclick="publishPost()">نشر المقال الآن ✅</button>
+        <button id="btn-publish" onclick="publishPost()">نشر الآن ✅</button>
     </div>
 
     <script type="module">
@@ -57,16 +55,16 @@
             const title = document.getElementById('post-title').value;
             const content = document.getElementById('post-content').value;
 
-            if(!file || !title || !content) return alert("كمل البيانات واختار صورة!");
+            if(!file || !title || !content) return alert("اختار صورة واكتب العنوان والمحتوى!");
 
             btn.innerText = "جاري رفع الصورة...";
             btn.disabled = true;
 
-            // رفع الصورة لموقع خارجي مجاني (ImgBB)
             const formData = new FormData();
             formData.append("image", file);
             
             try {
+                // الرفع لموقع مجاني لتخطي مشكلة الدفع في فيربيز
                 const res = await fetch("https://api.imgbb.com/1/upload?key=6386665792c31e21b0451a5160867041", {
                     method: "POST",
                     body: formData
@@ -74,18 +72,21 @@
                 const data = await res.json();
                 const imageUrl = data.data.url;
 
-                btn.innerText = "جاري حفظ المقال...";
+                btn.innerText = "جاري الحفظ النهائي...";
 
                 await addDoc(collection(db, "posts"), {
-                    title, content, image: imageUrl, timestamp: serverTimestamp()
+                    title: title,
+                    content: content,
+                    image: imageUrl,
+                    timestamp: serverTimestamp()
                 });
 
-                alert("✅ مبروك يا قبطان! المقال اتنشر بالصورة");
+                alert("✅ تمام يا قبطان! المقال اتنشر بالصورة والموقع اتحدث");
                 location.reload();
             } catch (e) {
-                alert("حصل خطأ: " + e.message);
+                alert("فشل النشر: " + e.message);
                 btn.disabled = false;
-                btn.innerText = "نشر المقال الآن ✅";
+                btn.innerText = "نشر الآن ✅";
             }
         };
     </script>
