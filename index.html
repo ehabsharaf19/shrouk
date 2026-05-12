@@ -19,8 +19,10 @@
         .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
         .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-        .article-card { border-bottom: 1px solid #222; padding: 15px 0; }
+        .article-card { border-bottom: 1px solid #222; padding: 15px 0; position: relative; }
         .article-image { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
+        .article-content { color: #ccc; font-size: 14px; white-space: pre-wrap; line-height: 1.6; }
+        .delete-btn { display: none; background: #e74c3c; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 10px; }
         .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
         .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
         #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
@@ -45,7 +47,7 @@
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
-                <p style="text-align:center; color:#666;">جاري جلب التقارير من القاعدة...</p>
+                <p style="text-align:center; color:#666;">جاري تحميل التقارير...</p>
             </div>
         </div>
     </div>
@@ -55,11 +57,11 @@
     </div>
 
     <div id="admin-panel-emosha">
-        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير بالصورة</h3>
+        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
-        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة (URL)...">
-        <textarea id="post-content" class="input-style" rows="4" placeholder="المحتوى..."></textarea>
-        <button class="btn-gold" onclick="addPost()">انشر الآن</button>
+        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة (اختياري)...">
+        <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا بفقرات مريحة..."></textarea>
+        <button class="btn-gold" onclick="addPost()">انشر التقرير الآن</button>
     </div>
 
     <div class="footer-gold">
@@ -71,73 +73,70 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // إعداد الربط بالرابط اللي بعته
-        const firebaseConfig = {
-            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/"
-        };
+        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        let isAdmin = false;
 
-        // عرض التقارير
+        // جلب وعرض التقارير مع دعم الفقرات وزر الحذف
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
             const data = snapshot.val();
             if(data) {
-                for (let id in data) {
+                const keys = Object.keys(data).reverse(); // عشان الجديد يظهر فوق
+                keys.forEach(id => {
                     const post = data[id];
-                    var imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
-                    var html = `
+                    const imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
+                    const delBtn = isAdmin ? `<button class="delete-btn" style="display:block;" onclick="deletePost('${id}')">حذف هذا التقرير</button>` : "";
+                    const html = `
                         <div class="article-card">
-                            <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
+                            <div style="color:#f1c40f; font-weight:bold; font-size:18px;">${post.title}</div>
                             ${imgHtml}
-                            <p style="color:#ccc; font-size:14px;">${post.content}</p>
+                            <div class="article-content">${post.content}</div>
+                            ${delBtn}
                         </div>`;
-                    container.innerHTML = html + container.innerHTML;
-                }
+                    container.innerHTML += html;
+                });
             } else {
                 container.innerHTML = '<p style="text-align:center; color:#666;">لا توجد تقارير حالياً.</p>';
             }
         });
 
-        // وظيفة النشر الصحيحة
         function addPost() {
             var t = document.getElementById('post-title').value;
             var img = document.getElementById('post-image').value;
             var c = document.getElementById('post-content').value;
-            
             if(t && c) {
-                database.ref('posts').push({
-                    title: t,
-                    image: img,
-                    content: c
-                }).then(() => {
-                    alert("تم النشر بنجاح يا قبطان!");
-                    document.getElementById('admin-panel-emosha').style.display = 'none';
+                database.ref('posts').push({ title: t, image: img, content: c }).then(() => {
+                    alert("تم نشر التقرير بنجاح!");
                     document.getElementById('post-title').value = "";
                     document.getElementById('post-image').value = "";
                     document.getElementById('post-content').value = "";
-                }).catch((e) => {
-                    alert("عفواً، فشل الاتصال بالقاعدة: " + e.message);
                 });
-            } else {
-                alert("اكتب العنوان والمحتوى الأول!");
             }
         }
 
-        // الحيلة المخفية للباسورد (1230)
+        function deletePost(id) {
+            if(confirm("هل أنت متأكد من حذف هذا التقرير نهائياً؟")) {
+                database.ref('posts').child(id).remove().then(() => {
+                    alert("تم الحذف بنجاح.");
+                });
+            }
+        }
+
         function openSecretPanel() {
             var pass = prompt("أدخل رمز القبطان:");
-            var secret = 600 + 630; // النتيجة 1230
-            if (parseInt(pass) === secret) {
+            if (parseInt(pass) === (700 + 530)) { // 1230
+                isAdmin = true;
                 document.getElementById('admin-panel-emosha').style.display = 'block';
+                // إظهار أزرار الحذف الموجودة
+                const btns = document.getElementsByClassName('delete-btn');
+                for(let b of btns) b.style.display = 'block';
                 window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                alert("الرمز خطأ!");
-            }
+            } else { alert("الرمز خطأ!"); }
         }
 
-        // تحديث الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -154,7 +153,6 @@
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
             } catch (e) { console.log("خطأ تحديث"); }
         }
-
         updatePrices();
         setInterval(updatePrices, 30000);
     </script>
