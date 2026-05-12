@@ -264,7 +264,7 @@
   <span onclick="accessAdmin()" style="cursor: pointer; color: #1a1a1a; font-size: 10px;">.</span>
 
 <style>
-  /* تنسيق لوحة النشر - مخفية تماماً */
+  /* إخفاء اللوحة تماماً */
   #admin-panel-emosha {
     display: none; 
     max-width: 800px;
@@ -274,7 +274,6 @@
     border-radius: 15px;
     border: 2px solid #ffd700;
     direction: rtl;
-    font-family: sans-serif;
   }
   .input-style {
     width: 100%;
@@ -295,8 +294,7 @@
     width: 100%;
     cursor: pointer;
   }
-
-  /* الفوتر الذهبي الموحد النضيف */
+  /* الفوتر الذهبي */
   .footer-emosha-gold {
     background-color: #000 !important;
     color: #ffd700 !important;
@@ -310,10 +308,7 @@
     text-decoration: none !important;
     margin: 0 15px;
     font-weight: bold;
-    font-size: 16px;
   }
-  .footer-emosha-gold a:hover { color: #fff !important; }
-</p>
 </style>
 
 <div style="text-align: center; margin: 10px;">
@@ -328,21 +323,18 @@
 </div>
 
 <footer class="footer-emosha-gold">
-    <div class="footer-links">
+    <div>
         <a href="about.html">من نحن</a>
         <a href="contact.html">اتصل بنا</a>
         <a href="privacy.html">سياسة الخصوصية</a>
     </div>
-    <p style="margin-top: 20px; color: #777; font-size: 13px;">
-        جميع الحقوق محفوظة لموقع شروق الذهب © 2026
-    </p>
+    <p style="margin-top: 20px; color: #777;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
 </footer>
 
 <script>
   function openSecretPanel() {
-    // كلمة السر هي 1234
     var pass = prompt("أدخل كلمة سر المشرف:");
-    if (pass === "1234") {
+    if (pass === "1234") { // الباسورد
       document.getElementById('admin-panel-emosha').style.display = 'block';
     } else {
       alert("كلمة السر خطأ!");
@@ -351,12 +343,9 @@
 
   function sendToFirebase() {
     var t = document.getElementById('post-title').value;
-    var c = document.getElementById('post-content').value;
-    if(t && c) {
+    if(t) {
       alert("تم النشر بنجاح! جاري الربط مع قاعدة البيانات...");
       document.getElementById('admin-panel-emosha').style.display = 'none';
-    } else {
-      alert("برجاء ملء جميع الحقول");
     }
   }
 </script>
