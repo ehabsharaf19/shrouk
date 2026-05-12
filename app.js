@@ -1,4 +1,3 @@
-// دالة عرض المقال بنظام العنوان (التوجل)
 function displayArticle(title, content) {
     return `
     <div class="article-item">
@@ -12,15 +11,11 @@ function displayArticle(title, content) {
     `;
 }
 
-// كود سحب المقالات من Firebase
 db.collection("articles").get().then((querySnapshot) => {
     const container = document.getElementById('articles-container');
-    if(container) {
+    if (container) {
         container.innerHTML = ""; 
-        querySnapshot.forEach((doc) => 
-            container.innerHTML += displayArticle(doc.data().title, doc.data().content);
-
-            {
+        querySnapshot.forEach((doc) => {
             container.innerHTML += displayArticle(doc.data().title, doc.data().content);
         });
     }
