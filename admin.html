@@ -1,125 +1,55 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة إيموشا ⚓</title>
-    <style>
-        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
-        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
-        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; font-size: 12px; width: auto; padding: 8px 20px; }
-        #admin-panel { display: none; } /* يظهر فقط بعد تسجيل الدخول */
-    </style>
-</head>
-<body>
+// Firebase
+import { initializeApp } from "firebase/app";
 
-    <!-- واجهة تسجيل الدخول -->
-    <div id="login-form" class="box">
-        <h3>تسجيل دخول القبطان ⚓</h3>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="login()">دخول</button>
-    </div>
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "firebase/firestore";
 
-    <!-- لوحة التحكم (مخفية افتراضياً) -->
-    <div id="admin-panel" class="box">
-        <h3>نشر مقال جديد - EMOSHA</h3>
-        <input type="text" id="title" placeholder="عنوان المقال">
-        <input type="text" id="image" placeholder="رابط الصورة (اختياري)">
-        <textarea id="content" rows="6" placeholder="اكتب التحليل هنا يا قبطان..."></textarea>
-        <button id="pub-btn" onclick="publish()">نشر الآن ✅</button>
-        <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
-    </div>
+const firebaseConfig = {
+  apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+  authDomain: "shrouk-ehab.firebaseapp.com",
+  databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
+  projectId: "shrouk-ehab",
+  storageBucket: "shrouk-ehab.firebasestorage.app",
+  messagingSenderId: "1015714183835",
+  appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e",
+  measurementId: "G-5NVYG4VND5"
+};
 
-    <script type="module">
-        // استيراد Firebase من CDN (إصدار v10 لضمان التوافق)
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-        // إعدادات Firebase الخاصة بك
-        const firebaseConfig = {
-            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
-            authDomain: "shrouk-ehab.firebaseapp.com",
-            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
-            projectId: "shrouk-ehab",
-            storageBucket: "shrouk-ehab.firebasestorage.app",
-            messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e",
-            measurementId: "G-5NVYG4VND5"
-        };
+// Firestore
+const db = getFirestore(app);
 
-        // تهيئة Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const analytics = getAnalytics(app);
+// نشر المقال
+async function publishPost() {
 
-        // مراقبة حالة المستخدم (تسجيل دخول/خروج)
-        onAuthStateChanged(auth, (user) => {
-            const loginForm = document.getElementById('login-form');
-            const adminPanel = document.getElementById('admin-panel');
-            
-            if (user) {
-                loginForm.style.display = 'none';
-                adminPanel.style.display = 'block';
-            } else {
-                loginForm.style.display = 'block';
-                adminPanel.style.display = 'none';
-            }
-        });
+  const title = document.getElementById("title").value;
 
-        // وظيفة تسجيل الدخول
-        window.login = async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (err) {
-                alert("خطأ في بيانات الدخول يا قبطان! تأكد من البريد وكلمة المرور.");
-            }
-        };
+  const content = document.getElementById("content").value;
 
-        // وظيفة تسجيل الخروج
-        window.logout = () => {
-            signOut(auth).then(() => {
-                alert("تم الخروج وتأمين اللوحة.");
-            });
-        };
+  try {
 
-        // وظيفة نشر المقال
-        window.publish = async () => {
-            const title = document.getElementById('title').value;
-            const content = document.getElementById('content').value;
-            const image = document.getElementById('image').value;
-            const btn = document.getElementById('pub-btn');
+    await addDoc(collection(db, "posts"), {
 
-            if (!title || !content) {
-                return alert("يا قبطان، العنوان والمحتوى أساسيان!");
-            }
+      title: title,
+      content: content,
+      createdAt: new Date()
 
-            btn.innerText = "جاري النشر المباشر...";
-            btn.disabled = true;
+    });
 
-            try {
-                await addDoc(collection(db, "posts"), {
-                    title: title,
-                    content: content,
-                    image: image,
-                    createdAt: new Date(), // للتوافق مع الكود الثاني
-                    timestamp: serverTimestamp() // لترتيب index.html بشكل صحيح
-                });
-                alert("✅ تم النشر بنجاح على متن السفينة!");
-                location.reload();
-            } catch (err) {
-                alert("فشل النشر: " + err.message);
-                btn.disabled = false;
-                btn.innerText = "نشر الآن ✅";
-            }
-        };
-    </script>
-</body>
-</html>
+    alert("تم نشر المقال بنجاح");
+
+  } catch (error) {
+
+    console.log(error);
+    alert(error.message);
+
+  }
+
+}
+
+window.publishPost = publishPost;
