@@ -30,5 +30,6 @@ db.collection("articles").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
         // بننادي على الدالة اللي إنت كتبتها عشان تعمل العنوان اللي بيفتح ويقفل
         container.innerHTML += displayArticle(doc.data().title, doc.data().content);
+
     });
 });
