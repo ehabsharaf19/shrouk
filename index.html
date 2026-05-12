@@ -19,64 +19,17 @@
         .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
         .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-/* تنسيق العناوين الذهبية الجديدة */
-.article-item {
-    border-bottom: 1px solid #333;
-    margin-bottom: 10px;
-    background: #111;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.article-header {
-    background: #1a1a1a;
-    color: #f1c40f;
-    padding: 15px;
-    cursor: pointer;
-    font-weight: bold;
-    border-right: 4px solid #f1c40f;
-    transition: 0.3s;
-}
-.article-header:hover {
-    background: #222;
-}
-.article-content {
-    max-height: 0;
-    padding: 0 15px;
-    color: #ccc;
-    background: #0a0a0a;
-    transition: max-height 0.3s ease-out;
-    overflow: hidden;
-}
-/* لما نضغط على العنوان بيفتح */
-.article-item.active .article-content {
-    max-height: 1000px; /* رقم كبير عشان ياخد محتوى المقال كله */
-    padding: 15px;
-    border-top: 1px solid #333;
-}
+        
+        /* تنسيق العناوين الذهبية الجديدة */
+        .article-item { border-bottom: 1px solid #333; margin-bottom: 10px; background: #111; border-radius: 8px; overflow: hidden; }
+        .article-header { background: #1a1a1a; color: #f1c40f; padding: 15px; cursor: pointer; font-weight: bold; border-right: 4px solid #f1c40f; }
+        .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.3s ease-out; overflow: hidden; }
+        .article-item.active .article-content { max-height: 2000px; padding: 15px; border-top: 1px solid #333; }
 
-        .article-card { border-bottom: 1px solid #222; padding: 15px 0; position: relative; }
-        .article-image { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
-        .article-content { color: #ccc; font-size: 14px; white-space: pre-wrap; line-height: 1.6; }
-        /* كود جعل المقدمة (أول سطر) عريض */
-        .article-content::first-line { font-weight: bold; color: #fff; font-size: 16px; }
-        .admin-btns { display: none; margin-top: 10px; gap: 10px; }
-        .delete-btn { background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
-        .edit-btn { background: #3498db; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
         .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
         #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
         .btn-gold { background: #f1c40f; color: #000; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
-   /* تنسيقات مقالات شروق الذهب الاحترافية */
-.article-content h2 { color: #f1c40f; font-size: 24px; border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 30px; }
-.article-content h3 { color: #f1c40f; font-size: 20px; margin-top: 20px; }
-.article-content p { line-height: 1.8; margin-bottom: 15px; }
-.article-content ul { padding-right: 25px; margin-bottom: 20px; }
-.article-content li { margin-bottom: 10px; color: #f1c40f; }
-.article-content li span { color: #ccc; }
-.article-content table { width: 100%; border-collapse: collapse; margin: 25px 0; background: #111; border: 1px solid #333; }
-.article-content th { background: #f1c40f; color: #000; padding: 12px; }
-.article-content td { padding: 10px; border: 1px solid #333; text-align: center; color: #fff; }
-
     </style>
 </head>
 <body>
@@ -96,6 +49,8 @@
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">جاري التحميل...</div>
+            <!-- هنا هتنزل المقالات الـ 29 المنظمة -->
+            <div id="articles-container" style="margin-top: 20px;"></div>
         </div>
     </div>
 
@@ -112,23 +67,27 @@
         <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
     </div>
 
-  
-        <p><div class="footer-gold">
-    <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
-    <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
-    <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
-    <p style="margin-top:15px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
-</div>
+    <div class="footer-gold">
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        <p style="margin-top:15px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
+    </div>
 
+    <!-- ملفات الفايربيس الأساسية للموقع -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
+        // إعدادات قاعدة البيانات القديمة (Realtime)
         const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const database = firebase.database();
+        const db = firebase.firestore(); // الفايرستور الجديد
         let currentStatus = false;
 
+        // سحب المقالات اللي بتنشرها يدوي
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
@@ -136,68 +95,17 @@
             if(data) {
                 Object.keys(data).reverse().forEach(id => {
                     const post = data[id];
-                    const displayStyle = currentStatus ? 'flex' : 'none';
                     container.innerHTML += `
-                        <div class="article-card">
+                        <div class="article-card" style="border-bottom:1px solid #222; padding:15px 0;">
                             <div style="color:#f1c40f; font-weight:bold; font-size:18px;">${post.title}</div>
-                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                            <div class="article-content">${post.content}</div>
-                            <div class="admin-btns" style="display:${displayStyle}">
-                                <button class="edit-btn" onclick="startEdit('${id}', '${encodeURI(post.title)}', '${encodeURI(post.content)}', '${post.image || ''}')">تعديل</button>
-                                <button class="delete-btn" onclick="deletePost('${id}')">حذف</button>
-                            </div>
+                            ${post.image ? `<img src="${post.image}" style="width:100%; border-radius:10px; margin:10px 0;">` : ""}
+                            <div style="color:#ccc; font-size:14px; white-space:pre-wrap;">${post.content}</div>
                         </div>`;
                 });
             }
         });
 
-        function addPost() {
-            const t = document.getElementById('post-title').value;
-            const img = document.getElementById('post-image').value;
-            const c = document.getElementById('post-content').value;
-            const id = document.getElementById('edit-id').value;
-
-            if(t && c) {
-                const ref = id ? database.ref('posts').child(id) : database.ref('posts').push();
-                ref.set({ title: t, image: img, content: c }).then(() => {
-                    alert(id ? "تم التحديث!" : "تم النشر!");
-                    resetForm();
-                });
-            }
-        }
-
-        function startEdit(id, t, c, img) {
-            document.getElementById('edit-id').value = id;
-            document.getElementById('post-title').value = decodeURI(t);
-            document.getElementById('post-content').value = decodeURI(c);
-            document.getElementById('post-image').value = img;
-            document.getElementById('panel-title').innerText = "تعديل التقرير";
-            document.getElementById('submit-btn').innerText = "حفظ التعديلات";
-            document.getElementById('admin-panel-emosha').style.display = 'block';
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-
-        function resetForm() {
-            document.getElementById('edit-id').value = "";
-            document.getElementById('post-title').value = "";
-            document.getElementById('post-content').value = "";
-            document.getElementById('post-image').value = "";
-            document.getElementById('panel-title').innerText = "إضافة تقرير جديد";
-            document.getElementById('submit-btn').innerText = "نشر الآن";
-            document.getElementById('admin-panel-emosha').style.display = 'none';
-        }
-
-        function deletePost(id) { if(confirm("حذف نهائي؟")) database.ref('posts').child(id).remove(); }
-
-        function openSecretPanel() {
-            if (parseInt(prompt("رمز القبطان:")) === 1230) {
-                currentStatus = true;
-                document.getElementById('admin-panel-emosha').style.display = 'block';
-                const btns = document.getElementsByClassName('admin-btns');
-                for(let b of btns) b.style.display = 'flex';
-            }
-        }
-
+        // تشغيل أسعار الذهب
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -216,177 +124,15 @@
         }
         updatePrices();
         setInterval(updatePrices, 30000);
+
+        function openSecretPanel() {
+            if (parseInt(prompt("رمز القبطان:")) === 1230) {
+                document.getElementById('admin-panel-emosha').style.display = 'block';
+            }
+        }
     </script>
-    <!-- قسم المقالات المنظم - شروق الذهب -->
-<section class="gold-articles-section">
-    <h2 style="text-align: center; color: #d4af37;">أحدث تقارير القبطان</h2>
-    <div id="articles-container">
-        <!-- المقالات هتنزل هنا آلياً -->
-    </div>
-</section>
-
-<!-- السطر ده لازم يكون آخر حاجة قبل </body> مباشرة -->
-<script src="app.js"></script>
-
-</body>
-</html>.article-content p { line-height: 1.8; margin-bottom: 15px; }
-.article-content ul { padding-right: 25px; margin-bottom: 20px; }
-.article-content li { margin-bottom: 10px; color: #f1c40f; }
-.article-content li span { color: #ccc; }
-.article-content table { width: 100%; border-collapse: collapse; margin: 25px 0; background: #111; border: 1px solid #333; }
-.article-content th { background: #f1c40f; color: #000; padding: 12px; }
-.article-content td { padding: 10px; border: 1px solid #333; text-align: center; color: #fff; }
-
-    </style>
-</head>
-<body>
-    <div class="main-title">شروق الذهب</div>
-    <div class="gateway-text">EMOSHA</div>
     
-    <div class="market-stats">
-        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
-    </div>
-
-    <div class="container">
-        <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
-        <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
-        <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
-        
-        <div class="article-section">
-            <h2>أحدث تقارير القبطان</h2>
-            <div id="posts-container">جاري التحميل...</div>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 30px;">
-        <span onclick="openSecretPanel()" style="cursor: pointer; color: #222; font-size: 12px;">إدارة المحتوى</span>
-    </div>
-
-    <div id="admin-panel-emosha">
-        <h3 id="panel-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
-        <input type="hidden" id="edit-id">
-        <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
-        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
-        <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا..."></textarea>
-        <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
-    </div>
-
-  
-        <p><div class="footer-gold">
-    <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
-    <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
-    <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
-    <p style="margin-top:15px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
-</div>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-    <script>
-        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        let currentStatus = false;
-
-        database.ref('posts').on('value', (snapshot) => {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = "";
-            const data = snapshot.val();
-            if(data) {
-                Object.keys(data).reverse().forEach(id => {
-                    const post = data[id];
-                    const displayStyle = currentStatus ? 'flex' : 'none';
-                    container.innerHTML += `
-                        <div class="article-card">
-                            <div style="color:#f1c40f; font-weight:bold; font-size:18px;">${post.title}</div>
-                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                            <div class="article-content">${post.content}</div>
-                            <div class="admin-btns" style="display:${displayStyle}">
-                                <button class="edit-btn" onclick="startEdit('${id}', '${encodeURI(post.title)}', '${encodeURI(post.content)}', '${post.image || ''}')">تعديل</button>
-                                <button class="delete-btn" onclick="deletePost('${id}')">حذف</button>
-                            </div>
-                        </div>`;
-                });
-            }
-        });
-
-        function addPost() {
-            const t = document.getElementById('post-title').value;
-            const img = document.getElementById('post-image').value;
-            const c = document.getElementById('post-content').value;
-            const id = document.getElementById('edit-id').value;
-
-            if(t && c) {
-                const ref = id ? database.ref('posts').child(id) : database.ref('posts').push();
-                ref.set({ title: t, image: img, content: c }).then(() => {
-                    alert(id ? "تم التحديث!" : "تم النشر!");
-                    resetForm();
-                });
-            }
-        }
-
-        function startEdit(id, t, c, img) {
-            document.getElementById('edit-id').value = id;
-            document.getElementById('post-title').value = decodeURI(t);
-            document.getElementById('post-content').value = decodeURI(c);
-            document.getElementById('post-image').value = img;
-            document.getElementById('panel-title').innerText = "تعديل التقرير";
-            document.getElementById('submit-btn').innerText = "حفظ التعديلات";
-            document.getElementById('admin-panel-emosha').style.display = 'block';
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-
-        function resetForm() {
-            document.getElementById('edit-id').value = "";
-            document.getElementById('post-title').value = "";
-            document.getElementById('post-content').value = "";
-            document.getElementById('post-image').value = "";
-            document.getElementById('panel-title').innerText = "إضافة تقرير جديد";
-            document.getElementById('submit-btn').innerText = "نشر الآن";
-            document.getElementById('admin-panel-emosha').style.display = 'none';
-        }
-
-        function deletePost(id) { if(confirm("حذف نهائي؟")) database.ref('posts').child(id).remove(); }
-
-        function openSecretPanel() {
-            if (parseInt(prompt("رمز القبطان:")) === 1230) {
-                currentStatus = true;
-                document.getElementById('admin-panel-emosha').style.display = 'block';
-                const btns = document.getElementsByClassName('admin-btns');
-                for(let b of btns) b.style.display = 'flex';
-            }
-        }
-
-        async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                const p24 = (globalPrice / 31.1035) * currentUSD;
-                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) {}
-        }
-        updatePrices();
-        setInterval(updatePrices, 30000);
-    </script>
-    <!-- قسم المقالات المنظم - شروق الذهب -->
-<section class="gold-articles-section">
-    <h2 style="text-align: center; color: #d4af37;">أحدث تقارير القبطان</h2>
-    <div id="articles-container">
-        <!-- المقالات هتنزل هنا آلياً -->
-    </div>
-</section>
-
-<!-- السطر ده لازم يكون آخر حاجة قبل </body> مباشرة -->
-<script src="app.js"></script>
-
+    <!-- السطر السحري اللي بيشغل الـ 29 مقال -->
+    <script src="app.js"></script>
 </body>
 </html>
