@@ -5,115 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شروق الذهب - EMOSHA Gold</title>
     <style>
-        body {
-            background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
-        }
-        .main-title {
-            font-size: 50px; font-weight: bold; color: #f1c40f;
-            text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px;
-        }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 30px; }
-        
-        .market-stats { 
-            display: flex; justify-content: space-between; background: #1a1a1a; 
-            padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; 
-            border: 1px solid #333; width: 100%; max-width: 420px; 
-        }
+        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
         .stat-item { text-align: center; flex: 1; }
         .stat-label { color: #888; font-size: 11px; display: block; }
         .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
-
         .container { width: 100%; max-width: 450px; }
-        
-        .gold-card {
-            background: #111; border: 1px solid #333; border-radius: 15px;
-            padding: 25px; margin-bottom: 15px; text-align: center; position: relative;
-        }
+        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 25px; margin-bottom: 15px; text-align: center; position: relative; }
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-label { color: #aaa; font-size: 16px; display: block; margin-bottom: 5px; }
         .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
-        
         .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
         .article-card { border-bottom: 1px solid #222; padding: 15px 0; }
-        .article-title { color: #f1c40f; font-size: 18px; font-weight: bold; margin-bottom: 8px; }
-        .article-excerpt { color: #ccc; font-size: 14px; line-height: 1.6; }
-
-        footer { margin-top: 50px; padding: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
-        .admin-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
-        .whatsapp-btn {
-            display: inline-block; background: #25d366; color: #fff; padding: 15px 30px;
-            border-radius: 40px; text-decoration: none; font-weight: bold; margin-top: 15px;
-            transition: 0.3s;
-        }
-        
-        .live-indicator { font-size: 13px; color: #2ecc71; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        /* تنسيق لوحة التحكم المخفية والفوتر الذهبي */
+        .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
+        .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
         #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
         .btn-gold { background: #f1c40f; color: #000; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
-        .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
-        .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
     </style>
 </head>
 <body>
-
     <div class="main-title">شروق الذهب</div>
     <div class="gateway-text">EMOSHA</div>
-
-    <div class="live-indicator">
-        <div class="dot"></div> تحديث حي للدولار والبورصة العالمية
-    </div>
-
     <div class="market-stats">
         <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-        <div style="width: 1px; background: #333; margin: 0 10px;"></div>
-        <div class="stat-item"><span class="stat-label">سعر الدولار (EGP)</span><span class="stat-value" id="usd-rate">...</span></div>
+        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
     </div>
-
     <div class="container">
         <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
         <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
         <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
-
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
+                <div class="article-card">
+                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (1): نصيحة الاستثمار</div>
+                    <p style="color:#ccc; font-size:14px;">الذهب هو الملاذ الآمن دائماً، وننصح بالشراء في أوقات الهبوط التدريجي لتأمين مدخراتك.</p>
                 </div>
+                <div class="article-card">
+                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (2): تحليل السوق</div>
+                    <p style="color:#ccc; font-size:14px;">نلاحظ استقراراً في السعر المحلي نتيجة توازن العرض والطلب، وهي فرصة جيدة للمقبلين على الشراء.</p>
+                </div>
+                <div class="article-card">
+                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (3): سبائك الإدخار</div>
+                    <p style="color:#ccc; font-size:14px;">دائماً ما تكون السبائك المغلفة هي الاختيار الأول لمن يرغب في الحفاظ على قيمة أمواله بأقل مصنعية.</p>
+                </div>
+                <div class="article-card">
+                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (4): الرؤية العالمية</div>
+                    <p style="color:#ccc; font-size:14px;">نراقب البورصة العالمية بدقة، وأي تغير في الفائدة سيؤثر فوراً على حركة الذهب هنا في مصر.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <div class="admin-box">
-            <h3 style="color: #f1c40f; margin-bottom: 10px;">عن المنصة</h3>
-            <p style="color: #888; font-size: 14px;">شروق الذهب هي خدمة تابعة لمشروع EMOSHA لتوفير الشفافية في الأسعار.</p>
-            <p style="color: #fff; margin: 15px 0;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
-            <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
-        </div>
-    </footer>
-
-    <div style="text-align: center; margin: 20px;">
-        <span onclick="openSecretPanel()" style="cursor: pointer; color: #111; font-size: 12px;">.</span>
+    <div style="text-align: center; margin-top: 30px;">
+        <span onclick="openSecretPanel()" style="cursor: pointer; color: #222; font-size: 12px;">إدارة المحتوى</span>
     </div>
 
     <div id="admin-panel-emosha">
-        <h3 style="color: #f1c40f; text-align: center;">لوحة تحكم كابتن إيهاب</h3>
-        <input type="text" id="post-title" class="input-style" placeholder="عنوان الخبر...">
-        <textarea id="post-content" class="input-style" rows="4" placeholder="تفاصيل الخبر..."></textarea>
-        <button class="btn-gold" onclick="sendToFirebase()">نشر الآن</button>
+        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
+        <textarea id="post-content" class="input-style" rows="4" placeholder="المحتوى..."></textarea>
+        <button class="btn-gold" onclick="addPost()">انشر الآن</button>
     </div>
 
     <div class="footer-gold">
-        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="color: #555; font-size: 12px; margin-top: 15px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
+        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a>
+        <p style="color: #444; font-size: 11px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
     </div>
 
     <script>
-        // تحديث الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -131,22 +95,24 @@
             } catch (e) { console.log("خطأ في التحديث"); }
         }
 
-        // لوحة التحكم السرية
         function openSecretPanel() {
             var pass = prompt("أدخل كلمة سر المشرف:");
-            if (pass === "1234") {
+            if (pass === "1230") { // كلمة السر الجديدة
                 document.getElementById('admin-panel-emosha').style.display = 'block';
                 window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                alert("كلمة السر خطأ!");
+            } else { alert("خطأ!"); }
+        }
+
+        function addPost() {
+            var t = document.getElementById('post-title').value;
+            var c = document.getElementById('post-content').value;
+            if(t && c) {
+                var html = `<div class="article-card"><div style="color:#f1c40f; font-weight:bold;">${t}</div><p style="color:#ccc; font-size:14px;">${c}</p></div>`;
+                document.getElementById('posts-container').innerHTML = html + document.getElementById('posts-container').innerHTML;
+                document.getElementById('admin-panel-emosha').style.display = 'none';
+                alert("تم النشر يا كابتن!");
             }
         }
-
-        function sendToFirebase() {
-            var t = document.getElementById('post-title').value;
-            if(t) { alert("تم النشر بنجاح!"); document.getElementById('admin-panel-emosha').style.display = 'none'; }
-        }
-
         updatePrices();
         setInterval(updatePrices, 30000);
     </script>
