@@ -61,4 +61,42 @@
   <textarea class="post-input" rows="6" placeholder="اكتب تفاصيل التحليل هنا..."></textarea>
   <button class="btn-publish">نشر الآن</button>
 
+/* كود "اللمسة الفنية" لتنظيم الصفحة */
+.gold-articles-section {
+    max-width: 800px; /* بيخلي الموقع ملموم في النص مش عريض */
+    margin: 30px auto; /* بيوسط المحتوى */
+    direction: rtl;
+    padding: 10px;
+}
+
+.article-item {
+    margin-bottom: 15px;
+    border: 1px solid #d4af37; /* لون ذهبي */
+    border-radius: 8px;
+    background: #1a1a1a; /* خلفية غامقة شيك */
+}
+
+.article-header {
+    background-color: #d4af37;
+    color: #000;
+    padding: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: right;
+}
+
+.article-content {
+    max-height: 0; /* المقال بيكون مستخبي */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #000;
+    color: #fff;
+}
+
+/* لما نضغط على العنوان يفتح المقال */
+.article-item.active .article-content {
+    max-height: 2000px; 
+    padding: 15px;
+}
 
