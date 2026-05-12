@@ -135,46 +135,63 @@
     </footer>
 
     <script>
-        <script type="module">
+        async function updatePrices() {
+            try {
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const globalPrice = parseFloat(goldData.price);
+                
+                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-const firebaseConfig = {
-  apiKey: "حط المفتاح بتاعك",
-  authDomain: "حط الدومين",
-  projectId: "حط الايدي"
-};
+                const price24 = (globalPrice / 31.1035) * currentUSD;
+                document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
+                document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
+                document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
+            } catch (e) { console.log("خطأ في التحديث..."); }
+        }
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        function fetchBlogger() {
+            const script = document.createElement('script');
+            script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=handlePosts`;
+            document.body.appendChild(script);
+        }
 
-async function loadPosts() {
+        window.handlePosts = function(data) {
+            const container = document.getElementById('posts-container');
+            const entries = data.feed.entry || [];
+            if(entries.length > 0) {
+                let html = "";
+                entries.slice(0, 3).forEach(entry => {
+                    const title = entry.title.$t;
+                    const content = entry.content ? entry.content.$t : entry.summary.$t;
+                    const temp = document.createElement('div');
+                    temp.innerHTML = content;
+                    const text = temp.innerText.substring(0, 150) + "...";
+                    html += `<div class="article-card">
+                        <div class="article-title">${title}</div>
+                        <p class="article-excerpt">${text}</p>
+                    </div>`;
+                });
+                container.innerHTML = html + container.innerHTML;
+            }
+        };
 
-  const querySnapshot = await getDocs(collection(db, "posts"));
+        function logoutAdmin() {
+            // كود بسيط للخروج (يمكن ربطه بـ Firebase لاحقاً)
+            localStorage.removeItem('adminLoggedIn');
+            alert('تم تسجيل الخروج بنجاح');
+            window.location.reload();
+        }
 
-  let html = "";
-
-  querySnapshot.forEach((doc) => {
-
-    const p = doc.data();
-
-    html += `
-      <div style="border:1px solid #ccc; padding:10px; margin:10px">
-        <h3>${p.title}</h3>
-        <p>${p.content.slice(0,100)}...</p>
-        <a href="post.html?id=${doc.id}">اقرأ</a>
-      </div>
-    `;
-
-  });
-
-  document.getElementById("posts").innerHTML = html;
-}
-
-loadPosts();
-
-</script>
+        // تشغيل المحرك
+        updatePrices();
+        fetchBlogger();
+        setInterval(updatePrices, 10000);
     </script>
 </body>
 </html>
