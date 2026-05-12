@@ -89,12 +89,19 @@
             } catch (e) { console.log("خطأ في التحديث"); }
         }
 
+        // الحيلة الذكية هنا يا كابتن عشان نخفي الباسورد
         function openSecretPanel() {
-            var pass = prompt("أدخل كلمة السر (1230):");
-            if (pass === "1230") {
+            var pass = prompt("أدخل رمز الوصول الخاص بالقبطان:");
+            var keyPart1 = 1000;
+            var keyPart2 = 230;
+            
+            // الباسورد هو مجموع الرقمين (1230) بس مش مكتوب صريح
+            if (parseInt(pass) === (keyPart1 + keyPart2)) {
                 document.getElementById('admin-panel-emosha').style.display = 'block';
                 window.scrollTo(0, document.body.scrollHeight);
-            } else { alert("خطأ!"); }
+            } else {
+                alert("الرمز غير صحيح!");
+            }
         }
 
         function addPost() {
