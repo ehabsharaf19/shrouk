@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شروق الذهب - EMOSHA</title>
     <style>
-        /* كود التصميم الأصلي بتاعك بدون أي تغيير */
         body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
@@ -20,14 +19,11 @@
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; display: block; }
         .articles-section { margin-top: 30px; width: 100%; border-top: 1px solid #333; padding-top: 20px; }
         .section-title { color: #f1c40f; font-size: 22px; margin-bottom: 20px; text-align: right; border-right: 4px solid #f1c40f; padding-right: 10px; }
-        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; overflow: hidden; }
-        .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; text-align: right; }
-        .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; text-align: right; }
-        .article-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; display: block; }
+        .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; overflow: hidden; text-align: right; }
+        .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; }
+        .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
         footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
-        .admin-login-btn { margin-top: 20px; background: none; border: 1px solid #333; color: #444; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: 0.3s; }
-        .admin-login-btn:hover { color: #f1c40f; border-color: #f1c40f; }
     </style>
 </head>
 <body>
@@ -53,83 +49,20 @@
         <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
 
         <div class="articles-section">
-            <div class="section-title">أخبار وتحليلات الذهب</div>
-            <div id="posts-container">
-                <p style="text-align:center; color: #666;">جاري تحميل أحدث التقارير...</p>
+            <div class="section-title">أحدث التحليلات والتقارير</div>
+            
+            <div class="article-card">
+                <div class="article-title">تحليل السوق: استقرار حذر قبل الإغلاق</div>
+                <p class="article-excerpt">يشهد سوق الذهب حالياً حالة من الاستقرار فوق مستويات الدعم التاريخية. ننصح المتابعين بمراقبة حركة الدولار عالمياً وتأثيرها على الأسعار المحلية في مصر خلال الساعات القادمة.</p>
+            </div>
+
+            <div class="article-card">
+                <div class="article-title">نصيحة القبطان للمستثمرين</div>
+                <p class="article-excerpt">دائماً ما نكرر أن الذهب هو وعاء ادخاري طويل الأمد. لا تنجرف وراء الشائعات اللحظية وحافظ على جزء من سيولتك في المعدن الأصفر لتأمين مستقبلك من التضخم.</p>
             </div>
         </div>
     </div>
 
     <footer>
         <p style="color: #fff;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
-        <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا واتساب 💬</a>
-        <br>
-        <button class="admin-login-btn" onclick="goToLogin()">لوحة التحكم</button>
-    </footer>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
-            authDomain: "shrouk-ehab.firebaseapp.com",
-            projectId: "shrouk-ehab",
-            storageBucket: "shrouk-ehab.firebasestorage.app",
-            messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.goToLogin = function() { window.location.href = "admin.html"; };
-
-        // تعديل orderBy لتطابق timestamp الموجود في كود الإدارة
-        const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
-        
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = ""; 
-            if (!snapshot.empty) {
-                snapshot.forEach((doc) => {
-                    const post = doc.data();
-                    container.innerHTML += `
-                        <div class="article-card">
-                            ${post.image ? `<img src="${post.image}" class="article-img">` : ""}
-                            <div class="article-title">${post.title}</div>
-                            <p class="article-excerpt">${post.content}</p>
-                        </div>
-                    `;
-                });
-            } else {
-                container.innerHTML = "<p style='text-align:center; color:#666;'>لا توجد مقالات منشورة حالياً.</p>";
-            }
-        });
-    </script>
-
-    <script>
-        async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                
-                document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
-
-                const price24 = (globalPrice / 31.1035) * currentUSD;
-                document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("تحديث الأسعار..."); }
-        }
-        updatePrices();
-        setInterval(updatePrices, 30000);
-    </script>
-</body>
-</html>
+        <a href="https://wa.me/201010202865"
