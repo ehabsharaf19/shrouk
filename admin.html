@@ -3,69 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة القبطان - EMOSHA</title>
+    <title>إدارة إيموشا ⚓</title>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
         .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
-        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
-        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; font-size: 12px; width: auto; padding: 8px 20px; }
+        #admin-panel { display: none; } /* مخفي لحد ما تسجل دخول */
     </style>
 </head>
 <body>
-    <h2>لوحة تحكم إيموشا ⚓</h2>
-    <div class="box">
-        <input type="text" id="post-title" placeholder="عنوان المقال">
-        <input type="text" id="post-image" placeholder="رابط الصورة (اختياري)">
-        <textarea id="post-content" rows="5" placeholder="تفاصيل التحليل..."></textarea>
-        <button id="btn-publish" onclick="publishNow()">نشر المقال فوراً ✅</button>
+
+    <div id="login-form" class="box">
+        <h3>تسجيل دخول القبطان ⚓</h3>
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">دخول</button>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <div id="admin-panel" class="box">
+        <h3>نشر مقال جديد - EMOSHA</h3>
+        <input type="text" id="title" placeholder="عنوان المقال">
+        <input type="text" id="image" placeholder="رابط الصورة (اختياري)">
+        <textarea id="content" rows="6" placeholder="اكتب التحليل هنا يا قبطان..."></textarea>
+        <button id="pub-btn" onclick="publish()">نشر الآن ✅</button>
+        <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
+    </div>
 
-    <script>
-        // الإعدادات مأخوذة مباشرة من صورتك الأخيرة لضمان الربط
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
-            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
             projectId: "shrouk-ehab",
-            storageBucket: "shrouk-ehab.appspot.com",
+            storageBucket: "shrouk-ehab.firebasestorage.app",
             messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e",
-            measurementId: "G-FK3KNWZZ15"
+            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        async function publishNow() {
-            const btn = document.getElementById('btn-publish');
-            const title = document.getElementById('post-title').value;
-            const content = document.getElementById('post-content').value;
-            const image = document.getElementById('post-image').value;
+        // مراقبة حالة التسجيل (لو فاتح يفضل فاتح، ولو قفلت يطلب دخول)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+            } else {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('admin-panel').style.display = 'none';
+            }
+        });
 
-            if(!title || !content) return alert("يا قبطان، اكتب العنوان والمحتوى!");
+        window.login = async () => {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('password').value;
+            try { await signInWithEmailAndPassword(auth, e, p); } 
+            catch (err) { alert("خطأ في بيانات الدخول يا قبطان!"); }
+        };
 
-            btn.innerText = "جاري الحفظ في القاعدة...";
+        window.logout = () => { signOut(auth); };
+
+        window.publish = async () => {
+            const t = document.getElementById('title').value;
+            const c = document.getElementById('content').value;
+            const i = document.getElementById('image').value;
+            const btn = document.getElementById('pub-btn');
+
+            if(!t || !c) return alert("اكمل البيانات أولاً");
+
+            btn.innerText = "جاري النشر المباشر...";
             btn.disabled = true;
 
-            db.collection("posts").add({
-                title: title,
-                content: content,
-                image: image,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                alert("✅ تمام يا قبطان إيهاب! المقال نزل على الموقع");
+            try {
+                await addDoc(collection(db, "posts"), {
+                    title: t,
+                    content: c,
+                    image: i,
+                    timestamp: serverTimestamp() // ده اللي هيخلي index.html يقرأ صح
+                });
+                alert("✅ تم النشر بنجاح!");
                 location.reload();
-            })
-            .catch((error) => {
-                alert("حدث خطأ في الربط: " + error.message);
+            } catch (err) {
+                alert("فشل النشر: " + err.message);
                 btn.disabled = false;
-                btn.innerText = "حاول مرة أخرى ✅";
-            });
-        }
+                btn.innerText = "نشر الآن ✅";
+            }
+        };
     </script>
 </body>
 </html>
