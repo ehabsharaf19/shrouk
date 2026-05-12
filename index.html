@@ -20,6 +20,7 @@
         .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
         .article-card { border-bottom: 1px solid #222; padding: 15px 0; }
+        .article-image { width: 100%; border-radius: 10px; margin: 10px 0; display: block; }
         .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
         .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
         #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
@@ -30,32 +31,24 @@
 <body>
     <div class="main-title">شروق الذهب</div>
     <div class="gateway-text">EMOSHA</div>
+    
     <div class="market-stats">
         <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
         <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
     </div>
+
     <div class="container">
         <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
         <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
         <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
+        
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
                 <div class="article-card">
-                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (1): نصيحة الاستثمار</div>
-                    <p style="color:#ccc; font-size:14px;">الذهب هو الملاذ الآمن دائماً، وننصح بالشراء في أوقات الهبوط التدريجي لتأمين مدخراتك.</p>
-                </div>
-                <div class="article-card">
-                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (2): تحليل السوق</div>
-                    <p style="color:#ccc; font-size:14px;">نلاحظ استقراراً في السعر المحلي نتيجة توازن العرض والطلب، وهي فرصة جيدة للمقبلين على الشراء.</p>
-                </div>
-                <div class="article-card">
-                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (3): سبائك الإدخار</div>
-                    <p style="color:#ccc; font-size:14px;">دائماً ما تكون السبائك المغلفة هي الاختيار الأول لمن يرغب في الحفاظ على قيمة أمواله بأقل مصنعية.</p>
-                </div>
-                <div class="article-card">
-                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان (4): الرؤية العالمية</div>
-                    <p style="color:#ccc; font-size:14px;">نراقب البورصة العالمية بدقة، وأي تغير في الفائدة سيؤثر فوراً على حركة الذهب هنا في مصر.</p>
+                    <div style="color:#f1c40f; font-weight:bold;">تقرير القبطان: نصيحة اليوم</div>
+                    <img src="https://images.unsplash.com/photo-1589758438368-2151aa295265?q=80&w=500&auto=format&fit=crop" class="article-image">
+                    <p style="color:#ccc; font-size:14px;">الذهب زينة وخزينة، استثمر بذكاء مع شروق الذهب.</p>
                 </div>
             </div>
         </div>
@@ -66,14 +59,15 @@
     </div>
 
     <div id="admin-panel-emosha">
-        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير بالصورة</h3>
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
+        <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة (URL)...">
         <textarea id="post-content" class="input-style" rows="4" placeholder="المحتوى..."></textarea>
         <button class="btn-gold" onclick="addPost()">انشر الآن</button>
     </div>
 
     <div class="footer-gold">
-        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a>
+        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
         <p style="color: #444; font-size: 11px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
     </div>
 
@@ -96,8 +90,8 @@
         }
 
         function openSecretPanel() {
-            var pass = prompt("أدخل كلمة سر المشرف:");
-            if (pass === "1230") { // كلمة السر الجديدة
+            var pass = prompt("أدخل كلمة السر (1230):");
+            if (pass === "1230") {
                 document.getElementById('admin-panel-emosha').style.display = 'block';
                 window.scrollTo(0, document.body.scrollHeight);
             } else { alert("خطأ!"); }
@@ -105,12 +99,14 @@
 
         function addPost() {
             var t = document.getElementById('post-title').value;
+            var img = document.getElementById('post-image').value;
             var c = document.getElementById('post-content').value;
             if(t && c) {
-                var html = `<div class="article-card"><div style="color:#f1c40f; font-weight:bold;">${t}</div><p style="color:#ccc; font-size:14px;">${c}</p></div>`;
+                var imgHtml = img ? `<img src="${img}" class="article-image">` : "";
+                var html = `<div class="article-card"><div style="color:#f1c40f; font-weight:bold;">${t}</div>${imgHtml}<p style="color:#ccc; font-size:14px;">${c}</p></div>`;
                 document.getElementById('posts-container').innerHTML = html + document.getElementById('posts-container').innerHTML;
                 document.getElementById('admin-panel-emosha').style.display = 'none';
-                alert("تم النشر يا كابتن!");
+                alert("تم النشر بنجاح!");
             }
         }
         updatePrices();
