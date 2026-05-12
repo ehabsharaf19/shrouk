@@ -7,63 +7,63 @@
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
         .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
-        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; display: block; margin-left: auto; margin-right: auto; }
-        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
     <h2>لوحة تحكم إيموشا ⚓</h2>
     <div class="box">
         <input type="text" id="post-title" placeholder="عنوان المقال">
-        <input type="text" id="post-image" placeholder="رابط الصورة المباشر">
+        <input type="text" id="post-image" placeholder="رابط الصورة (اختياري)">
         <textarea id="post-content" rows="5" placeholder="تفاصيل التحليل..."></textarea>
-        <button id="btn-publish" onclick="publishPost()">نشر المقال فوراً ✅</button>
+        <button id="btn-publish" onclick="publishNow()">نشر المقال فوراً ✅</button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // إعدادات مشروعك (تأكد إنها مطابقة تماماً)
-        var firebaseConfig = {
+        // الإعدادات مأخوذة مباشرة من صورتك الأخيرة لضمان الربط
+        const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
-            projectId: "shrouk-ehab"
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
+            projectId: "shrouk-ehab",
+            storageBucket: "shrouk-ehab.appspot.com",
+            messagingSenderId: "1015714183835",
+            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e",
+            measurementId: "G-FK3KNWZZ15"
         };
 
-        // بدء تشغيل فيربيز
         firebase.initializeApp(firebaseConfig);
-        var db = firebase.firestore();
+        const db = firebase.firestore();
 
-        async function publishPost() {
-            var btn = document.getElementById('btn-publish');
-            var title = document.getElementById('post-title').value;
-            var content = document.getElementById('post-content').value;
-            var image = document.getElementById('post-image').value;
+        async function publishNow() {
+            const btn = document.getElementById('btn-publish');
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const image = document.getElementById('post-image').value;
 
-            if(!title || !content) {
-                alert("يا قبطان، اكتب العنوان والمحتوى الأول!");
-                return;
-            }
+            if(!title || !content) return alert("يا قبطان، اكتب العنوان والمحتوى!");
 
-            btn.innerText = "جاري الإرسال للموقع...";
+            btn.innerText = "جاري الحفظ في القاعدة...";
             btn.disabled = true;
 
-            // إرسال البيانات لـ Firestore
             db.collection("posts").add({
                 title: title,
                 content: content,
                 image: image,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
-            .then(function() {
-                alert("✅ تمام يا قبطان! المقال اتنشر بنجاح");
-                window.location.reload();
+            .then(() => {
+                alert("✅ تمام يا قبطان إيهاب! المقال نزل على الموقع");
+                location.reload();
             })
-            .catch(function(error) {
-                alert("حصل خطأ: " + error.message);
+            .catch((error) => {
+                alert("حدث خطأ في الربط: " + error.message);
                 btn.disabled = false;
-                btn.innerText = "حاول تاني ✅";
+                btn.innerText = "حاول مرة أخرى ✅";
             });
         }
     </script>
