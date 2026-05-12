@@ -17,7 +17,10 @@ db.collection("articles").get().then((querySnapshot) => {
     const container = document.getElementById('articles-container');
     if(container) {
         container.innerHTML = ""; 
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc) => 
+            container.innerHTML += displayArticle(doc.data().title, doc.data().content);
+
+            {
             container.innerHTML += displayArticle(doc.data().title, doc.data().content);
         });
     }
