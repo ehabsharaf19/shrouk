@@ -45,8 +45,7 @@
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
-                <p style="text-align:center; color:#666;">جاري تحميل التقارير من القاعدة...</p>
-            </div>
+                </div>
         </div>
     </div>
 
@@ -67,39 +66,18 @@
         <p style="color: #444; font-size: 11px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // الربط بالقاعدة بتاعتك يا قبطان
+        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
             databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/"
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // عرض المقالات من Firebase
-        database.ref('posts').on('value', (snapshot) => {
-            const postsContainer = document.getElementById('posts-container');
-            postsContainer.innerHTML = ''; 
-            const data = snapshot.val();
-            if(data) {
-                for (let id in data) {
-                    const post = data[id];
-                    const imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
-                    const html = `<div class="article-card">
-                                    <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
-                                    ${imgHtml}
-                                    <p style="color:#ccc; font-size:14px;">${post.content}</p>
-                                  </div>`;
-                    postsContainer.innerHTML = html + postsContainer.innerHTML;
-                }
-            } else {
-                postsContainer.innerHTML = '<p style="color:#666;">لا توجد تقارير حالياً. أضف أول تقرير!</p>';
-            }
-        });
-
-        // تحديث الأسعار
+        // وظيفة جلب الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -114,32 +92,62 @@
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("خطأ في الأسعار"); }
+            } catch (e) { console.log("خطأ في التحديث"); }
         }
 
-        // لوحة التحكم
+        // الحيلة الذكية لإخفاء الباسورد
         function openSecretPanel() {
-            var pass = prompt("أدخل الرمز (1230):");
-            if (parseInt(pass) === (1000 + 230)) {
+            var pass = prompt("أدخل رمز الوصول الخاص بالقبطان:");
+            var keyPart1 = 1000;
+            var keyPart2 = 230;
+            
+            if (parseInt(pass) === (keyPart1 + keyPart2)) {
                 document.getElementById('admin-panel-emosha').style.display = 'block';
                 window.scrollTo(0, document.body.scrollHeight);
-            } else { alert("خطأ!"); }
+            } else {
+                alert("الرمز غير صحيح!");
+            }
         }
 
-        // النشر للفايربيس
+        // حفظ المقال في Firebase
         function addPost() {
             var t = document.getElementById('post-title').value;
             var img = document.getElementById('post-image').value;
             var c = document.getElementById('post-content').value;
+            
             if(t && c) {
-                database.ref('posts').push({ title: t, image: img, content: c });
-                document.getElementById('admin-panel-emosha').style.display = 'none';
-                document.getElementById('post-title').value = '';
-                document.getElementById('post-image').value = '';
-                document.getElementById('post-content').value = '';
-                alert("تم النشر بنجاح!");
+                database.ref('articles').push({
+                    title: t,
+                    image: img,
+                    content: c,
+                    timestamp: Date.now()
+                }).then(() => {
+                    alert("تم النشر بنجاح وثبات المقال!");
+                    document.getElementById('admin-panel-emosha').style.display = 'none';
+                    document.getElementById('post-title').value = "";
+                    document.getElementById('post-image').value = "";
+                    document.getElementById('post-content').value = "";
+                });
             }
         }
+
+        // جلب المقالات من Firebase وعرضها فوراً
+        database.ref('articles').on('value', (snapshot) => {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            snapshot.forEach((childSnapshot) => {
+                const post = childSnapshot.val();
+                var imgHtml = post.image ? `<img src="${post.image}" class="article-image">` : "";
+                var html = `
+                    <div class="article-card">
+                        <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
+                        ${imgHtml}
+                        <p style="color:#ccc; font-size:14px;">${post.content}</p>
+                    </div>`;
+                container.innerHTML = html + container.innerHTML; // الجديد يظهر فوق
+            });
+        });
+
         updatePrices();
         setInterval(updatePrices, 30000);
     </script>
