@@ -42,38 +42,48 @@
 
         window.login = async () => {
             try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); }
-            catch (e) { alert("خطأ: " + e.message); }
+            catch (e) { alert("خطأ في الدخول: " + e.message); }
         };
 
         onAuthStateChanged(auth, (user) => {
-            if (user) { document.getElementById('login-section').style.display = 'none'; document.getElementById('editor-section').style.display = 'block'; }
+            if (user) { 
+                document.getElementById('login-section').style.display = 'none'; 
+                document.getElementById('editor-section').style.display = 'block'; 
+            }
         });
 
         window.publishPost = async function() {
             const btn = document.getElementById('btn-publish');
-            const file = document.getElementById('post-file').files[0];
+            const fileInput = document.getElementById('post-file');
+            const file = fileInput.files[0];
             const title = document.getElementById('post-title').value;
             const content = document.getElementById('post-content').value;
 
-            if(!file || !title || !content) return alert("اختار صورة واكتب العنوان والمحتوى!");
+            if(!title || !content) return alert("اكتب العنوان والمحتوى!");
 
-            btn.innerText = "جاري رفع الصورة...";
+            btn.innerText = "جاري النشر...";
             btn.disabled = true;
 
-            const formData = new FormData();
-            formData.append("image", file);
-            
+            let imageUrl = "";
+
             try {
-                // الرفع لموقع مجاني لتخطي مشكلة الدفع في فيربيز
-                const res = await fetch("https://api.imgbb.com/1/upload?key=6386665792c31e21b0451a5160867041", {
-                    method: "POST",
-                    body: formData
-                });
-                const data = await res.json();
-                const imageUrl = data.data.url;
+                // محاولة رفع الصورة لو موجودة
+                if (file) {
+                    const formData = new FormData();
+                    formData.append("image", file);
+                    const res = await fetch("https://api.imgbb.com/1/upload?key=6386665792c31e21b0451a5160867041", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const data = await res.json();
+                    if(data.success) {
+                        imageUrl = data.data.url;
+                    } else {
+                        throw new Error("فشل رفع الصورة لموقع الرفع المجاني.");
+                    }
+                }
 
-                btn.innerText = "جاري الحفظ النهائي...";
-
+                // حفظ في قاعدة البيانات
                 await addDoc(collection(db, "posts"), {
                     title: title,
                     content: content,
@@ -81,7 +91,7 @@
                     timestamp: serverTimestamp()
                 });
 
-                alert("✅ تمام يا قبطان! المقال اتنشر بالصورة والموقع اتحدث");
+                alert("✅ مبروك يا قبطان! تم النشر بنجاح");
                 location.reload();
             } catch (e) {
                 alert("فشل النشر: " + e.message);
