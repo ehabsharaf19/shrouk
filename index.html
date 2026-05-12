@@ -53,7 +53,27 @@
         <div class="articles-section">
             <div class="section-title">أحدث التقارير والتحليلات</div>
             <div id="posts-container">
-                <p style="text-align:center; color: #666;">جاري جلب تحليلات القبطان من بلوجر...</p>
+                <div class="article-card">
+                    <div class="article-title">لماذا الذهب هو الملاذ الآمن دائماً؟</div>
+                    <p class="article-excerpt">في ظل التقلبات الاقتصادية، يظل الذهب هو العملة الوحيدة التي لا تطبع ولا تفقد قيمتها التاريخية. ننصح دائماً بتخصيص جزء من مدخراتك للذهب لضمان القوة الشرائية لأموالك على المدى البعيد.</p>
+                </div>
+                
+                <div class="article-card">
+                    <div class="article-title">نصيحة القبطان: متى تشتري الذهب؟</div>
+                    <p class="article-excerpt">التوقيت الأفضل لشراء الذهب ليس عند القمة، بل عند التصحيح السعري. لا تلاحق السعر وهو يرتفع، بل انتظر لحظات الهدوء في السوق لتبني مراكزك الاستثمارية بذكاء.</p>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-title">الفرق بين السبائك والمشغولات</div>
+                    <p class="article-excerpt">إذا كان هدفك الاستثمار، فالسبائك والعملات الذهبية (الجنيه الذهب) هي الاختيار الأول بسبب انخفاض المصنعية وسهولة الاسترداد، أما المشغولات فهي للزينة والادخار معاً.</p>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-title">كيف تتأكد من جودة الذهب عند الشراء؟</div>
+                    <p class="article-excerpt">دائماً اطلب الفاتورة الضريبية المختومة وتأكد من وجود الدمغة الرسمية. "شروق الذهب" تهدف لنشر هذه الثقافة لحماية المستثمر الصغير من أي تلاعب في السوق.</p>
+                </div>
+
+                <p style="text-align:center; color: #666; font-size: 12px;">جاري تحديث المزيد من مدونة بلوجر...</p>
             </div>
         </div>
     </div>
@@ -68,7 +88,6 @@
     </footer>
 
     <script>
-        // سحب المقالات من بلوجر
         function fetchBlogger() {
             const script = document.createElement('script');
             script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=handlePosts`;
@@ -77,28 +96,31 @@
 
         window.handlePosts = function(data) {
             const container = document.getElementById('posts-container');
-            container.innerHTML = "";
             const entries = data.feed.entry || [];
-            entries.slice(0, 5).forEach(entry => {
-                const title = entry.title.$t;
-                const content = entry.content ? entry.content.$t : entry.summary.$t;
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = content;
-                const firstImg = tempDiv.querySelector('img');
-                const imgUrl = firstImg ? firstImg.src : "";
-                const textOnly = tempDiv.innerText.replace(/\s+/g, ' ').trim().substring(0, 180) + "...";
+            if(entries.length > 0) {
+                // إذا وجد مقالات في بلوجر، يضيفها فوق المقالات الثابتة
+                let bloggerHTML = "";
+                entries.slice(0, 5).forEach(entry => {
+                    const title = entry.title.$t;
+                    const content = entry.content ? entry.content.$t : entry.summary.$t;
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = content;
+                    const firstImg = tempDiv.querySelector('img');
+                    const imgUrl = firstImg ? firstImg.src : "";
+                    const textOnly = tempDiv.innerText.replace(/\s+/g, ' ').trim().substring(0, 180) + "...";
 
-                container.innerHTML += `
-                    <div class="article-card">
-                        ${imgUrl ? `<img src="${imgUrl}" class="article-img">` : ""}
-                        <div class="article-title">${title}</div>
-                        <p class="article-excerpt">${textOnly}</p>
-                    </div>`;
-            });
+                    bloggerHTML += `
+                        <div class="article-card">
+                            ${imgUrl ? `<img src="${imgUrl}" class="article-img">` : ""}
+                            <div class="article-title">${title}</div>
+                            <p class="article-excerpt">${textOnly}</p>
+                        </div>`;
+                });
+                container.innerHTML = bloggerHTML + container.innerHTML;
+            }
         };
         fetchBlogger();
 
-        // تحديث الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -109,16 +131,4 @@
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
-                document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).toLocaleString();
-
-                const price24 = (globalPrice / 31.1035) * currentUSD;
-                document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) {}
-        }
-        updatePrices();
-        setInterval(updatePrices, 30000);
-    </script>
-</body>
-</html>
+                document.getElementById('global-ounce').innerText = "$" + Math.round(globalPrice).
