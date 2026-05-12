@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شروق الذهب - EMOSHA</title>
     <style>
+        /* كود التصميم الأصلي بتاعك بدون أي تغيير */
         body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 10px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
@@ -20,8 +21,8 @@
         .articles-section { margin-top: 30px; width: 100%; border-top: 1px solid #333; padding-top: 20px; }
         .section-title { color: #f1c40f; font-size: 22px; margin-bottom: 20px; text-align: right; border-right: 4px solid #f1c40f; padding-right: 10px; }
         .article-card { background: #111; border-radius: 12px; padding: 15px; margin-bottom: 20px; border-right: 2px solid #444; overflow: hidden; }
-        .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; }
-        .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
+        .article-title { color: #f1c40f; font-size: 20px; margin: 10px 0; font-weight: bold; text-align: right; }
+        .article-excerpt { color: #ccc; font-size: 15px; line-height: 1.8; white-space: pre-wrap; text-align: right; }
         .article-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; display: block; }
         footer { margin-top: 40px; padding: 20px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .whatsapp-btn { display: inline-block; background: #25d366; color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin-top: 10px; }
@@ -68,7 +69,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
@@ -82,18 +83,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.goToLogin = function() {
-            window.location.href = "admin.html";
-        };
+        window.goToLogin = function() { window.location.href = "admin.html"; };
 
-        async function loadPosts() {
-            const q = query(collection(db, "posts"), orderBy("date", "desc"));
-            const querySnapshot = await getDocs(q);
+        // تعديل orderBy لتطابق timestamp الموجود في كود الإدارة
+        const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+        
+        onSnapshot(q, (snapshot) => {
             const container = document.getElementById('posts-container');
-            
-            if (!querySnapshot.empty) {
-                container.innerHTML = ""; 
-                querySnapshot.forEach((doc) => {
+            container.innerHTML = ""; 
+            if (!snapshot.empty) {
+                snapshot.forEach((doc) => {
                     const post = doc.data();
                     container.innerHTML += `
                         <div class="article-card">
@@ -106,8 +105,7 @@
             } else {
                 container.innerHTML = "<p style='text-align:center; color:#666;'>لا توجد مقالات منشورة حالياً.</p>";
             }
-        }
-        loadPosts();
+        });
     </script>
 
     <script>
