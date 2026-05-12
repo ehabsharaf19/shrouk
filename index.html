@@ -17,10 +17,11 @@
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-label { color: #aaa; font-size: 16px; display: block; margin-bottom: 5px; }
         .card-price { color: #f1c40f; font-size: 45px; font-weight: 900; display: block; }
-        .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
+        
+        .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; width: 100%; max-width: 400px; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
         
-        /* تنسيق العناوين الذهبية الجديدة */
+        /* تنسيق المقالات اللي بتفتح وتقفل */
         .article-item { border-bottom: 1px solid #333; margin-bottom: 10px; background: #111; border-radius: 8px; overflow: hidden; }
         .article-header { background: #1a1a1a; color: #f1c40f; padding: 15px; cursor: pointer; font-weight: bold; border-right: 4px solid #f1c40f; }
         .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.3s ease-out; overflow: hidden; }
@@ -45,8 +46,7 @@
         
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
-            <div id="posts-container"></div> <!-- المقالات القديمة -->
-            <div id="articles-container"></div> <!-- المقالات الـ 29 -->
+            <div id="articles-container">جاري التحميل...</div>
         </div>
     </div>
 
@@ -57,20 +57,12 @@
         <p style="margin-top:15px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
     </div>
 
-    <!-- ملفات الفايربيس (الأساس اللي بيشغل كل حاجة) -->
+    <!-- ترتيب الملفات هنا هو السر عشان الأسعار تشتغل -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // إعدادات قاعدة البيانات (Realtime)
-        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        
-        const database = firebase.database();
-        const db = firebase.firestore();
-
-        // 1. تشغيل أسعار الذهب فوراً
+        // الأسعار بتشتغل لوحدها هنا عشان ما تعتمدش على ملفات تانية
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -87,28 +79,38 @@
                 document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) { console.log("Error in prices"); }
+            } catch (e) { console.log("Price Error"); }
         }
         updatePrices();
         setInterval(updatePrices, 30000);
 
-        // 2. سحب المقالات القديمة (Realtime)
-        database.ref('posts').on('value', (snapshot) => {
-            const container = document.getElementById('posts-container');
+        // ربط الفايرستور للمقالات
+        const firebaseConfig = { 
+            projectId: "shrouk-ehab", // اتأكد إن ده اسم مشروعك الصح في Firebase
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" 
+        };
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const db = firebase.firestore();
+
+        // سحب المقالات وعرضها
+        db.collection("articles").get().then((querySnapshot) => {
+            const container = document.getElementById('articles-container');
             container.innerHTML = "";
-            const data = snapshot.val();
-            if(data) {
-                Object.keys(data).reverse().forEach(id => {
-                    const post = data[id];
-                    container.innerHTML += `<div style="border-bottom:1px solid #222; padding:15px 0;">
-                        <div style="color:#f1c40f; font-weight:bold;">${post.title}</div>
-                        <div style="color:#ccc; font-size:14px;">${post.content}</div>
-                    </div>`;
-                });
-            }
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                container.innerHTML += `
+                <div class="article-item">
+                    <div class="article-header" onclick="this.parentElement.classList.toggle('active')">
+                        ${data.title}
+                    </div>
+                    <div class="article-content">
+                        <p>${data.content}</p>
+                    </div>
+                </div>`;
+            });
+        }).catch(err => {
+            document.getElementById('articles-container').innerText = "خطأ في تحميل المقالات";
         });
     </script>
-    <!-- 3. السطر ده هو اللي هيجيب الـ 29 مقال من Firestore -->
-    <script src="app.js"></script>
 </body>
 </html>
