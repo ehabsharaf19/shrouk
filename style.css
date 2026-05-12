@@ -97,3 +97,7 @@ footer a {
 footer a:hover {
     color: #ffffff !important; /* بيخلي اللون يقلب أبيض لما تقف عليه */
 }
+a {
+    color: #ffd700 !important;
+    text-decoration: none !important;
+}
