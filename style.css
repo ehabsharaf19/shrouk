@@ -84,3 +84,16 @@ footer {
     color: #ffd700;
 }
 
+/* تنسيق روابط الفوتر */
+footer a {
+    color: #ffd700 !important; /* ده اللون الذهبي */
+    text-decoration: none;    /* ده بيشيل الخط اللي تحت الكلام */
+    margin: 0 15px;           /* بيبعد الروابط عن بعضها */
+    font-size: 16px;          /* بيكبر الخط شوية عشان يبقى واضح */
+    font-weight: bold;        /* بيخلي الخط عريض */
+}
+
+/* التنسيق لما تلمس الرابط بالماوس */
+footer a:hover {
+    color: #ffffff !important; /* بيخلي اللون يقلب أبيض لما تقف عليه */
+}
