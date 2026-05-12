@@ -1,55 +1,89 @@
-// Firebase
-import { initializeApp } from "firebase/app";
+<script type="module">
 
-import {
-  getFirestore,
-  collection,
-  addDoc
-} from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
   authDomain: "shrouk-ehab.firebaseapp.com",
-  databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com",
   projectId: "shrouk-ehab",
-  storageBucket: "shrouk-ehab.firebasestorage.app",
+  storageBucket: "shrouk-ehab.appspot.com",
   messagingSenderId: "1015714183835",
-  appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e",
-  measurementId: "G-5NVYG4VND5"
+  appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e3"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Firestore
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-// نشر المقال
-async function publishPost() {
+onAuthStateChanged(auth, (user) => {
+  document.getElementById('login-form').style.display = user ? 'none' : 'block';
+  document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
+});
 
-  const title = document.getElementById("title").value;
-
-  const content = document.getElementById("content").value;
+window.login = async () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
 
   try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (e) {
+    alert("❌ خطأ في تسجيل الدخول");
+  }
+};
 
-    await addDoc(collection(db, "posts"), {
+window.logout = async () => {
+  await signOut(auth);
+  alert("تم تسجيل الخروج");
+};
 
-      title: title,
-      content: content,
-      createdAt: new Date()
+window.publish = async () => {
 
-    });
+  const title = document.getElementById('title').value.trim();
+  const content = document.getElementById('content').value.trim();
+  const image = document.getElementById('image').value.trim();
+  const btn = document.getElementById('pub-btn');
 
-    alert("تم نشر المقال بنجاح");
-
-  } catch (error) {
-
-    console.log(error);
-    alert(error.message);
-
+  if (!title || !content) {
+    return alert("املأ العنوان والمحتوى");
   }
 
-}
+  btn.disabled = true;
+  btn.innerText = "⏳ جاري النشر...";
 
-window.publishPost = publishPost;
+  try {
+    await addDoc(collection(db, "posts"), {
+      title,
+      content,
+      image: image || "",
+      createdAt: serverTimestamp()
+    });
+
+    alert("✅ تم نشر المقال بنجاح");
+
+    document.getElementById('title').value = "";
+    document.getElementById('content').value = "";
+    document.getElementById('image').value = "";
+
+  } catch (e) {
+    console.log(e);
+    alert("❌ فشل النشر: " + e.message);
+  }
+
+  btn.disabled = false;
+  btn.innerText = "نشر الآن";
+};
+
+  </script>
