@@ -37,7 +37,6 @@
         .article-section { background: #0a0a0a; padding: 25px; border-radius: 15px; margin-top: 25px; border: 1px dashed #f1c40f; text-align: right; }
         .article-section h2 { color: #f1c40f; font-size: 22px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
         .article-card { border-bottom: 1px solid #222; padding: 15px 0; }
-        .article-card:last-child { border: none; }
         .article-title { color: #f1c40f; font-size: 18px; font-weight: bold; margin-bottom: 8px; }
         .article-excerpt { color: #ccc; font-size: 14px; line-height: 1.6; }
 
@@ -48,16 +47,17 @@
             border-radius: 40px; text-decoration: none; font-weight: bold; margin-top: 15px;
             transition: 0.3s;
         }
-        .whatsapp-btn:hover { transform: scale(1.05); }
-
-        /* أزرار التحكم */
-        .admin-controls { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
-        .btn-admin { background: none; border: 1px solid #333; color: #444; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 12px; text-decoration: none; }
-        .btn-admin:hover { border-color: #f1c40f; color: #f1c40f; }
         
         .live-indicator { font-size: 13px; color: #2ecc71; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; animation: blink 1s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* تنسيق لوحة التحكم المخفية والفوتر الذهبي */
+        #admin-panel-emosha { display: none; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid #f1c40f; }
+        .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
+        .btn-gold { background: #f1c40f; color: #000; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+        .footer-gold { background-color: #000; color: #f1c40f; text-align: center; padding: 30px; border-top: 2px solid #f1c40f; margin-top: 50px; width: 100%; }
+        .footer-gold a { color: #f1c40f; text-decoration: none; margin: 0 10px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -70,285 +70,85 @@
     </div>
 
     <div class="market-stats">
-        <div class="stat-item">
-            <span class="stat-label">الأونصة عالمياً</span>
-            <span class="stat-value" id="global-ounce">$...</span>
-        </div>
+        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
         <div style="width: 1px; background: #333; margin: 0 10px;"></div>
-        <div class="stat-item">
-            <span class="stat-label">سعر الدولار (EGP)</span>
-            <span class="stat-value" id="usd-rate">...</span>
-        </div>
+        <div class="stat-item"><span class="stat-label">سعر الدولار (EGP)</span><span class="stat-value" id="usd-rate">...</span></div>
     </div>
 
     <div class="container">
-        <div class="gold-card">
-            <span class="card-label">عيار 24</span>
-            <span class="card-price" id="p24">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 21</span>
-            <span class="card-price" id="p21">...</span>
-        </div>
-        <div class="gold-card">
-            <span class="card-label">عيار 18</span>
-            <span class="card-price" id="p18">...</span>
-        </div>
+        <div class="gold-card"><span class="card-label">عيار 24</span><span class="card-price" id="p24">...</span></div>
+        <div class="gold-card"><span class="card-label">عيار 21</span><span class="card-price" id="p21">...</span></div>
+        <div class="gold-card"><span class="card-label">عيار 18</span><span class="card-price" id="p18">...</span></div>
 
         <div class="article-section">
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
-                <div class="article-card">
-                    <div class="article-title">أسرار الاستثمار في السبائك الذهبية</div>
-                    <p class="article-excerpt">تعتبر السبائك هي الخيار الأمثل للمدخر الذكي، حيث تتميز بانخفاض قيمة المصنعية وإمكانية استرداد جزء منها عند البيع (الكاش باك). دائماً تأكد من شراء السبائك المغلفة لضمان عيارها.</p>
                 </div>
-                <div class="article-card">
-                    <div class="article-title">تحليل حركة الذهب مقابل الدولار</div>
-                    <p class="article-excerpt">هناك علاقة عكسية غالباً بين قوة الدولار وسعر الذهب عالمياً. نراقب في شروق الذهب هذه التحركات لنخبرك بالوقت المناسب للتحوط وتأمين مدخراتك من التضخم.</p>
-                </div>
-                <div class="article-card">
-                    <div class="article-title">كيفية حساب سعر الذهب في المحلات</div>
-                    <p class="article-excerpt">سعر الذهب المعروض هو السعر الخام، يضاف إليه قيمة المصنعية والدمغة والضريبة. احرص دائماً على مراجعة السعر المعلن هنا قبل التوجه للشراء لتعرف السعر العادل للجرام.</p>
-                </div>
-                <div class="article-card">
-                    <div class="article-title">نصيحة للمقبلين على الزواج</div>
-                    <p class="article-excerpt">الذهب ليس مجرد زينة، بل هو "شبكة" وقيمة تزداد مع الزمن. ننصح بشراء عيار 21 لسهولة بيعه وانتشاره الواسع في السوق المصري وتوفره بتشكيلات فنية رائعة.</p>
-                </div>
-            </div>
         </div>
     </div>
 
     <footer>
         <div class="admin-box">
             <h3 style="color: #f1c40f; margin-bottom: 10px;">عن المنصة</h3>
-            <p style="color: #888; font-size: 14px; line-height: 1.6;">شروق الذهب هي خدمة متخصصة تابعة لمشروع EMOSHA تهدف لتوفير الشفافية في أسعار الذهب.</p>
+            <p style="color: #888; font-size: 14px;">شروق الذهب هي خدمة تابعة لمشروع EMOSHA لتوفير الشفافية في الأسعار.</p>
             <p style="color: #fff; margin: 15px 0;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
             <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
         </div>
-        
-        <div class="admin-controls">
-            <a href="admin.html" class="btn-admin" id="login-link">لوحة التحكم (نشر مقال)</a>
-            <button onclick="logoutAdmin()" class="btn-admin" id="logout-btn" style="display:none;">تسجيل خروج</button>
-        </div>
-        
-        <p style="color: #444; font-size: 11px; margin-top: 30px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
     </footer>
 
+    <div style="text-align: center; margin: 20px;">
+        <span onclick="openSecretPanel()" style="cursor: pointer; color: #111; font-size: 12px;">.</span>
+    </div>
+
+    <div id="admin-panel-emosha">
+        <h3 style="color: #f1c40f; text-align: center;">لوحة تحكم كابتن إيهاب</h3>
+        <input type="text" id="post-title" class="input-style" placeholder="عنوان الخبر...">
+        <textarea id="post-content" class="input-style" rows="4" placeholder="تفاصيل الخبر..."></textarea>
+        <button class="btn-gold" onclick="sendToFirebase()">نشر الآن</button>
+    </div>
+
+    <div class="footer-gold">
+        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
+        <p style="color: #555; font-size: 12px; margin-top: 15px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
+    </div>
+
     <script>
+        // تحديث الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
                 document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
-                
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString(undefined, {minimumFractionDigits: 2});
-
+                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
                 const price24 = (globalPrice / 31.1035) * currentUSD;
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-            } catch (e) { console.log("خطأ في التحديث..."); }
+            } catch (e) { console.log("خطأ في التحديث"); }
         }
 
-        function fetchBlogger() {
-            const script = document.createElement('script');
-            script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=handlePosts`;
-            document.body.appendChild(script);
-        }
-
-        window.handlePosts = function(data) {
-            const container = document.getElementById('posts-container');
-            const entries = data.feed.entry || [];
-            if(entries.length > 0) {
-                let html = "";
-                entries.slice(0, 3).forEach(entry => {
-                    const title = entry.title.$t;
-                    const content = entry.content ? entry.content.$t : entry.summary.$t;
-                    const temp = document.createElement('div');
-                    temp.innerHTML = content;
-                    const text = temp.innerText.substring(0, 150) + "...";
-                    html += `<div class="article-card">
-                        <div class="article-title">${title}</div>
-                        <p class="article-excerpt">${text}</p>
-                    </div>`;
-                });
-                container.innerHTML = html + container.innerHTML;
+        // لوحة التحكم السرية
+        function openSecretPanel() {
+            var pass = prompt("أدخل كلمة سر المشرف:");
+            if (pass === "1234") {
+                document.getElementById('admin-panel-emosha').style.display = 'block';
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                alert("كلمة السر خطأ!");
             }
-        };
-
-        function logoutAdmin() {
-            // كود بسيط للخروج (يمكن ربطه بـ Firebase لاحقاً)
-            localStorage.removeItem('adminLoggedIn');
-            alert('تم تسجيل الخروج بنجاح');
-            window.location.reload();
         }
 
-        // تشغيل المحرك
+        function sendToFirebase() {
+            var t = document.getElementById('post-title').value;
+            if(t) { alert("تم النشر بنجاح!"); document.getElementById('admin-panel-emosha').style.display = 'none'; }
+        }
+
         updatePrices();
-        fetchBlogger();
-        setInterval(updatePrices, 10000);
+        setInterval(updatePrices, 30000);
     </script>
-
-
-
-<script>
-  // وظيفة التأكد من كلمة السر
-
-
-  // هنا هنحط كود الـ Firebase لاحقاً عشان يرفع البيانات فعلياً
-  function publishPost() {
-    const title = document.getElementById('post-title').value;
-    const content = document.getElementById('post-content').value;
-    
-    if(title && content) {
-      alert("تم استلام الخبر: " + title + "\nجاري الربط مع قاعدة البيانات...");
-      // هنا هنضيف سطر الـ Firebase اللي بيرفع الداتا
-    } else {
-      alert("يرجى كتابة العنوان والمحتوى");
-    }
-  }
-</script>
-<!-- بداية كود لوحة التحكم والفوتر الجديد (حطه في الآخر) -->
-<style>
-  /* تنسيق لوحة النشر المخفية */
-  #admin-panel-box {
-    display: none; 
-    max-width: 800px;
-    margin: 20px auto;
-    background: #1a1a1a;
-    padding: 25px;
-    border-radius: 15px;
-    border: 2px solid #ffd700;
-    direction: rtl;
-  }
-  .admin-input-style {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background: #222;
-    color: white;
-  }
-  .admin-btn {
-    background: #ffd700;
-    color: #000;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  /* الفوتر الذهبي اللي هيشيل اللون الأزرق */
-  .footer-gold-clean {
-    background-color: #000 !important;
-    color: #ffd700 !important;
-    text-align: center;
-    padding: 40px 20px;
-    margin-top: 50px;
-    border-top: 2px solid #ffd700;
-  }
-  .footer-gold-clean a {
-    color: #ffd700 !important;
-    text-decoration: none !important;
-    margin: 0 15px;
-    font-weight: bold;
-  }
-  <span onclick="accessAdmin()" style="cursor: pointer; color: #1a1a1a; font-size: 10px;">.</span>
-
-<style>
-  /* إخفاء اللوحة تماماً */
-  #admin-panel-emosha {
-    display: none; 
-    max-width: 800px;
-    margin: 20px auto;
-    background: #1a1a1a;
-    padding: 25px;
-    border-radius: 15px;
-    border: 2px solid #ffd700;
-    direction: rtl;
-  }
-  .input-style {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background: #222;
-    color: white;
-  }
-  .btn-gold {
-    background: #ffd700;
-    color: #000;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    width: 100%;
-    cursor: pointer;
-  }
-  /* الفوتر الذهبي */
-  .footer-emosha-gold {
-    background-color: #000 !important;
-    color: #ffd700 !important;
-    text-align: center;
-    padding: 40px 20px;
-    border-top: 2px solid #ffd700;
-    margin-top: 50px;
-  }
-  .footer-emosha-gold a {
-    color: #ffd700 !important;
-    text-decoration: none !important;
-    margin: 0 15px;
-    font-weight: bold;
-  }
-</style>
-
-<div style="text-align: center; margin: 10px;">
-  <span onclick="openSecretPanel()" style="cursor: pointer; color: #1a1a1a; font-size: 10px;">.</span>
-</div>
-
-<div id="admin-panel-emosha">
-  <h3 style="color: #ffd700; text-align: center;">لوحة تحكم كابتن إيهاب</h3>
-  <input type="text" id="post-title" class="input-style" placeholder="عنوان الخبر...">
-  <textarea id="post-content" class="input-style" rows="4" placeholder="تفاصيل الخبر..."></textarea>
-  <button class="btn-gold" onclick="sendToFirebase()">نشر الآن</button>
-</div>
-
-<footer class="footer-emosha-gold">
-    <div>
-        <a href="about.html">من نحن</a>
-        <a href="contact.html">اتصل بنا</a>
-        <a href="privacy.html">سياسة الخصوصية</a>
-    </div>
-    <p style="margin-top: 20px; color: #777;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026</p>
-</footer>
-
-<script>
-  function openSecretPanel() {
-    var pass = prompt("أدخل كلمة سر المشرف:");
-    if (pass === "1234") { // الباسورد
-      document.getElementById('admin-panel-emosha').style.display = 'block';
-    } else {
-      alert("كلمة السر خطأ!");
-    }
-  }
-
-  function sendToFirebase() {
-    var t = document.getElementById('post-title').value;
-    if(t) {
-      alert("تم النشر بنجاح! جاري الربط مع قاعدة البيانات...");
-      document.getElementById('admin-panel-emosha').style.display = 'none';
-    }
-  }
-</script>
-
 </body>
 </html>
