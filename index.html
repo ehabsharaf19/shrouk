@@ -40,7 +40,6 @@
         .article-card:last-child { border: none; }
         .article-title { color: #f1c40f; font-size: 18px; font-weight: bold; margin-bottom: 8px; }
         .article-excerpt { color: #ccc; font-size: 14px; line-height: 1.6; }
-        .article-img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
 
         footer { margin-top: 50px; padding: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .admin-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
@@ -49,7 +48,12 @@
             border-radius: 40px; text-decoration: none; font-weight: bold; margin-top: 15px;
             transition: 0.3s;
         }
-        .whatsapp-btn:hover { transform: scale(1.05); background: #128c7e; }
+        .whatsapp-btn:hover { transform: scale(1.05); }
+
+        /* أزرار التحكم */
+        .admin-controls { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        .btn-admin { background: none; border: 1px solid #333; color: #444; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 12px; text-decoration: none; }
+        .btn-admin:hover { border-color: #f1c40f; color: #f1c40f; }
         
         .live-indicator { font-size: 13px; color: #2ecc71; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; animation: blink 1s infinite; }
@@ -95,8 +99,20 @@
             <h2>أحدث تقارير القبطان</h2>
             <div id="posts-container">
                 <div class="article-card">
-                    <div class="article-title">لماذا الذهب هو الملاذ الآمن دائماً؟</div>
-                    <p class="article-excerpt">في ظل التقلبات الاقتصادية، يظل الذهب هو العملة الوحيدة التي لا تفقد قيمتها التاريخية. ننصح دائماً بالادخار طويل الأجل.</p>
+                    <div class="article-title">أسرار الاستثمار في السبائك الذهبية</div>
+                    <p class="article-excerpt">تعتبر السبائك هي الخيار الأمثل للمدخر الذكي، حيث تتميز بانخفاض قيمة المصنعية وإمكانية استرداد جزء منها عند البيع (الكاش باك). دائماً تأكد من شراء السبائك المغلفة لضمان عيارها.</p>
+                </div>
+                <div class="article-card">
+                    <div class="article-title">تحليل حركة الذهب مقابل الدولار</div>
+                    <p class="article-excerpt">هناك علاقة عكسية غالباً بين قوة الدولار وسعر الذهب عالمياً. نراقب في شروق الذهب هذه التحركات لنخبرك بالوقت المناسب للتحوط وتأمين مدخراتك من التضخم.</p>
+                </div>
+                <div class="article-card">
+                    <div class="article-title">كيفية حساب سعر الذهب في المحلات</div>
+                    <p class="article-excerpt">سعر الذهب المعروض هو السعر الخام، يضاف إليه قيمة المصنعية والدمغة والضريبة. احرص دائماً على مراجعة السعر المعلن هنا قبل التوجه للشراء لتعرف السعر العادل للجرام.</p>
+                </div>
+                <div class="article-card">
+                    <div class="article-title">نصيحة للمقبلين على الزواج</div>
+                    <p class="article-excerpt">الذهب ليس مجرد زينة، بل هو "شبكة" وقيمة تزداد مع الزمن. ننصح بشراء عيار 21 لسهولة بيعه وانتشاره الواسع في السوق المصري وتوفره بتشكيلات فنية رائعة.</p>
                 </div>
             </div>
         </div>
@@ -109,38 +125,36 @@
             <p style="color: #fff; margin: 15px 0;"><b>المشرف العام:</b> إيهاب شرف / Ehab Sharaf</p>
             <a href="https://wa.me/201010202865" target="_blank" class="whatsapp-btn">تواصل معنا عبر واتساب 💬</a>
         </div>
+        
+        <div class="admin-controls">
+            <a href="admin.html" class="btn-admin" id="login-link">لوحة التحكم (نشر مقال)</a>
+            <button onclick="logoutAdmin()" class="btn-admin" id="logout-btn" style="display:none;">تسجيل خروج</button>
+        </div>
+        
         <p style="color: #444; font-size: 11px; margin-top: 30px;">جميع الحقوق محفوظة © 2026 EMOSHA Gold</p>
     </footer>
 
     <script>
-        // دالة تحديث الأسعار "المحرك السريع"
         async function updatePrices() {
             try {
-                // جلب سعر الدولار الرسمي
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
                 document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
 
-                // جلب سعر الذهب العالمي (Binance)
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
                 
                 document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                // الحسبة المصرية (الذهب العالمي / أونصة * دولار)
                 const price24 = (globalPrice / 31.1035) * currentUSD;
-                
                 document.getElementById('p24').innerText = Math.round(price24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(price24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(price24 * 0.75).toLocaleString();
-                
-                console.log("تحديث ناجح: " + new Date().toLocaleTimeString());
             } catch (e) { console.log("خطأ في التحديث..."); }
         }
 
-        // دالة بلوجر
         function fetchBlogger() {
             const script = document.createElement('script');
             script.src = `https://emosh20.blogspot.com/feeds/posts/default?alt=json-in-script&callback=handlePosts`;
@@ -157,10 +171,8 @@
                     const content = entry.content ? entry.content.$t : entry.summary.$t;
                     const temp = document.createElement('div');
                     temp.innerHTML = content;
-                    const img = temp.querySelector('img') ? temp.querySelector('img').src : "";
                     const text = temp.innerText.substring(0, 150) + "...";
                     html += `<div class="article-card">
-                        ${img ? `<img src="${img}" class="article-img">` : ""}
                         <div class="article-title">${title}</div>
                         <p class="article-excerpt">${text}</p>
                     </div>`;
@@ -169,10 +181,17 @@
             }
         };
 
-        // التشغيل
+        function logoutAdmin() {
+            // كود بسيط للخروج (يمكن ربطه بـ Firebase لاحقاً)
+            localStorage.removeItem('adminLoggedIn');
+            alert('تم تسجيل الخروج بنجاح');
+            window.location.reload();
+        }
+
+        // تشغيل المحرك
         updatePrices();
         fetchBlogger();
-        setInterval(updatePrices, 10000); // تحديث كل 10 ثواني لملاحقة البورصة
+        setInterval(updatePrices, 10000);
     </script>
 </body>
 </html>
