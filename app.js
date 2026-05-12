@@ -12,15 +12,7 @@ function suggestActivity() {
 }
 function displayArticle(title, content) {
     return `
-    <div class="article-item">
-        <div class="article-header" onclick="this.parentElement.classList.toggle('active')">
-            ${title}
-        </div>
-        <div class="article-content">
-            <p>${content}</p>
-        </div>
-    </div>
-    `;
+
 }
 // كود جلب المقالات من Firebase ورصها في الموقع
 db.collection("articles").get().then((querySnapshot) => {
