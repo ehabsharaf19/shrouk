@@ -30,7 +30,6 @@
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; }
         
-        .section-title { color: #f1c40f; font-size: 24px; border-right: 6px solid #f1c40f; padding-right: 15px; margin-bottom: 25px; text-align: right; }
         .article-item { display: none; border-bottom: 1px solid #333; margin-bottom: 15px; background: #111; border-radius: 12px; overflow: hidden; }
         .article-item.visible { display: block; }
         .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; cursor: pointer; font-weight: bold; font-size: 18px; border-right: 4px solid transparent; transition: 0.3s; }
@@ -39,8 +38,7 @@
         .article-item.active .article-content { max-height: 4000px; padding: 25px; border-top: 1px solid #333; }
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
 
-        .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; transition: 0.3s; }
-        .load-more-btn:hover { background: #f1c40f; color: #000; }
+        .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
 
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; }
         .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; }
@@ -71,7 +69,7 @@
 
     <div class="main-layout">
         <div class="articles-main">
-            <h2 class="section-title">📰 أحدث تحليلات القبطان</h2>
+            <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
             <div id="posts-container">جاري التحميل...</div>
             <button id="load-more-btn" class="load-more-btn" onclick="loadThreeMore()">عرض 3 مقالات أخرى</button>
         </div>
@@ -79,30 +77,31 @@
         <aside class="sidebar">
             <div class="sidebar-box">
                 <h3>👤 عن القبطان</h3>
-                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان <b>إيهاب شرف</b>، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
+                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان إيهاب شرف، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
             </div>
             <div class="sidebar-box">
-                <h3>📱 منصاتنا الرسمية</h3>
-                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 الصفحة الشخصية</a>
-                <a href="https://www.facebook.com/groups/1322491319816622/" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
-                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 قناة اليوتيوب</a>
+                <h3>📱 منصاتنا</h3>
+                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك</a>
+                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
             </div>
         </aside>
     </div>
 
     <div id="admin-panel-emosha">
-        <input type="hidden" id="edit-id">
+        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
         <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
         <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا..."></textarea>
-        <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
+        <button class="btn-gold" onclick="addPost()">نشر الآن</button>
     </div>
 
+    <div style="text-align: center; margin-bottom: 20px;"><span onclick="openSecretPanel()" style="cursor: pointer; color: #111; font-size: 10px;">لوحة الإدارة</span></div>
+
     <div class="footer-gold">
-        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">من نحن</a> | 
-        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">اتصل بنا</a> | 
-        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">سياسة الخصوصية</a>
-        <p style="margin-top:25px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب شرف</p>
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب شرف</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -112,8 +111,7 @@
         const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        let currentStatus = false;
-        let visibleCount = 3; // عدد المقالات التي تظهر في البداية
+        let visibleCount = 3;
 
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
@@ -124,66 +122,56 @@
             if(data) {
                 const titles = [];
                 const keys = Object.keys(data).reverse();
-                
                 keys.forEach((id, index) => {
                     const post = data[id];
                     titles.push("🔱 " + post.title);
                     const isVisible = index < visibleCount ? 'visible' : '';
-                    const displayAdmin = currentStatus ? 'flex' : 'none';
-                    
                     container.innerHTML += `
                         <div class="article-item ${isVisible}">
                             <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                             <div class="article-content">
                                 ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                                 <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                                <div style="margin-top:25px; padding:15px; background:#1a1a1a; border-radius:10px; font-size:14px; color:#ccc; border-right:4px solid #f1c40f;">
-                                    <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'غير محدد'}</span>
+                                <div style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:10px; border-right:4px solid #f1c40f; font-size:14px;">
+                                    <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'تم النشر مؤخراً'}</span>
                                     📝 تحرير: القبطان إيهاب شرف
-                                </div>
-                                <div class="admin-btns" style="display:${displayAdmin}; margin-top:20px; gap:12px;">
-                                    <button style="background:#3498db; color:white; border:none; padding:10px 20px; border-radius:6px;" onclick="event.stopPropagation(); startEdit('${id}', '${encodeURI(post.title)}', '${encodeURI(post.content)}', '${post.image || ''}')">تعديل</button>
-                                    <button style="background:#e74c3c; color:white; border:none; padding:10px 20px; border-radius:6px;" onclick="event.stopPropagation(); deletePost('${id}')">حذف</button>
                                 </div>
                             </div>
                         </div>`;
                 });
-                
                 ticker.innerText = titles.join(" . . . . . . ");
-                updateButtonVisibility(keys.length);
+                document.getElementById('load-more-btn').style.display = visibleCount < keys.length ? 'block' : 'none';
             }
         });
 
         function loadThreeMore() {
-            visibleCount += 3; // زيادة العدد المعروض بـ 3 في كل ضغطة
+            visibleCount += 3;
             const items = document.querySelectorAll('.article-item');
-            items.forEach((item, index) => {
-                if (index < visibleCount) item.classList.add('visible');
-            });
-            updateButtonVisibility(items.length);
-        }
-
-        function updateButtonVisibility(totalItems) {
-            const btn = document.getElementById('load-more-btn');
-            btn.style.display = visibleCount < totalItems ? 'block' : 'none';
+            items.forEach((item, index) => { if (index < visibleCount) item.classList.add('visible'); });
+            if (visibleCount >= items.length) document.getElementById('load-more-btn').style.display = 'none';
         }
 
         function addPost() {
             const t = document.getElementById('post-title').value;
             const img = document.getElementById('post-image').value;
             const c = document.getElementById('post-content').value;
+            
+            // سحب التاريخ الحالي تلقائياً لحظة النشر
             const now = new Date();
-            const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+            const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
             if(t && c) {
                 database.ref('posts').push({ title: t, image: img, content: c, date: dateString }).then(() => {
-                    alert("تم النشر ✅");
-                    resetForm();
+                    alert("تم نشر تقرير القبطان بنجاح ✅");
+                    document.getElementById('post-title').value = "";
+                    document.getElementById('post-content').value = "";
+                    document.getElementById('admin-panel-emosha').style.display = 'none';
                 });
             }
         }
 
-        function resetForm() { document.getElementById('post-title').value = ""; document.getElementById('post-content').value = ""; document.getElementById('admin-panel-emosha').style.display = 'none'; }
-        
+        function openSecretPanel() { let p = prompt("كلمة السر:"); if(p === "1230") document.getElementById('admin-panel-emosha').style.display = 'block'; }
+
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
