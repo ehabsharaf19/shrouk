@@ -255,7 +255,7 @@
    <!-- كود موقعك الأصلي بالكامل يكون هنا -->
 </div>
 <style>
-    /* القائمة السفلية الثابتة */
+    /* تثبيت الأزرار بالأسفل */
     .bottom-nav {
         position: fixed; bottom: 0; left: 0; width: 100%;
         background: #111; display: flex; justify-content: space-around;
@@ -264,143 +264,157 @@
     .nav-item { color: #666; text-align: center; font-size: 11px; cursor: pointer; flex: 1; }
     .nav-item.active { color: #f1c40f; font-weight: bold; }
 
-    /* الصفحات */
-    .page-section { display: none; width: 100%; min-height: 100vh; padding: 20px 10px 100px 10px; box-sizing: border-box; }
+    /* تنسيق الصفحات */
+    .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 100px; }
     .active-page { display: block !important; }
 
-    /* كروت التصميم */
-    .gold-card-new { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; }
-    .input-style { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; font-size: 16px; }
-    .btn-action { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+    /* تنسيق الكروت */
+    .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px; text-align: center; }
+    .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .company-btn { background: #222; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-size: 12px; transition: 0.3s; }
+    .company-btn:hover { border-color: #f1c40f; color: #f1c40f; }
     
-    .res-box { background: #222; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px dashed #f1c40f; color: #f1c40f; font-size: 18px; font-weight: bold; display: none; }
+    .input-style { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
+    .btn-gold { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+    .btn-zakat { background: #27ae60; color: #fff; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
 </style>
 
-<!-- القائمة السفلية -->
+<!-- الأزرار السفلية الثابتة -->
 <div class="bottom-nav">
-    <div class="nav-item active" onclick="navTo('home-page', this)">🏠<br>الرئيسية</div>
-    <div class="nav-item" onclick="navTo('bullion-page', this)">🏆<br>السبائك</div>
-    <div class="nav-item" onclick="navTo('calc-page', this)">🧮<br>الحاسبة والزكاة</div>
+    <div class="nav-item active" onclick="showTab('home-page', this)">🏠<br>الرئيسية</div>
+    <div class="nav-item" onclick="showTab('bullion-page', this)">🏆<br>السبائك</div>
+    <div class="nav-item" onclick="showTab('calc-page', this)">🧮<br>الحاسبة والزكاة</div>
 </div>
 
-<!-- 1. صفحة السبائك (منفصلة تماماً) -->
-<div id="bullion-page" class="page-section" style="background: #000;">
-    <h2 style="color:#f1c40f; text-align:center;">🏆 قارن أسعار الشركات</h2>
-    <div class="gold-card-new">
+<!-- 1. صفحة السبايك (توسيع شامل للأوزان والشركات) -->
+<div id="bullion-page" class="page-section">
+    <div class="main-title" style="font-size: 24px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 مقارنة أسعار الشركات والسبائك</div>
+    <div class="bullion-box">
+        <label style="color:#888; font-size:12px;">اختر وزن السبيكة:</label>
         <select id="b-weight" class="input-style">
-            <option value="1">سبيكة 1 جرام</option>
-            <option value="2.5">سبيكة 2.5 جرام</option>
-            <option value="5">سبيكة 5 جرام</option>
-            <option value="10">سبيكة 10 جرام</option>
-            <option value="31.1">أونصة 31.1 جرام</option>
-            <option value="50">سبيكة 50 جرام</option>
-            <option value="100">سبيكة 100 جرام</option>
-            <option value="1000">كيلو (1000 جم)</option>
+            <optgroup label="أوزان صغيرة">
+                <option value="0.25">ربع جرام</option>
+                <option value="0.5">نصف جرام</option>
+                <option value="1">1 جرام</option>
+                <option value="2.5">2.5 جرام</option>
+                <option value="5">5 جرام</option>
+            </optgroup>
+            <optgroup label="أوزان متوسطة">
+                <option value="10">10 جرام</option>
+                <option value="15.5">نصف أونصة (15.5 جم)</option>
+                <option value="20">20 جرام</option>
+                <option value="31.1">أونصة كاملة (31.1 جم)</option>
+                <option value="50">50 جرام</option>
+                <option value="100">100 جرام</option>
+            </optgroup>
+            <optgroup label="أوزان ثقيلة">
+                <option value="250">ربع كيلو (250 جم)</option>
+                <option value="500">نصف كيلو (500 جم)</option>
+                <option value="1000">1 كيلو (1000 جم)</option>
+                <option value="2000">2 كيلو (2000 جم)</option>
+                <option value="3000">3 كيلو (3000 جم)</option>
+            </optgroup>
         </select>
-        <div class="company-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-            <button class="company-btn" style="background:#222; color:#fff; padding:10px; border-radius:8px; border:1px solid #444;" onclick="comp('BTC', 130)">بي تي سي (BTC)</button>
-            <button class="company-btn" style="background:#222; color:#fff; padding:10px; border-radius:8px; border:1px solid #444;" onclick="comp('SAM', 125)">سام (SAM)</button>
-            <button class="company-btn" style="background:#222; color:#fff; padding:10px; border-radius:8px; border:1px solid #444;" onclick="comp('سويس جولد', 135)">سويس جولد</button>
-            <button class="company-btn" style="background:#222; color:#fff; padding:10px; border-radius:8px; border:1px solid #444;" onclick="comp('جولدن كينج', 120)">جولدن كينج</button>
+        
+        <div class="company-grid">
+            <!-- قائمة الشركات الموسعة -->
+            <button class="company-btn" onclick="comp('BTC', 125)">بي تي سي (BTC)</button>
+            <button class="company-btn" onclick="comp('SAM', 120)">سام (SAM)</button>
+            <button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
+            <button class="company-btn" onclick="comp('سويس جولد', 130)">سويس جولد</button>
+            <button class="company-btn" onclick="comp('لازوردي', 145)">لازوردي</button>
+            <button class="company-btn" onclick="comp('إيجيبت جولد', 115)">إيجيبت جولد</button>
+            <button class="company-btn" onclick="comp('ماستر جولد', 120)">ماستر جولد</button>
+            <button class="company-btn" onclick="comp('سليمة جولد', 125)">سليمة جولد</button>
+            <button class="company-btn" onclick="comp('القدس', 110)">القدس</button>
+            <button class="company-btn" onclick="comp('ملوك الذهب', 115)">ملوك الذهب</button>
+            <button class="company-btn" onclick="comp('جالي جولد', 120)">جالي جولد</button>
+            <button class="company-btn" onclick="comp('فينوس', 130)">فينوس جولد</button>
+            <button class="company-btn" onclick="comp('العقاد', 110)">العقاد للذهب</button>
+            <button class="company-btn" onclick="comp('داماس', 150)">داماس</button>
+            <button class="company-btn" onclick="comp('مجوهرات طيبة', 125)">طيبة جولد</button>
         </div>
-        <div id="b-res" class="res-box"></div>
+        
+        <div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border:1px dashed #f1c40f; border-radius:10px;">
+            <span id="c-name" style="color:#f1c40f"></span>: <br>
+            <span id="c-price" style="font-size:25px; font-weight:bold; color:#f1c40f;">0</span> ج.م
+        </div>
     </div>
 </div>
 
-<!-- 2. صفحة الحاسبة (بالمصنعية + الزكاة) -->
-<div id="calc-page" class="page-section" style="background: #000;">
-    <!-- قسم حاسبة الأسعار والمصنعية -->
-    <div class="gold-card-new">
-        <h3 style="color:#f1c40f;">🧮 حاسبة سعر الذهب بالمصنعية</h3>
-        <input type="number" id="g-w" class="input-style" placeholder="أدخل الوزن بالجرام">
+<!-- 2. صفحة الحاسبة والزكاة -->
+<div id="calc-page" class="page-section">
+    <div class="bullion-box">
+        <h3 style="color:#f1c40f;">🧮 حاسبة المصنعية والوزن</h3>
+        <input type="number" id="g-w" class="input-style" placeholder="أدخل الوزن الإجمالي">
         <select id="g-c" class="input-style">
             <option value="24">عيار 24</option>
             <option value="21">عيار 21</option>
             <option value="18">عيار 18</option>
         </select>
-        <input type="number" id="g-m" class="input-style" placeholder="المصنعية للجرام الواحد">
-        <button class="btn-action" onclick="calcGoldPrice()">احسب السعر النهائي</button>
-        <div id="g-res" class="res-box"></div>
+        <input type="number" id="g-m" class="input-style" placeholder="المصنعية للجرام">
+        <button class="btn-gold" onclick="runGoldCalc()">احسب السعر</button>
+        <div id="g-res" style="display:none; margin-top:10px; font-size:20px; color:#f1c40f;"> الإجمالي: <span id="g-val">0</span> ج.م</div>
     </div>
 
-    <hr style="border: 0.5px solid #333; margin: 30px 0;">
-
-    <!-- قسم الزكاة -->
-    <div class="gold-card-new">
-        <h3 style="color:#f1c40f;">🕌 حاسبة زكاة الذهب</h3>
-        <input type="number" id="z-w" class="input-style" placeholder="إجمالي الوزن الذي تملكه">
-        <button class="btn-action" style="background:#27ae60; color:#fff;" onclick="calcZakat()">احسب قيمة الزكاة</button>
-        <div id="z-res" class="res-box"></div>
-        <p id="z-info" style="font-size:12px; color:#888; margin-top:10px;"></p>
+    <div class="bullion-box">
+        <h3 style="color:#f1c40f;">🕌 حاسبة الزكاة (نصاب 85 جم)</h3>
+        <input type="number" id="z-w" class="input-style" placeholder="وزن الذهب الكلي">
+        <button class="btn-zakat" onclick="runZakat()">احسب الزكاة (2.5%)</button>
+        <div id="z-res" style="display:none; margin-top:10px; font-size:20px; color:#27ae60;"> المبلغ: <span id="z-val">0</span> ج.م</div>
+        <p id="z-status" style="font-size:12px; margin-top:5px;"></p>
     </div>
 </div>
 
 <script>
-    // وظيفة التنقل الذكي
-    function navTo(id, el) {
+    function showTab(id, el) {
         document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
         document.getElementById(id).classList.add('active-page');
-        
-        // إخفاء الفوتر والمقالات إذا لم نكن في الرئيسية
-        const extras = document.querySelectorAll('footer, .analysis-section, .about-section');
-        extras.forEach(item => {
-            item.style.display = (id === 'home-page') ? 'block' : 'none';
-        });
-
+        const extra = document.querySelectorAll('footer, .analysis-section, .about-section');
+        extra.forEach(i => i.style.display = (id === 'home-page' ? 'block' : 'none'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
         window.scrollTo(0,0);
     }
 
-    // حساب السبيكة والمقارنة
     function comp(name, fee) {
         const w = parseFloat(document.getElementById('b-weight').value);
         const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
         if(!isNaN(p24)) {
-            let total = (p24 + fee) * w;
-            const res = document.getElementById('b-res');
-            res.innerHTML = `شركة ${name}<br>السعر: ${Math.round(total).toLocaleString()} ج.م`;
-            res.style.display = 'block';
+            // منطق المصنعية: تقل تدريجياً مع الأوزان الكبيرة جداً
+            let finalFee = w >= 250 ? fee * 0.6 : (w >= 50 ? fee * 0.8 : fee);
+            let total = (p24 + finalFee) * w;
+            document.getElementById('c-name').innerText = "سعر " + name;
+            document.getElementById('c-price').innerText = Math.round(total).toLocaleString();
+            document.getElementById('res-bullion').style.display = 'block';
         }
     }
 
-    // حاسبة الذهب والمصنعية
-    function calcGoldPrice() {
+    function runGoldCalc() {
         const w = parseFloat(document.getElementById('g-w').value);
         const c = document.getElementById('g-c').value;
         const m = parseFloat(document.getElementById('g-m').value) || 0;
         const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
-        
         if(w > 0 && !isNaN(p)) {
-            let total = (p + m) * w;
-            const res = document.getElementById('g-res');
-            res.innerHTML = `الإجمالي شامل المصنعية:<br>${Math.round(total).toLocaleString()} ج.م`;
-            res.style.display = 'block';
+            document.getElementById('g-val').innerText = Math.round((p + m) * w).toLocaleString();
+            document.getElementById('g-res').style.display = 'block';
         }
     }
 
-    // حاسبة الزكاة
-    function calcZakat() {
+    function runZakat() {
         const w = parseFloat(document.getElementById('z-w').value);
         const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
         if(w > 0 && !isNaN(p24)) {
-            let val = (w * p24) * 0.025;
-            const res = document.getElementById('z-res');
-            const info = document.getElementById('z-info');
-            
-            res.innerHTML = `قيمة الزكاة: ${Math.round(val).toLocaleString()} ج.م`;
-            res.style.display = 'block';
-            
-            if(w >= 85) {
-                info.innerText = "✅ لقد بلغت النصاب الشرعي (85 جم عيار 24)";
-                info.style.color = "#2ecc71";
-            } else {
-                info.innerText = "❌ لم تبلغ النصاب بعد";
-                info.style.color = "#e74c3c";
-            }
+            let zakat = (w * p24) * 0.025;
+            document.getElementById('z-val').innerText = Math.round(zakat).toLocaleString();
+            document.getElementById('z-res').style.display = 'block';
+            const status = document.getElementById('z-status');
+            if(w >= 85) { status.innerText = "✅ بلغت النصاب"; status.style.color = "#27ae60"; }
+            else { status.innerText = "❌ لم تبلغ النصاب"; status.style.color = "#e74c3c"; }
         }
     }
 </script>
+
 
 </body>
 </html>
