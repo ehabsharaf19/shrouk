@@ -18,6 +18,7 @@
     </div>
 
     <script>
+        // بيانات مشروعك في فايربيز يا قبطان
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIWiokUeuntHLvDbEclB6P_yXg",
             databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
@@ -27,16 +28,16 @@
         
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 
-        // التعديل هنا: هيدخل يجيب رابط "today" تلقائياً
+        // التعديل السحري: الكود هيدخل يجيب رابط today لوحده فوراً
         firebase.database().ref('gold/today').once('value').then((s) => {
             const url = s.val();
             if (url) {
                 window.location.replace(url);
             } else {
-                document.getElementById('msg').innerHTML = "الرابط مش موجود في فايربيز";
+                document.getElementById('msg').innerHTML = "الرابط غير موجود في فايربيز";
             }
         }).catch((e) => {
-            document.getElementById('msg').innerHTML = "تأكد من الـ Rules في فايربيز";
+            document.getElementById('msg').innerHTML = "تأكد من إعدادات Rules في فايربيز";
         });
     </script>
 </body>
