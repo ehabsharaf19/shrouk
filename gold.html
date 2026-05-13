@@ -18,26 +18,24 @@
     </div>
 
     <script>
-        // بيانات مشروعك في فايربيز يا قبطان
-        const firebaseConfig = {
+        const config = {
             apiKey: "AIzaSyCp-m2DkIIWiokUeuntHLvDbEclB6P_yXg",
             databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
             projectId: "shrouk-ehab",
             appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
         };
-        
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        firebase.initializeApp(config);
 
-        // التعديل السحري: الكود هيدخل يجيب رابط today لوحده فوراً
-        firebase.database().ref('gold/today').once('value').then((s) => {
-            const url = s.val();
-            if (url) {
-                window.location.replace(url);
+        // تعديل جذري: الكود سيبحث عن today أولاً، وإذا لم يجدها سيظل في الصفحة
+        firebase.database().ref('gold/today').on('value', (snapshot) => {
+            const link = snapshot.val();
+            if (link && link.startsWith('http')) {
+                window.location.replace(link);
             } else {
-                document.getElementById('msg').innerHTML = "الرابط غير موجود في فايربيز";
+                document.getElementById('msg').innerHTML = "في انتظار تحديث الرابط من فايربيز...";
             }
-        }).catch((e) => {
-            document.getElementById('msg').innerHTML = "تأكد من إعدادات Rules في فايربيز";
+        }, (error) => {
+            document.getElementById('msg').innerHTML = "تأكد من فتح الـ Rules في فايربيز";
         });
     </script>
 </body>
