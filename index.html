@@ -83,7 +83,6 @@
                 <h3>📱 منصاتنا</h3>
                 <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك الشخصي</a>
                 <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
-                <!-- الرابط الحقيقي الذي أرسلته -->
                 <a href="https://www.facebook.com/groups/1322491319816622/?ref=share_group_link" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
                 <a href="https://chat.whatsapp.com/GjN9Q8lQ2k0K8X" target="_blank" class="social-link-btn">💬 جروب الواتساب</a>
                 
@@ -155,6 +154,7 @@
             if (visibleCount >= items.length) document.getElementById('load-more-btn').style.display = 'none';
         }
 
+        // هذه هي الدالة التي تم تحديثها لضمان النشر
         function addPost() {
             const t = document.getElementById('post-title').value;
             const img = document.getElementById('post-image').value;
@@ -163,12 +163,24 @@
             const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
             if(t && c) {
-                database.ref('posts').push({ title: t, image: img, content: c, date: dateString }).then(() => {
+                database.ref('posts').push({ 
+                    title: t, 
+                    image: img, 
+                    content: c, 
+                    date: dateString 
+                })
+                .then(() => {
                     alert("تم نشر تقرير القبطان بنجاح ✅");
                     document.getElementById('post-title').value = "";
+                    document.getElementById('post-image').value = "";
                     document.getElementById('post-content').value = "";
                     document.getElementById('admin-panel-emosha').style.display = 'none';
+                })
+                .catch((error) => {
+                    alert("خطأ في النشر: " + error.message);
                 });
+            } else {
+                alert("برجاء ملء العنوان والمحتوى");
             }
         }
 
