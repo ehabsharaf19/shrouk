@@ -254,162 +254,163 @@
     <div id="home-content"> 
    <!-- كود موقعك الأصلي بالكامل يكون هنا -->
 </div>
-<!-- ============================================ -->
-<!-- كود الـ 3 صفحات المطور (إضافة القبطان إيهاب) -->
-<!-- ============================================ -->
-
-<style>
-    .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 80px; }
-    .active-page { display: block !important; animation: fadeIn 0.4s ease-in; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+    <style>
+    /* تثبيت القائمة السفلية */
     .bottom-nav {
         position: fixed; bottom: 0; left: 0; width: 100%;
         background: #111; display: flex; justify-content: space-around;
-        padding: 12px 0; border-top: 2px solid #f1c40f; z-index: 9999;
+        padding: 10px 0; border-top: 2px solid #f1c40f; z-index: 10000;
         box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
     }
-    .nav-item { color: #666; text-align: center; font-size: 11px; cursor: pointer; flex: 1; }
-    .nav-item.active { color: #f1c40f; font-weight: bold; }
+    .nav-item { color: #666; text-align: center; font-size: 10px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .nav-item.active { color: #f1c40f; transform: translateY(-3px); }
+    .nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
 
-    .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px; text-align: center; border-right: 5px solid #f1c40f; }
-    .input-style { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
-    .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 90%; cursor: pointer; margin-top:10px; }
-    .trend-indicator { font-size: 20px; font-weight: bold; padding: 15px; border-radius: 10px; margin: 15px 0; }
-    .up { color: #2ecc71; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; }
-    .down { color: #e74c3c; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; }
-    
-    /* تنسيق قائمة الشركات */
+    /* تنسيق صفحات المحتوى */
+    .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 100px; padding-top: 20px; }
+    .active-page { display: block !important; }
+
+    /* نظام مقارنة الشركات */
+    .company-btn { 
+        background: #222; color: #fff; padding: 12px; border-radius: 8px; 
+        border: 1px solid #333; cursor: pointer; font-size: 13px; transition: 0.2s;
+    }
+    .company-btn:active { background: #f1c40f; color: #000; }
     .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-    .comp-link { background: #222; color: #fff; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 12px; border: 1px solid #333; }
+
+    /* حاسبة الزكاة */
+    .zakat-box { background: #f1c40f; color: #000; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
+    .info-text { font-size: 12px; color: #aaa; text-align: right; padding: 10px; line-height: 1.6; }
 </style>
 
+<!-- القائمة السفلية الثابتة -->
 <div class="bottom-nav">
     <div class="nav-item active" onclick="changeTab('home-page', this)">🏠<br>الرئيسية</div>
     <div class="nav-item" onclick="changeTab('bullion-page', this)">🏆<br>السبايك</div>
-    <div class="nav-item" onclick="changeTab('calc-page', this)">🧮<br>الحاسبة</div>
+    <div class="nav-item" onclick="changeTab('calc-page', this)">🧮<br>الحاسبة والزكاة</div>
 </div>
 
-<!-- صفحة السبايك (مفعلة) -->
+<!-- صفحة السبايك والمقارنة -->
 <div id="bullion-page" class="page-section">
-    <div class="main-title" style="font-size: 28px; margin-top: 40px; text-align:center; color:#f1c40f;">أسعار السبايك والمؤشر</div>
-    
     <div class="bullion-box">
-        <h3 style="color: #f1c40f; margin-top: 0;">📉 مؤشر السوق العالمي</h3>
-        <div id="live-trend" class="trend-indicator">جاري التحليل...</div>
-    </div>
-
-    <div class="bullion-box">
-        <h3 style="color: #f1c40f;">💰 حساب سعر السبيكة</h3>
-        <select id="weight-sel" class="input-style" onchange="calcBullionNow()">
-            <option value="1">سبيكة 1 جرام</option>
-            <option value="2.5">سبيكة 2.5 جرام</option>
-            <option value="5">سبيكة 5 جرام</option>
-            <option value="10">سبيكة 10 جرام</option>
-            <option value="31.1">أونصة 31.1 جرام</option>
-            <option value="50">سبيكة 50 جرام</option>
-            <option value="100">سبيكة 100 جرام</option>
+        <h3 style="color: #f1c40f;">⚖️ قارن أسعار الشركات</h3>
+        <select id="b-weight" class="input-style" style="width: 100%;">
+            <option value="0.25">ربع جرام</option>
+            <option value="0.5">نصف جرام</option>
+            <option value="1">1 جرام</option>
+            <option value="2.5">2.5 جرام</option>
+            <option value="5">5 جرام</option>
+            <option value="10">10 جرام</option>
+            <option value="20">20 جرام</option>
+            <option value="31.1">أونصة (31.1 جم)</option>
+            <option value="50">50 جرام</option>
+            <option value="100">100 جرام</option>
+            <option value="250">ربع كيلو (250 جم)</option>
+            <option value="500">نصف كيلو (500 جم)</option>
+            <option value="1000">كيلو (1000 جم)</option>
+            <option value="2000">2 كيلو (2000 جم)</option>
         </select>
-        <div style="font-size: 25px; font-weight: bold; color: #f1c40f; margin-top: 10px;" id="bullion-res">0.00 ج.م</div>
-    </div>
 
-    <div class="bullion-box">
-        <h3 style="color: #f1c40f;">🏢 أشهر 10 شركات ذهب</h3>
-        <div class="company-grid">
-            <a href="https://BTC-egypt.com" target="_blank" class="comp-link">بي تي سي (BTC)</a>
-            <a href="https://sam-preciousmetals.com" target="_blank" class="comp-link">سام (SAM)</a>
-            <a href="#" class="comp-link">جولدن كينج</a>
-            <a href="#" class="comp-link">سويس جولد</a>
-            <a href="#" class="comp-link">لازوردي</a>
-            <a href="#" class="comp-link">إيجيبت جولد</a>
-            <a href="#" class="comp-link">ماستر جولد</a>
-            <a href="#" class="comp-link">سليمة جولد</a>
-            <a href="#" class="comp-link">القدس للذهب</a>
-            <a href="#" class="comp-link">ملوك الذهب</a>
+        <div class="company-grid" id="company-list">
+            <!-- الشركات - عند الضغط يتم الحساب فوراً -->
+            <button class="company-btn" onclick="compare('BTC', 120)">بي تي سي (BTC)</button>
+            <button class="company-btn" onclick="compare('SAM', 115)">سام (SAM)</button>
+            <button class="company-btn" onclick="compare('Golden King', 110)">جولدن كينج</button>
+            <button class="company-btn" onclick="compare('Swiss Gold', 125)">سويس جولد</button>
+            <button class="company-btn" onclick="compare('L'azurde', 140)">لازوردي</button>
+            <button class="company-btn" onclick="compare('Egypt Gold', 110)">إيجيبت جولد</button>
+            <button class="company-btn" onclick="compare('Master Gold', 115)">ماستر جولد</button>
+            <button class="company-btn" onclick="compare('Selima Gold', 120)">سليمة جولد</button>
+            <button class="company-btn" onclick="compare('El Quds', 105)">القدس</button>
+            <button class="company-btn" onclick="compare('Kings Gold', 110)">ملوك الذهب</button>
+        </div>
+
+        <div id="comp-res" class="zakat-box" style="display:none; background:#222; color:#f1c40f; border: 1px dashed #f1c40f; margin-top:20px;">
+            السعر في <span id="comp-name"></span>: <br>
+            <span id="comp-val" style="font-size:24px;">0</span> ج.م
         </div>
     </div>
 </div>
 
-<!-- صفحة الحاسبة (مفعلة) -->
+<!-- صفحة الحاسبة والزكاة -->
 <div id="calc-page" class="page-section">
-    <div class="main-title" style="font-size: 28px; margin-top: 40px; text-align:center; color:#f1c40f;">حاسبة الذهب الذكية</div>
     <div class="bullion-box">
-        <input type="number" id="c-w" class="input-style" placeholder="الوزن بالجرام">
-        <select id="c-carat" class="input-style">
+        <h3 style="color: #f1c40f;">🕌 حاسبة زكاة الذهب</h3>
+        <input type="number" id="z-w" class="input-style" placeholder="إجمالي وزن الذهب عندك">
+        <select id="z-c" class="input-style">
             <option value="24">عيار 24</option>
             <option value="21">عيار 21</option>
             <option value="18">عيار 18</option>
         </select>
-        <input type="number" id="c-m" class="input-style" placeholder="المصنعية للجرام الواحد">
-        <button class="btn-gold" onclick="runCalcNow()">احسب الآن</button>
-        <div id="c-res-box" style="display:none; margin-top:15px; border-top:1px solid #333; padding-top:10px;">
-            <h3 style="color:#2ecc71">الإجمالي: <span id="c-total">0</span> ج.م</h3>
+        <button class="btn-gold" onclick="calculateZakat()">احسب الزكاة</button>
+
+        <div id="z-res" style="display:none; margin-top:15px;">
+            <div class="zakat-box">الزكاة المستحقة: <span id="z-val">0</span> ج.م</div>
+            <div id="nisab-status" style="margin-top:10px; font-size:14px;"></div>
         </div>
+    </div>
+
+    <div class="info-text">
+        <strong>⚠️ شروط الزكاة:</strong><br>
+        1. بلوغ النصاب (ما يعادل 85 جرام ذهب عيار 24).<br>
+        2. مرور حول كامل (سنة هجرية) على ملكيته.<br>
+        3. الذهب المعد للزينة المعتادة (للمرأة) فيه خلاف، والأحوط إخراج زكاته إذا بلغ النصاب.
     </div>
 </div>
 
 <script>
-    // 1. التغليف الآلي (كما طلبت يا قبطان)
-    window.onload = function() {
-        const home = document.createElement('div');
-        home.id = 'home-page'; home.className = 'page-section active-page';
-        while (document.body.firstChild && document.body.firstChild.id !== 'bullion-page' && 
-               document.body.firstChild.id !== 'calc-page' && !document.body.firstChild.classList?.contains('bottom-nav')) {
-            home.appendChild(document.body.firstChild);
+    // مقارنة الشركات
+    function compare(name, fee) {
+        const weight = parseFloat(document.getElementById('b-weight').value);
+        const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
+        if(!isNaN(p24)) {
+            // معادلة: (سعر الجرام + المصنعية) * الوزن
+            // المصنعية تقل كلما زاد الوزن برمجياً
+            let dynamicFee = weight >= 100 ? fee * 0.7 : fee; 
+            let total = (p24 + dynamicFee) * weight;
+            
+            document.getElementById('comp-name').innerText = name;
+            document.getElementById('comp-val').innerText = Math.round(total).toLocaleString();
+            document.getElementById('comp-res').style.display = 'block';
         }
-        document.body.insertBefore(home, document.getElementById('bullion-page'));
-    };
+    }
 
+    // حساب الزكاة
+    function calculateZakat() {
+        const w = parseFloat(document.getElementById('z-w').value);
+        const c = document.getElementById('z-c').value;
+        const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
+        const pCurrent = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
+        
+        if(w > 0 && !isNaN(pCurrent)) {
+            let totalValue = w * pCurrent;
+            let zakat = totalValue * 0.025; // 2.5%
+            
+            // حساب النصاب
+            let userIn24 = (w * parseInt(c)) / 24;
+            let status = document.getElementById('nisab-status');
+            
+            if(userIn24 >= 85) {
+                status.innerHTML = "✅ لقد بلغت النصاب (85 جرام عيار 24)";
+                status.style.color = "#2ecc71";
+            } else {
+                status.innerHTML = "❌ لم تبلغ النصاب بعد (أقل من 85 جرام عيار 24)";
+                status.style.color = "#e74c3c";
+            }
+
+            document.getElementById('z-val').innerText = Math.round(zakat).toLocaleString();
+            document.getElementById('z-res').style.display = 'block';
+        }
+    }
+
+    // وظيفة التنقل الثابتة
     function changeTab(pageId, element) {
         document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
         document.getElementById(pageId).classList.add('active-page');
         document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
         element.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo(0,0);
     }
-
-    // --- البرمجة الجديدة للحسابات ---
-    function calcBullionNow() {
-        const w = parseFloat(document.getElementById('weight-sel').value);
-        const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-        if(!isNaN(p24)) {
-            let m = w <= 5 ? 150 : 100; // مصنعية تقريبية
-            document.getElementById('bullion-res').innerText = Math.round((p24 + m) * w).toLocaleString() + " ج.م";
-        }
-    }
-
-    function runCalcNow() {
-        const w = parseFloat(document.getElementById('c-w').value);
-        const c = document.getElementById('c-carat').value;
-        const m = parseFloat(document.getElementById('c-m').value) || 0;
-        const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
-        if(w > 0 && !isNaN(p)) {
-            document.getElementById('c-total').innerText = Math.round((p + m) * w).toLocaleString();
-            document.getElementById('c-res-box').style.display = 'block';
-        }
-    }
-
-    // المؤشر العالمي
-    let oldGlobalPrice = 0;
-    function checkTrend(newPrice) {
-        const trendDiv = document.getElementById('live-trend');
-        if (oldGlobalPrice > 0) {
-            if (newPrice > oldGlobalPrice) {
-                trendDiv.innerText = "↑ صعود عالمي (+$" + (newPrice - oldGlobalPrice).toFixed(2) + ")";
-                trendDiv.className = "trend-indicator up";
-            } else if (newPrice < oldGlobalPrice) {
-                trendDiv.innerText = "↓ هبوط عالمي (-$" + (oldGlobalPrice - newPrice).toFixed(2) + ")";
-                trendDiv.className = "trend-indicator down";
-            }
-        }
-        oldGlobalPrice = newPrice;
-    }
-
-    // ربط الدالة بأسعارك
-    setInterval(() => {
-        const priceText = document.getElementById('global-ounce')?.innerText.replace('$', '').replace(',', '');
-        if(priceText) checkTrend(parseFloat(priceText));
-    }, 5000);
 </script>
 
 </body>
