@@ -38,6 +38,11 @@
         .article-item.active .article-content { max-height: 4000px; padding: 25px; border-top: 1px solid #333; }
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
 
+        /* أزرار الإدارة داخل المقال */
+        .admin-controls { display: none; margin-top: 15px; gap: 10px; }
+        .btn-edit { background: #2980b9; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .btn-delete { background: #c0392b; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
 
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; }
@@ -92,12 +97,15 @@
         </aside>
     </div>
 
+    <!-- لوحة الإضافة والتعديل -->
     <div id="admin-panel-emosha">
-        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <h3 id="panel-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <input type="hidden" id="edit-post-id">
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
         <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
         <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا..."></textarea>
-        <button class="btn-gold" onclick="addPost()">نشر الآن</button>
+        <button id="main-action-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
+        <button id="cancel-edit-btn" style="display:none; margin-top:10px; background:#444; color:#fff;" class="btn-gold" onclick="resetAdminPanel()">إلغاء التعديل</button>
     </div>
 
     <div class="footer-gold">
@@ -115,6 +123,7 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         let visibleCount = 3;
+        let isAdmin = false; // لمتابعة حالة تسجيل الدخول
 
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
@@ -130,7 +139,7 @@
                     titles.push("🔱 " + post.title);
                     const isVisible = index < visibleCount ? 'visible' : '';
                     container.innerHTML += `
-                        <div class="article-item ${isVisible}">
+                        <div class="article-item ${isVisible}" id="post-${id}">
                             <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                             <div class="article-content">
                                 ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
@@ -138,6 +147,10 @@
                                 <div style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:10px; border-right:4px solid #f1c40f; font-size:14px;">
                                     <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'تم النشر مؤخراً'}</span>
                                     📝 تحرير: القبطان إيهاب شرف
+                                </div>
+                                <div class="admin-controls" style="display: ${isAdmin ? 'flex' : 'none'}">
+                                    <button class="btn-edit" onclick="prepareEdit('${id}', '${post.title.replace(/'/g, "\\'")}', '${post.image}', \`${post.content.replace(/`/g, "\\`")}\`)">تعديل التقرير</button>
+                                    <button class="btn-delete" onclick="deletePost('${id}')">حذف التقرير</button>
                                 </div>
                             </div>
                         </div>`;
@@ -154,40 +167,77 @@
             if (visibleCount >= items.length) document.getElementById('load-more-btn').style.display = 'none';
         }
 
-        // هذه هي الدالة التي تم تحديثها لضمان النشر
+        // دالة النشر أو التعديل
         function addPost() {
             const t = document.getElementById('post-title').value;
             const img = document.getElementById('post-image').value;
             const c = document.getElementById('post-content').value;
+            const editId = document.getElementById('edit-post-id').value;
+            
             const now = new Date();
             const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
             if(t && c) {
-                database.ref('posts').push({ 
-                    title: t, 
-                    image: img, 
-                    content: c, 
-                    date: dateString 
-                })
-                .then(() => {
-                    alert("تم نشر تقرير القبطان بنجاح ✅");
-                    document.getElementById('post-title').value = "";
-                    document.getElementById('post-image').value = "";
-                    document.getElementById('post-content').value = "";
-                    document.getElementById('admin-panel-emosha').style.display = 'none';
-                })
-                .catch((error) => {
-                    alert("خطأ في النشر: " + error.message);
-                });
+                if(editId) {
+                    // وضع التعديل
+                    database.ref('posts/' + editId).update({ title: t, image: img, content: c })
+                    .then(() => {
+                        alert("تم تعديل التقرير بنجاح ✅");
+                        resetAdminPanel();
+                    });
+                } else {
+                    // وضع النشر الجديد
+                    database.ref('posts').push({ title: t, image: img, content: c, date: dateString })
+                    .then(() => {
+                        alert("تم نشر تقرير القبطان بنجاح ✅");
+                        resetAdminPanel();
+                    });
+                }
             } else {
-                alert("برجاء ملء العنوان والمحتوى");
+                alert("يا قبطان، لازم تكتب العنوان والمحتوى!");
             }
+        }
+
+        // تجهيز التعديل
+        function prepareEdit(id, title, image, content) {
+            document.getElementById('edit-post-id').value = id;
+            document.getElementById('post-title').value = title;
+            document.getElementById('post-image').value = image;
+            document.getElementById('post-content').value = content;
+            
+            document.getElementById('panel-title').innerText = "تعديل التقرير الحالي";
+            document.getElementById('main-action-btn').innerText = "حفظ التعديلات";
+            document.getElementById('cancel-edit-btn').style.display = "block";
+            
+            window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop, behavior: 'smooth' });
+        }
+
+        // حذف المقال
+        function deletePost(id) {
+            if(confirm("هل أنت متأكد من حذف هذا التقرير نهائياً؟")) {
+                database.ref('posts/' + id).remove().then(() => alert("تم الحذف بنجاح"));
+            }
+        }
+
+        // إعادة تصفير اللوحة
+        function resetAdminPanel() {
+            document.getElementById('edit-post-id').value = "";
+            document.getElementById('post-title').value = "";
+            document.getElementById('post-image').value = "";
+            document.getElementById('post-content').value = "";
+            document.getElementById('panel-title').innerText = "إضافة تقرير جديد";
+            document.getElementById('main-action-btn').innerText = "نشر الآن";
+            document.getElementById('cancel-edit-btn').style.display = "none";
+            document.getElementById('admin-panel-emosha').style.display = 'none';
         }
 
         function openSecretPanel() { 
             let p = prompt("كلمة السر:"); 
             if(p === "1230") {
+                isAdmin = true;
                 document.getElementById('admin-panel-emosha').style.display = 'block';
+                // إظهار أزرار التعديل والحذف في كل المقالات
+                document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'flex');
                 window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop, behavior: 'smooth' });
             }
         }
