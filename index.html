@@ -9,7 +9,6 @@
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         
-        /* شريط الأخبار: هادئ جداً (150 ثانية) */
         .ticker-wrap { width: 100%; background: #f1c40f; color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 17px; margin-bottom: 25px; border-bottom: 2px solid #fff; }
         .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
         .ticker-move:hover { animation-play-state: paused; }
@@ -45,25 +44,19 @@
 
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; }
         .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; }
-        .social-link-btn:hover { padding-right: 10px; color: #fff; }
 
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
         .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
 
-        @media (max-width: 850px) {
-            .main-layout { flex-direction: column; align-items: center; }
-            .sidebar { position: static; width: 100%; }
-        }
+        @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
     </style>
 </head>
 <body>
     <div class="main-title">شروق الذهب</div>
     <div class="gateway-text">EMOSHA GOLD</div>
 
-    <div class="ticker-wrap">
-        <div class="ticker-move" id="news-ticker">تحميل أحدث تقارير القبطان إيهاب شرف...</div>
-    </div>
+    <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">جاري التحميل...</div></div>
     
     <div class="market-stats">
         <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
@@ -80,29 +73,24 @@
         <div class="articles-main">
             <h2 class="section-title">📰 أحدث تحليلات القبطان</h2>
             <div id="posts-container">جاري التحميل...</div>
-            <button id="load-more-btn" class="load-more-btn" onclick="showAllPosts()">عرض المزيد من المقالات</button>
+            <button id="load-more-btn" class="load-more-btn" onclick="loadThreeMore()">عرض 3 مقالات أخرى</button>
         </div>
 
         <aside class="sidebar">
             <div class="sidebar-box">
                 <h3>👤 عن القبطان</h3>
-                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان <b>إيهاب شرف</b>، نقدم لك أدق تحليلات سوق الذهب المصري والعالمي بخبرة ملاحية واقتصادية حقيقية.</p>
+                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان <b>إيهاب شرف</b>، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
             </div>
             <div class="sidebar-box">
                 <h3>📱 منصاتنا الرسمية</h3>
                 <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 الصفحة الشخصية</a>
                 <a href="https://www.facebook.com/groups/1322491319816622/" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
-                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 قناة اليوتيوب الرسمية</a>
+                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 قناة اليوتيوب</a>
             </div>
         </aside>
     </div>
 
-    <div style="text-align: center; margin-top: 30px;">
-        <span onclick="openSecretPanel()" style="cursor: pointer; color: #111; font-size: 12px;">إدارة المحتوى</span>
-    </div>
-
     <div id="admin-panel-emosha">
-        <h3 id="panel-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
         <input type="hidden" id="edit-id">
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
         <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
@@ -110,12 +98,11 @@
         <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
     </div>
 
-    <!-- الجزء اللي طلبت إرجاعه (الصفحات القانونية) -->
     <div class="footer-gold">
         <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">من نحن</a> | 
         <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">اتصل بنا</a> | 
         <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">سياسة الخصوصية</a>
-        <p style="margin-top:25px; color:#666; font-size:12px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026 | القبطان إيهاب شرف</p>
+        <p style="margin-top:25px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب شرف</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -126,11 +113,11 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         let currentStatus = false;
+        let visibleCount = 3; // عدد المقالات التي تظهر في البداية
 
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
             const ticker = document.getElementById('news-ticker');
-            const loadMoreBtn = document.getElementById('load-more-btn');
             container.innerHTML = "";
             const data = snapshot.val();
             
@@ -141,82 +128,62 @@
                 keys.forEach((id, index) => {
                     const post = data[id];
                     titles.push("🔱 " + post.title);
-                    const isVisible = index < 3 ? 'visible' : '';
+                    const isVisible = index < visibleCount ? 'visible' : '';
                     const displayAdmin = currentStatus ? 'flex' : 'none';
                     
                     container.innerHTML += `
                         <div class="article-item ${isVisible}">
-                            <div class="article-header" onclick="this.parentElement.classList.toggle('active')">
-                                ${post.title}
-                            </div>
+                            <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                             <div class="article-content">
                                 ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                                <div style="white-space: pre-wrap; line-height: 1.9; font-size:16px;">${post.content}</div>
-                                <div style="margin-top:25px; padding:15px; background:#1a1a1a; border-radius:10px; font-size:14px; color:#f1c40f; border-right:4px solid #f1c40f;">
+                                <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                                <div style="margin-top:25px; padding:15px; background:#1a1a1a; border-radius:10px; font-size:14px; color:#ccc; border-right:4px solid #f1c40f;">
+                                    <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'غير محدد'}</span>
                                     📝 تحرير: القبطان إيهاب شرف
                                 </div>
                                 <div class="admin-btns" style="display:${displayAdmin}; margin-top:20px; gap:12px;">
-                                    <button class="edit-btn" style="background:#3498db; color:white; border:none; padding:10px 25px; border-radius:6px; cursor:pointer;" onclick="event.stopPropagation(); startEdit('${id}', '${encodeURI(post.title)}', '${encodeURI(post.content)}', '${post.image || ''}')">تعديل</button>
-                                    <button class="delete-btn" style="background:#e74c3c; color:white; border:none; padding:10px 25px; border-radius:6px; cursor:pointer;" onclick="event.stopPropagation(); deletePost('${id}')">حذف</button>
+                                    <button style="background:#3498db; color:white; border:none; padding:10px 20px; border-radius:6px;" onclick="event.stopPropagation(); startEdit('${id}', '${encodeURI(post.title)}', '${encodeURI(post.content)}', '${post.image || ''}')">تعديل</button>
+                                    <button style="background:#e74c3c; color:white; border:none; padding:10px 20px; border-radius:6px;" onclick="event.stopPropagation(); deletePost('${id}')">حذف</button>
                                 </div>
                             </div>
                         </div>`;
                 });
                 
                 ticker.innerText = titles.join(" . . . . . . ");
-                loadMoreBtn.style.display = keys.length > 3 ? 'block' : 'none';
+                updateButtonVisibility(keys.length);
             }
         });
 
-        function showAllPosts() {
+        function loadThreeMore() {
+            visibleCount += 3; // زيادة العدد المعروض بـ 3 في كل ضغطة
             const items = document.querySelectorAll('.article-item');
-            items.forEach(item => item.classList.add('visible'));
-            document.getElementById('load-more-btn').style.display = 'none';
+            items.forEach((item, index) => {
+                if (index < visibleCount) item.classList.add('visible');
+            });
+            updateButtonVisibility(items.length);
+        }
+
+        function updateButtonVisibility(totalItems) {
+            const btn = document.getElementById('load-more-btn');
+            btn.style.display = visibleCount < totalItems ? 'block' : 'none';
         }
 
         function addPost() {
             const t = document.getElementById('post-title').value;
             const img = document.getElementById('post-image').value;
             const c = document.getElementById('post-content').value;
-            const id = document.getElementById('edit-id').value;
+            const now = new Date();
+            const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
             if(t && c) {
-                const ref = id ? database.ref('posts').child(id) : database.ref('posts').push();
-                ref.set({ title: t, image: img, content: c }).then(() => {
-                    alert("تم حفظ التقرير بنجاح ✅");
+                database.ref('posts').push({ title: t, image: img, content: c, date: dateString }).then(() => {
+                    alert("تم النشر ✅");
                     resetForm();
                 });
             }
         }
 
-        function startEdit(id, t, c, img) {
-            document.getElementById('edit-id').value = id;
-            document.getElementById('post-title').value = decodeURI(t);
-            document.getElementById('post-content').value = decodeURI(c);
-            document.getElementById('post-image').value = img;
-            document.getElementById('admin-panel-emosha').style.display = 'block';
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-
-        function resetForm() {
-            document.getElementById('edit-id').value = "";
-            document.getElementById('post-title').value = "";
-            document.getElementById('post-content').value = "";
-            document.getElementById('post-image').value = "";
-            document.getElementById('admin-panel-emosha').style.display = 'none';
-        }
-
-        function deletePost(id) { if(confirm("حذف نهائي؟")) database.ref('posts').child(id).remove(); }
-
-        function openSecretPanel() {
-            let pass = prompt("الرمز السري:");
-            if (pass === "1230") {
-                currentStatus = true;
-                document.getElementById('admin-panel-emosha').style.display = 'block';
-                const adminBtns = document.querySelectorAll('.admin-btns');
-                adminBtns.forEach(btn => btn.style.display = 'flex');
-            }
-        }
-
+        function resetForm() { document.getElementById('post-title').value = ""; document.getElementById('post-content').value = ""; document.getElementById('admin-panel-emosha').style.display = 'none'; }
+        
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -226,8 +193,8 @@
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
                 const p24 = (globalPrice / 31.1035) * currentUSD;
+                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
                 document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
                 document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
