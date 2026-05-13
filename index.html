@@ -38,10 +38,6 @@
         .article-item.active .article-content { max-height: 5000px; padding: 25px; border-top: 1px solid #333; }
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; display: block; }
 
-        .admin-controls { display: none; margin-top: 15px; gap: 10px; border-top: 1px solid #333; padding-top: 15px; }
-        .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
-        .btn-delete { background: #c0392b; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
-
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
 
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
@@ -132,19 +128,29 @@
                     const post = data[id];
                     titles.push("🔱 " + post.title);
                     const isVisible = index < visibleCount ? 'visible' : '';
+                    
+                    // تحويل المحتوى لنص آمن للاستخدام في دالة الجافا سكريبت
+                    const safeContent = post.content ? post.content.replace(/`/g, "\\`").replace(/\$/g, "\\$") : "";
+                    const safeTitle = post.title ? post.title.replace(/'/g, "\\'") : "";
+
                     container.innerHTML += `
                         <div class="article-item ${isVisible}" id="post-${id}">
                             <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                             <div class="article-content">
                                 ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                                <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                                <div style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:10px; border-right:4px solid #f1c40f; font-size:14px;">
-                                    <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'تم النشر مؤخراً'}</span>
-                                    📝 تحرير: القبطان إيهاب شرف
+                                <div style="white-space: pre-wrap; line-height: 1.9; color: #eee; font-size: 16px; margin-bottom: 20px;">${post.content}</div>
+                                
+                                <div style="background: #1a1a1a; padding: 12px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;">
+                                    <p style="margin: 0; color: #f1c40f; font-size: 13px;">📅 تاريخ النشر: ${post.date || 'تم النشر مؤخراً'}</p>
+                                    <p style="margin: 5px 0 0 0; color: #888; font-size: 13px;">✍️ تحرير: القبطان إيهاب شرف</p>
                                 </div>
-                                <div class="admin-controls" id="controls-${id}" style="display: ${isAdmin ? 'flex' : 'none'}">
-                                    <button class="btn-edit" onclick="prepareEdit('${id}', '${post.title.replace(/'/g, "\\'")}', '${post.image}', \`${post.content.replace(/`/g, "\\`")}\`)">تعديل</button>
-                                    <button class="btn-delete" onclick="deletePost('${id}')">حذف</button>
+
+                                <!-- أزرار الإدارة المنفصلة -->
+                                <div class="admin-controls" id="controls-${id}" style="display: ${isAdmin ? 'flex' : 'none'}; gap: 10px; margin-top: 15px; border-top: 1px solid #222; padding-top: 15px;">
+                                    <button style="background: #27ae60; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; flex: 1; font-weight: bold;" 
+                                        onclick="prepareEdit('${id}', '${safeTitle}', '${post.image}', \`${safeContent}\`)">⚙️ تعديل التقرير</button>
+                                    <button style="background: #c0392b; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; flex: 1; font-weight: bold;" 
+                                        onclick="deletePost('${id}')">🗑️ حذف نهائي</button>
                                 </div>
                             </div>
                         </div>`;
@@ -176,7 +182,7 @@
                 action.then(() => {
                     alert("تمت العملية بنجاح ✅");
                     resetAdminPanel();
-                }).catch(e => alert("خطأ: " + e.message));
+                }).catch(e => alert("خطأ في التصريح: تأكد من إعدادات Rules في Firebase"));
             }
         }
 
@@ -185,15 +191,17 @@
             document.getElementById('post-title').value = title;
             document.getElementById('post-image').value = image;
             document.getElementById('post-content').value = content;
-            document.getElementById('panel-title').innerText = "تعديل التقرير";
-            document.getElementById('main-action-btn').innerText = "حفظ التعديل";
+            document.getElementById('panel-title').innerText = "تعديل التقرير الحالي";
+            document.getElementById('main-action-btn').innerText = "حفظ التعديلات";
             document.getElementById('cancel-edit-btn').style.display = "block";
             document.getElementById('admin-panel-emosha').style.display = 'block';
-            window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop - 50, behavior: 'smooth' });
         }
 
         function deletePost(id) {
-            if(confirm("حذف نهائي؟")) database.ref('posts/' + id).remove();
+            if(confirm("هل أنت متأكد من حذف هذا التقرير نهائياً؟")) {
+                database.ref('posts/' + id).remove();
+            }
         }
 
         function resetAdminPanel() {
@@ -201,6 +209,9 @@
             document.getElementById('post-title').value = "";
             document.getElementById('post-image').value = "";
             document.getElementById('post-content').value = "";
+            document.getElementById('panel-title').innerText = "إضافة تقرير جديد";
+            document.getElementById('main-action-btn').innerText = "نشر الآن";
+            document.getElementById('cancel-edit-btn').style.display = "none";
             document.getElementById('admin-panel-emosha').style.display = 'none';
         }
 
@@ -209,6 +220,7 @@
                 isAdmin = true;
                 document.getElementById('admin-panel-emosha').style.display = 'block';
                 document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'flex');
+                alert("مرحباً يا قبطان، تم تفعيل وضع الإدارة.");
             }
         }
 
