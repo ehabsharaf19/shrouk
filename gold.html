@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>جاري التحويل... | EMOSHA</title>
+    <!-- ربط مكتبة فايربيز -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f4; }
+        .loader { border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 60px; height: 60px; animation: spin 2s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <h2>مرحباً بك في موقع إيموشا</h2>
+    <div class="loader"></div>
+    <p>انتظر لحظة، جاري توجيهك للرابط المطلوب...</p>
+
+    <script>
+        // إعدادات فايربيز الخاصة بمشروعك (ضع بياناتك هنا)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "emosha-xxxx",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // 1. الحصول على الكلمة المفتاحية من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const linkID = urlParams.get('id');
+
+        if (linkID) {
+            // 2. البحث في قاعدة البيانات
+            const dbRef = firebase.database().ref('shortLinks/' + linkID);
+            dbRef.once('value', (snapshot) => {
+                const longUrl = snapshot.val();
+                if (longUrl) {
+                    // 3. التحويل للرابط الأصلي
+                    window.location.href = longUrl;
+                } else {
+                    document.body.innerHTML = "<h1>الرابط غير صحيح أو منتهي الصلاحية</h1>";
+                }
+            });
+        } else {
+            document.body.innerHTML = "<h1>عذراً، لم يتم تحديد رابط!</h1>";
+        }
+    </script>
+</body>
+</html>
