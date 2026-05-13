@@ -25,18 +25,18 @@
             appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
         };
         
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 
-        // تعديل بسيط: سحب الرابط مباشرة من كلمة today
+        // التعديل هنا: هيدخل يجيب رابط "today" تلقائياً
         firebase.database().ref('gold/today').once('value').then((s) => {
             const url = s.val();
             if (url) {
-                window.location.href = url;
+                window.location.replace(url);
             } else {
-                document.getElementById('msg').innerHTML = "الرابط غير موجود في قاعدة البيانات";
+                document.getElementById('msg').innerHTML = "الرابط مش موجود في فايربيز";
             }
-        }).catch((error) => {
-            document.getElementById('msg').innerHTML = "خطأ في الاتصال: " + error.message;
+        }).catch((e) => {
+            document.getElementById('msg').innerHTML = "تأكد من الـ Rules في فايربيز";
         });
     </script>
 </body>
