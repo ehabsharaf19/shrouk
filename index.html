@@ -35,11 +35,14 @@
         .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; cursor: pointer; font-weight: bold; font-size: 18px; border-right: 4px solid transparent; transition: 0.3s; }
         .article-header:hover { border-right-color: #f1c40f; background: #222; }
         .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.4s ease-out; overflow: hidden; }
-        /* التعديل لضمان ظهور كامل المحتوى مهما طال */
         .article-item.active .article-content { max-height: none; padding: 25px; border-top: 1px solid #333; }
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
 
-        .admin-controls { display: none; gap: 10px; margin-top: 15px; border-top: 1px solid #333; padding-top: 15px; }
+        /* أزرار التحكم - مخفية تماماً بشكل افتراضي */
+        .admin-controls { display: none !important; gap: 10px; margin-top: 15px; border-top: 1px solid #333; padding-top: 15px; }
+        /* تظهر فقط عندما نضيف كلاس show-admin برمجياً */
+        .admin-mode .admin-controls { display: flex !important; }
+        
         .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
         .btn-delete { background: #c0392b; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
 
@@ -55,7 +58,7 @@
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
     </style>
 </head>
-<body>
+<body id="main-body">
     <div class="main-title">شروق الذهب</div>
     <div class="gateway-text">EMOSHA GOLD</div>
 
@@ -98,11 +101,11 @@
     </div>
 
     <div id="admin-panel-emosha">
-        <h3 id="admin-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+        <h3 id="admin-title" style="color: #f1c40f; text-align: center;">إدارة المحتوى</h3>
         <input type="hidden" id="edit-post-id">
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
         <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
-        <textarea id="post-content" class="input-style" rows="8" placeholder="اكتب تقريرك هنا..."></textarea>
+        <textarea id="post-content" class="input-style" rows="10" placeholder="اكتب تقريرك هنا..."></textarea>
         <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
         <button id="cancel-btn" class="btn-gold" style="display:none; margin-top:10px; background:#444; color:#fff;" onclick="resetForm()">إلغاء التعديل</button>
     </div>
@@ -122,7 +125,6 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         let visibleCount = 3;
-        let isAdmin = false;
 
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
@@ -152,7 +154,7 @@
                                     <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'تم النشر مؤخراً'}</span>
                                     📝 تحرير: القبطان إيهاب شرف
                                 </div>
-                                <div class="admin-controls" style="display: ${isAdmin ? 'flex' : 'none'}">
+                                <div class="admin-controls">
                                     <button class="btn-edit" onclick="prepareEdit('${id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
                                     <button class="btn-delete" onclick="deletePost('${id}')">حذف</button>
                                 </div>
@@ -176,8 +178,6 @@
             const img = document.getElementById('post-image').value;
             const c = document.getElementById('post-content').value;
             const editId = document.getElementById('edit-post-id').value;
-            
-            // جلب التاريخ والوقت بدقة لحظة النشر
             const now = new Date();
             const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
@@ -207,6 +207,7 @@
             document.getElementById('post-title').value = title;
             document.getElementById('post-image').value = image;
             document.getElementById('post-content').value = content;
+            
             document.getElementById('admin-title').innerText = "تعديل تقرير القبطان";
             document.getElementById('submit-btn').innerText = "حفظ التعديلات";
             document.getElementById('cancel-btn').style.display = "block";
@@ -228,10 +229,13 @@
         function openSecretPanel() { 
             let p = prompt("كلمة السر:"); 
             if(p === "1230") {
-                isAdmin = true;
+                // تفعيل وضع الإدارة وإظهار الأزرار واللوحة
+                document.getElementById('main-body').classList.add('admin-mode');
                 document.getElementById('admin-panel-emosha').style.display = 'block';
-                document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'flex');
                 window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop - 50, behavior: 'smooth' });
+                alert("مرحباً بك يا قبطان.. تم تفعيل وضع الإدارة بنجاح.");
+            } else {
+                alert("كلمة السر خاطئة!");
             }
         }
 
