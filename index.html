@@ -9,7 +9,6 @@
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         
-        /* شريط الأخبار هادئ جداً 150 ثانية */
         .ticker-wrap { width: 100%; background: #f1c40f; color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 17px; margin-bottom: 25px; border-bottom: 2px solid #fff; }
         .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
         .ticker-move:hover { animation-play-state: paused; }
@@ -42,8 +41,8 @@
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
 
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; }
-        .footer-links a { color:#f1c40f; text-decoration:none; margin:0 10px; font-weight:bold; }
-        
+        .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; }
+
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
         .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
@@ -82,13 +81,18 @@
             </div>
             <div class="sidebar-box">
                 <h3>📱 منصاتنا</h3>
-                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" style="color:#f1c40f; text-decoration:none; display:block; margin-bottom:10px;">📘 فيسبوك</a>
-                <a href="https://youtube.com/@ehabsharaf19" target="_blank" style="color:#f1c40f; text-decoration:none; display:block;">📺 يوتيوب</a>
+                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك</a>
+                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
+                <a href="#" target="_blank" class="social-link-btn">👥 جروب شروق الذهب (فيسبوك)</a>
+                <a href="#" target="_blank" class="social-link-btn">💬 جروب الواتساب</a>
+                
+                <!-- إضافة محتوى رجعت لمكانها المفضل -->
+                <hr style="border:0; border-top:1px solid #222; margin:15px 0;">
+                <span onclick="openSecretPanel()" style="cursor: pointer; color: #444; font-size: 12px; display: block; text-align: center;">إدارة المحتوى</span>
             </div>
         </aside>
     </div>
 
-    <!-- لوحة الإدارة المخفية -->
     <div id="admin-panel-emosha">
         <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
@@ -98,14 +102,10 @@
     </div>
 
     <div class="footer-gold">
-        <div class="footer-links">
-            <a href="about.html">من نحن</a> | 
-            <a href="contact.html">اتصل بنا</a> | 
-            <a href="privacy.html">سياسة الخصوصية</a>
-        </div>
-        <p style="margin-top:25px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب شرف</p>
-        <!-- الزر البديل للنقطة السوداء -->
-        <span onclick="openSecretPanel()" style="cursor: pointer; color: #222; font-size: 11px; margin-top: 10px; display: block;">إدارة المحتوى</span>
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب شرف</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -173,12 +173,10 @@
         }
 
         function openSecretPanel() { 
-            let p = prompt("كلمة السر الخاصة بالقبطان:"); 
+            let p = prompt("كلمة السر:"); 
             if(p === "1230") {
                 document.getElementById('admin-panel-emosha').style.display = 'block';
-                window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                alert("عذراً، كلمة السر غير صحيحة.");
+                window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop, behavior: 'smooth' });
             }
         }
 
