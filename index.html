@@ -247,75 +247,114 @@
         updatePrices();
         setInterval(updatePrices, 30000);
     </script>
-    <!-- ============================================ -->
-<!-- كود تحويل الموقع لـ 3 صفحات (إضافة القبطان إيهاب) -->
-<!-- ============================================ -->
-
-<style>
-    /* 1. تنسيق الصفحات */
-    .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 80px; }
-    .active-page { display: block !important; animation: fadeIn 0.4s ease-in; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* 2. شريط التنقل السفلي (نفس ستايل الصورة 1000174278.jpg) */
-    .bottom-nav {
-        position: fixed; bottom: 0; left: 0; width: 100%;
-        background: #111; display: flex; justify-content: space-around;
-        padding: 12px 0; border-top: 2px solid #f1c40f; z-index: 9999;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
-    }
-    .nav-item { color: #666; text-align: center; font-size: 11px; cursor: pointer; flex: 1; }
-    .nav-item i { font-size: 22px; display: block; margin-bottom: 4px; }
-    .nav-item.active { color: #f1c40f; font-weight: bold; }
-
-    /* 3. تصميم صفحة السبايك */
-    .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px; text-align: center; border-right: 5px solid #f1c40f; }
-    .trend-indicator { font-size: 20px; font-weight: bold; padding: 15px; border-radius: 10px; margin: 15px 0; }
-    .up { color: #2ecc71; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; }
-    .down { color: #e74c3c; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; }
-</style>
-
-<!-- شريط التنقل السفلي -->
-<div class="bottom-nav">
-    <div class="nav-item active" onclick="changeTab('home-page', this)">🏠<br>الرئيسية</div>
-    <div class="nav-item" onclick="changeTab('bullion-page', this)">🏆<br>السبايك</div>
-    <div class="nav-item" onclick="changeTab('calc-page', this)">🧮<br>الحاسبة</div>
-</div>
-
-<!-- محتوى الصفحة الثانية (السبايك) -->
+                <!-- محتوى الصفحة الثانية (السبايك) المعدل -->
 <div id="bullion-page" class="page-section">
-    <div class="main-title" style="font-size: 28px; margin-top: 40px;">أسعار السبايك والمؤشر</div>
+    <div class="main-title" style="font-size: 28px; margin-top: 20px;">أسعار السبايك اللحظية</div>
     
     <div class="bullion-box">
-        <h3 style="color: #f1c40f; margin-top: 0;">📈 مؤشر السوق العالمي</h3>
-        <div id="live-trend" class="trend-indicator">جاري التحليل...</div>
-        <p style="font-size: 12px; color: #888;">يتم احتساب الصعود والهبوط بناءً على السعر العالمي اللحظي</p>
-    </div>
+        <h3 style="color: #f1c40f;">اختر الشركة والوزن</h3>
+        <select id="company-select" class="input-style" style="width: 100%;">
+            <option value="btc">شركة BTC (بي تي سي)</option>
+            <option value="sam">شركة SAM (سام)</option>
+            <option value="king">جولدن كينج</option>
+        </select>
+        
+        <select id="weight-select" class="input-style" style="width: 100%;" onchange="calculateBullion()">
+            <option value="1">سبيكة 1 جرام</option>
+            <option value="2.5">سبيكة 2.5 جرام</option>
+            <option value="5">سبيكة 5 جرام</option>
+            <option value="10">سبيكة 10 جرام</option>
+            <option value="20">سبيكة 20 جرام</option>
+            <option value="31.1">أونصة (31.1 جرام)</option>
+            <option value="50">سبيكة 50 جرام</option>
+            <option value="100">سبيكة 100 جرام</option>
+        </select>
 
-    <div class="bullion-box">
-        <h3 style="color: #f1c40f;">🔗 روابط الشركات الرسمية</h3>
-        <a href="https://BTC-egypt.com" target="_blank" class="social-link-btn" style="background: #222; padding: 12px; border-radius: 8px; justify-content: center; margin-bottom: 10px;">سبايك BTC (بي تي سي)</a>
-        <a href="https://sam-preciousmetals.com" target="_blank" class="social-link-btn" style="background: #222; padding: 12px; border-radius: 8px; justify-content: center; margin-bottom: 10px;">سبايك SAM (سام)</a>
-        <a href="https://www.kingmsr.com" target="_blank" class="social-link-btn" style="background: #222; padding: 12px; border-radius: 8px; justify-content: center;">جولدن كينج (Golden King)</a>
+        <div id="bullion-result" class="gold-card" style="margin-top:15px; border: 1px dashed #f1c40f;">
+            <span style="color:#888; font-size: 14px;">السعر التقريبي الآن</span><br>
+            <span class="card-price" id="bullion-final-price">0.00</span>
+            <p style="font-size:11px; color:#666;">* السعر يشمل المصنعية والدمغة التقريبية</p>
+        </div>
     </div>
 </div>
 
-<!-- محتوى الصفحة الثالثة (الحاسبة) -->
+<!-- محتوى الصفحة الثالثة (الحاسبة) المعدل -->
 <div id="calc-page" class="page-section">
-    <div class="main-title" style="font-size: 28px; margin-top: 40px;">حاسبة الذهب</div>
+    <div class="main-title" style="font-size: 28px; margin-top: 20px;">حاسبة الذهب الذكية</div>
     <div class="bullion-box">
-        <p style="color: #ccc;">قريباً يا قبطان.. سنقوم ببرمجة حاسبة دقيقة للمصنعية والوزن هنا.</p>
+        <input type="number" id="calc-weight" class="input-style" placeholder="أدخل الوزن بالجرام...">
+        <select id="calc-carat" class="input-style">
+            <option value="24">عيار 24</option>
+            <option value="21">عيار 21</option>
+            <option value="18">عيار 18</option>
+        </select>
+        <input type="number" id="calc-making" class="input-style" placeholder="المصنعية للجرام (اختياري)...">
+        
+        <button class="btn-gold" onclick="startCalculating()">احسب الإجمالي</button>
+
+        <div id="calc-result" style="display:none; margin-top:20px; text-align: right; border-top: 1px solid #333; padding-top: 10px;">
+            <p>سعر الذهب الصافي: <span id="res-pure" style="color:#f1c40f">0</span> ج.م</p>
+            <p>إجمالي المصنعية: <span id="res-making" style="color:#f1c40f">0</span> ج.م</p>
+            <hr>
+            <h3 style="color:#2ecc71">الإجمالي: <span id="res-total">0</span> ج.م</h3>
+        </div>
     </div>
 </div>
 
 <script>
-    // 1. تغليف الكود القديم تلقائياً (عشان ما نبوظش حاجة)
-    window.onload = function() {
-        // نأخذ كل عناصر الصفحة ماعدا الجديدة ونضعها في "الرئيسية"
+    // وظيفة حساب سعر السبيكة بناءً على عيار 24 الموجود في الموقع
+    function calculateBullion() {
+        const weight = parseFloat(document.getElementById('weight-select').value);
+        const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
+        
+        if (!isNaN(p24)) {
+            // مصنعية تقريبية للسبايك (تقل كلما زاد الوزن)
+            let makingPerGram = weight <= 5 ? 150 : (weight <= 31.1 ? 110 : 80); 
+            let total = (p24 + makingPerGram) * weight;
+            
+            document.getElementById('bullion-final-price').innerText = Math.round(total).toLocaleString() + " ج.م";
+        }
+    }
+
+    // وظيفة حاسبة الذهب الشاملة
+    function startCalculating() {
+        const weight = parseFloat(document.getElementById('calc-weight').value);
+        const carat = document.getElementById('calc-carat').value;
+        const making = parseFloat(document.getElementById('calc-making').value) || 0;
+        
+        // جلب السعر من كروت الذهب الأصلية في الصفحة
+        const pricePerGram = parseFloat(document.getElementById('p' + carat).innerText.replace(/,/g, ''));
+
+        if (weight > 0 && !isNaN(pricePerGram)) {
+            const purePrice = weight * pricePerGram;
+            const totalMaking = weight * making;
+            const finalTotal = purePrice + totalMaking;
+
+            document.getElementById('res-pure').innerText = Math.round(purePrice).toLocaleString();
+            document.getElementById('res-making').innerText = Math.round(totalMaking).toLocaleString();
+            document.getElementById('res-total').innerText = Math.round(finalTotal).toLocaleString();
+            document.getElementById('calc-result').style.display = 'block';
+        } else {
+            alert("يرجى التأكد من إدخال الوزن وسعر الذهب");
+        }
+    }
+
+    // تعديل بسيط لربط التنقل
+    function changeTab(pageId, element) {
+        document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        element.classList.add('active');
+        
+        if(pageId === 'bullion-page') calculateBullion(); // تحديث تلقائي عند فتح الصفحة
+        window.scrollTo(0,0);
+    }
+    
+    // تشغيل التغليف التلقائي (نفس كود المرة الماضية)
+    window.addEventListener('load', function() {
         const home = document.createElement('div');
         home.id = 'home-page';
         home.className = 'page-section active-page';
-        
         while (document.body.firstChild && 
                document.body.firstChild.id !== 'bullion-page' && 
                document.body.firstChild.id !== 'calc-page' && 
@@ -323,50 +362,8 @@
             home.appendChild(document.body.firstChild);
         }
         document.body.insertBefore(home, document.getElementById('bullion-page'));
-    };
-
-    // 2. وظيفة التبديل بين الصفحات
-    function changeTab(pageId, element) {
-        document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
-        document.getElementById(pageId).classList.add('active-page');
-        
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        element.classList.add('active');
-        
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // 3. ذكاء المؤشر (مربوط بدالة updatePrices القديمة عندك)
-    let oldGlobalPrice = 0;
-    function checkTrend(newPrice) {
-        const trendDiv = document.getElementById('live-trend');
-        if (oldGlobalPrice > 0) {
-            if (newPrice > oldGlobalPrice) {
-                trendDiv.innerText = "↑ صعود عالمي (+$" + (newPrice - oldGlobalPrice).toFixed(2) + ")";
-                trendDiv.className = "trend-indicator up";
-            } else if (newPrice < oldGlobalPrice) {
-                trendDiv.innerText = "↓ هبوط عالمي (-$" + (oldGlobalPrice - newPrice).toFixed(2) + ")";
-                trendDiv.className = "trend-indicator down";
-            } else {
-                trendDiv.innerText = "↔ استقرار في السعر العالمي";
-                trendDiv.className = "trend-indicator";
-            }
-        }
-        oldGlobalPrice = newPrice;
-    }
-
-    // ربط المؤشر بالبيانات الحقيقية (تعديل بسيط على دالتك الأصلية)
-    const originalUpdatePrices = updatePrices;
-    updatePrices = async function() {
-        await originalUpdatePrices();
-        const priceText = document.getElementById('global-ounce').innerText.replace('$', '').replace(',', '');
-        const currentGlobal = parseFloat(priceText);
-        if(!isNaN(currentGlobal)) checkTrend(currentGlobal);
-    };
+    });
 </script>
-
-
-
 
 </body>
 </html>
