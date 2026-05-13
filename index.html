@@ -1,3 +1,7 @@
+<div id="home-content"> 
+   <!-- كود موقعك الأصلي بالكامل يكون هنا -->
+</div>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -247,122 +251,113 @@
         updatePrices();
         setInterval(updatePrices, 30000);
     </script>
-                <!-- محتوى الصفحة الثانية (السبايك) المعدل -->
+    <div id="home-content"> 
+   <!-- كود موقعك الأصلي بالكامل يكون هنا -->
+</div>
+
+                        /* تنسيق الصفحات */
+.page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 80px; }
+.active-page { display: block !important; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* شريط التنقل السفلي */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: #111; display: flex; justify-content: space-around;
+    padding: 10px 0; border-top: 2px solid #f1c40f; z-index: 9999;
+}
+.nav-item { color: #666; text-align: center; font-size: 11px; cursor: pointer; flex: 1; }
+.nav-item.active { color: #f1c40f; font-weight: bold; }
+
+/* تصميم الحقول */
+.bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 15px; margin: 10px; text-align: center; }
+.input-style { width: 90%; padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
+<!-- شريط التنقل -->
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="openTab('home-content', this)">🏠<br>الرئيسية</div>
+    <div class="nav-item" onclick="openTab('bullion-page', this)">🏆<br>السبايك</div>
+    <div class="nav-item" onclick="openTab('calc-page', this)">🧮<br>الحاسبة</div>
+</div>
+
+<!-- صفحة السبايك -->
 <div id="bullion-page" class="page-section">
-    <div class="main-title" style="font-size: 28px; margin-top: 20px;">أسعار السبايك اللحظية</div>
-    
+    <div class="main-title" style="font-size: 25px; text-align:center; margin-top:20px;">أسعار السبايك</div>
     <div class="bullion-box">
-        <h3 style="color: #f1c40f;">اختر الشركة والوزن</h3>
-        <select id="company-select" class="input-style" style="width: 100%;">
-            <option value="btc">شركة BTC (بي تي سي)</option>
-            <option value="sam">شركة SAM (سام)</option>
-            <option value="king">جولدن كينج</option>
-        </select>
-        
-        <select id="weight-select" class="input-style" style="width: 100%;" onchange="calculateBullion()">
+        <select id="weight-sel" class="input-style" onchange="runBullionCalc()">
             <option value="1">سبيكة 1 جرام</option>
             <option value="2.5">سبيكة 2.5 جرام</option>
             <option value="5">سبيكة 5 جرام</option>
             <option value="10">سبيكة 10 جرام</option>
-            <option value="20">سبيكة 20 جرام</option>
-            <option value="31.1">أونصة (31.1 جرام)</option>
+            <option value="31.1">أونصة 31.1 جرام</option>
             <option value="50">سبيكة 50 جرام</option>
             <option value="100">سبيكة 100 جرام</option>
         </select>
-
-        <div id="bullion-result" class="gold-card" style="margin-top:15px; border: 1px dashed #f1c40f;">
-            <span style="color:#888; font-size: 14px;">السعر التقريبي الآن</span><br>
-            <span class="card-price" id="bullion-final-price">0.00</span>
-            <p style="font-size:11px; color:#666;">* السعر يشمل المصنعية والدمغة التقريبية</p>
+        <div class="gold-card" style="margin-top:10px;">
+            <span id="bullion-res" style="color:#f1c40f; font-size:30px; font-weight:bold;">0.00</span>
+            <p style="font-size:12px; color:#666;">السعر يشمل المصنعية التقريبية</p>
         </div>
     </div>
 </div>
 
-<!-- محتوى الصفحة الثالثة (الحاسبة) المعدل -->
+<!-- صفحة الحاسبة -->
 <div id="calc-page" class="page-section">
-    <div class="main-title" style="font-size: 28px; margin-top: 20px;">حاسبة الذهب الذكية</div>
+    <div class="main-title" style="font-size: 25px; text-align:center; margin-top:20px;">حاسبة الذهب</div>
     <div class="bullion-box">
-        <input type="number" id="calc-weight" class="input-style" placeholder="أدخل الوزن بالجرام...">
-        <select id="calc-carat" class="input-style">
+        <input type="number" id="c-w" class="input-style" placeholder="الوزن بالجرام">
+        <select id="c-carat" class="input-style">
             <option value="24">عيار 24</option>
             <option value="21">عيار 21</option>
             <option value="18">عيار 18</option>
         </select>
-        <input type="number" id="calc-making" class="input-style" placeholder="المصنعية للجرام (اختياري)...">
-        
-        <button class="btn-gold" onclick="startCalculating()">احسب الإجمالي</button>
-
-        <div id="calc-result" style="display:none; margin-top:20px; text-align: right; border-top: 1px solid #333; padding-top: 10px;">
-            <p>سعر الذهب الصافي: <span id="res-pure" style="color:#f1c40f">0</span> ج.م</p>
-            <p>إجمالي المصنعية: <span id="res-making" style="color:#f1c40f">0</span> ج.م</p>
-            <hr>
-            <h3 style="color:#2ecc71">الإجمالي: <span id="res-total">0</span> ج.م</h3>
+        <input type="number" id="c-m" class="input-style" placeholder="المصنعية للجرام">
+        <button class="btn-gold" onclick="runMainCalc()">احسب الإجمالي</button>
+        <div id="c-res-box" style="display:none; margin-top:15px; border-top:1px solid #333; padding-top:10px;">
+            <h3 style="color:#2ecc71">الإجمالي: <span id="c-total">0</span> ج.م</h3>
         </div>
     </div>
 </div>
-
 <script>
-    // وظيفة حساب سعر السبيكة بناءً على عيار 24 الموجود في الموقع
-    function calculateBullion() {
-        const weight = parseFloat(document.getElementById('weight-select').value);
-        const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-        
-        if (!isNaN(p24)) {
-            // مصنعية تقريبية للسبايك (تقل كلما زاد الوزن)
-            let makingPerGram = weight <= 5 ? 150 : (weight <= 31.1 ? 110 : 80); 
-            let total = (p24 + makingPerGram) * weight;
-            
-            document.getElementById('bullion-final-price').innerText = Math.round(total).toLocaleString() + " ج.م";
-        }
-    }
+// 1. تعريف الصفحة الرئيسية تلقائياً
+document.addEventListener('DOMContentLoaded', function() {
+    // سنقوم بالبحث عن أول div كبير في موقعك ونعطيه ID 'home-content'
+    // أو يمكنك يدوياً وضع <div id="home-content" class="page-section active-page"> حول كودك القديم
+    const allBody = document.body.innerHTML;
+    // هذه الخطوة اختيارية إذا أردت أن يعمل التنقل فوراً
+});
 
-    // وظيفة حاسبة الذهب الشاملة
-    function startCalculating() {
-        const weight = parseFloat(document.getElementById('calc-weight').value);
-        const carat = document.getElementById('calc-carat').value;
-        const making = parseFloat(document.getElementById('calc-making').value) || 0;
-        
-        // جلب السعر من كروت الذهب الأصلية في الصفحة
-        const pricePerGram = parseFloat(document.getElementById('p' + carat).innerText.replace(/,/g, ''));
-
-        if (weight > 0 && !isNaN(pricePerGram)) {
-            const purePrice = weight * pricePerGram;
-            const totalMaking = weight * making;
-            const finalTotal = purePrice + totalMaking;
-
-            document.getElementById('res-pure').innerText = Math.round(purePrice).toLocaleString();
-            document.getElementById('res-making').innerText = Math.round(totalMaking).toLocaleString();
-            document.getElementById('res-total').innerText = Math.round(finalTotal).toLocaleString();
-            document.getElementById('calc-result').style.display = 'block';
-        } else {
-            alert("يرجى التأكد من إدخال الوزن وسعر الذهب");
-        }
-    }
-
-    // تعديل بسيط لربط التنقل
-    function changeTab(pageId, element) {
-        document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
-        document.getElementById(pageId).classList.add('active-page');
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        element.classList.add('active');
-        
-        if(pageId === 'bullion-page') calculateBullion(); // تحديث تلقائي عند فتح الصفحة
-        window.scrollTo(0,0);
-    }
+function openTab(id, el) {
+    // إخفاء صفحتك الرئيسية (المفترض أن تضع كودك القديم داخل div يحمل id="home-content")
+    const home = document.getElementById('home-content');
+    if(home) home.style.display = (id === 'home-content') ? 'block' : 'none';
     
-    // تشغيل التغليف التلقائي (نفس كود المرة الماضية)
-    window.addEventListener('load', function() {
-        const home = document.createElement('div');
-        home.id = 'home-page';
-        home.className = 'page-section active-page';
-        while (document.body.firstChild && 
-               document.body.firstChild.id !== 'bullion-page' && 
-               document.body.firstChild.id !== 'calc-page' && 
-               !document.body.firstChild.classList?.contains('bottom-nav')) {
-            home.appendChild(document.body.firstChild);
-        }
-        document.body.insertBefore(home, document.getElementById('bullion-page'));
-    });
+    // التبديل بين الصفحات الأخرى
+    document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
+    const target = document.getElementById(id);
+    if(target) target.classList.add('active-page');
+
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function runBullionCalc() {
+    const w = parseFloat(document.getElementById('weight-sel').value);
+    const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
+    if(!isNaN(p24)) {
+        let m = w <= 5 ? 150 : 100; // مصنعية تقريبية
+        document.getElementById('bullion-res').innerText = Math.round((p24 + m) * w).toLocaleString() + " ج.م";
+    }
+}
+
+function runMainCalc() {
+    const w = parseFloat(document.getElementById('c-w').value);
+    const c = document.getElementById('c-carat').value;
+    const m = parseFloat(document.getElementById('c-m').value) || 0;
+    const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
+    if(w > 0 && !isNaN(p)) {
+        document.getElementById('c-total').innerText = Math.round((p + m) * w).toLocaleString();
+        document.getElementById('c-res-box').style.display = 'block';
+    }
+}
 </script>
 
 </body>
