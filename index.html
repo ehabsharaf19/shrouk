@@ -5,18 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شروق الذهب - EMOSHA Gold</title>
     <style>
+        /* التنسيقات العامة */
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         
+        /* شريط الأخبار */
         .ticker-wrap { width: 100%; background: #f1c40f; color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 17px; margin-bottom: 25px; border-bottom: 2px solid #fff; }
         .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* نظام الصفحات */
+        /* نظام الأقسام المنفصلة */
         .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 120px; }
         .active-page { display: block !important; }
 
+        /* التنقل السفلي الثابت */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid #f1c40f; z-index: 99999; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+        .nav-item { color: #888; text-align: center; font-size: 12px; cursor: pointer; flex: 1; transition: 0.3s; }
+        .nav-item.active { color: #f1c40f; font-weight: bold; transform: scale(1.1); }
+
+        /* تنسيقات كروت الأسعار */
         .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin: 0 auto 20px; border: 1px solid #333; width: 90%; max-width: 420px; }
         .stat-item { text-align: center; flex: 1; }
         .stat-label { color: #888; font-size: 11px; display: block; }
@@ -27,37 +35,38 @@
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; }
 
+        /* المقالات والسايدبار */
         .main-layout { display: flex; gap: 20px; width: 95%; max-width: 1100px; margin: 20px auto; align-items: flex-start; }
         .articles-main { flex: 2; width: 100%; }
         .sidebar { flex: 1; }
         .sidebar-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; text-align: right; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid #f1c40f; z-index: 99999; }
-        .nav-item { color: #888; text-align: center; font-size: 12px; cursor: pointer; flex: 1; }
-        .nav-item.active { color: #f1c40f; font-weight: bold; }
+        .article-item { background: #111; border-radius: 12px; margin-bottom: 15px; padding: 15px; border-right: 4px solid #f1c40f; }
 
         /* لوحة الإدارة */
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
-        .input-style { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
-        .btn-gold { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         .admin-mode .admin-controls { display: flex !important; margin-top: 10px; gap: 5px; }
         .admin-controls { display: none; }
+        .input-style { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; box-sizing: border-box; }
+        .btn-gold { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
 
+        /* تصميم صفحة السبائك */
         .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px; text-align: center; }
         .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .company-btn { background: #222; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-size: 12px; }
-        .article-item { background: #111; border-radius: 12px; margin-bottom: 15px; padding: 15px; border-right: 4px solid #f1c40f; }
+        
+        @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { width: 100%; } }
     </style>
 </head>
 <body id="main-body">
 
+    <!-- قائمة التنقل السفلية -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showTab('home-page', this)">🏠<br>الرئيسية</div>
         <div class="nav-item" onclick="showTab('bullion-page', this)">🏆<br>السبائك</div>
         <div class="nav-item" onclick="showTab('calc-page', this)">🧮<br>الحاسبة والزكاة</div>
     </div>
 
-    <!-- 1. الرئيسية -->
+    <!-- 1. صفحة الرئيسية (تحتوي على الأسعار والمقالات والإدارة) -->
     <div id="home-page" class="page-section active-page">
         <div class="main-title">شروق الذهب</div>
         <div class="gateway-text">EMOSHA GOLD</div>
@@ -83,60 +92,71 @@
                 <div class="sidebar-box">
                     <h3>👤 عن القبطان</h3>
                     <p style="font-size: 14px; color: #bbb;">منصة "شروق الذهب" بإشراف القبطان إيهاب شرف.</p>
-                    <a href="https://www.facebook.com/ehabsharaf19" target="_blank" style="color:#f1c40f; text-decoration:none; display:block; margin:10px 0;">📘 فيسبوك</a>
                     <span onclick="openSecretPanel()" style="cursor: pointer; color: #444; font-size: 12px; display: block; text-align: center; margin-top: 20px;">إدارة المحتوى</span>
                 </div>
             </aside>
         </div>
 
-        <!-- لوحة الإدارة (تظهر فقط في الرئيسية عند الطلب) -->
+        <!-- لوحة الإدارة (تفتح داخل الرئيسية بكلمة سر) -->
         <div id="admin-panel-emosha">
-            <h3 id="admin-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+            <h3 id="admin-title" style="color: #f1c40f; text-align: center;">إدارة المحتوى</h3>
             <input type="hidden" id="edit-post-id">
             <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
-            <textarea id="post-content" class="input-style" rows="5" placeholder="نص التقرير..."></textarea>
+            <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة (اختياري)...">
+            <textarea id="post-content" class="input-style" rows="8" placeholder="نص التقرير..."></textarea>
             <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
         </div>
     </div>
 
-    <!-- 2. السبائك -->
+    <!-- 2. صفحة السبائك -->
     <div id="bullion-page" class="page-section">
-        <div class="main-title" style="font-size: 22px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 أسعار الشركات والسبائك</div>
+        <div class="main-title" style="font-size: 25px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 أسعار السبائك</div>
         <div class="bullion-box">
             <select id="b-weight" class="input-style">
                 <option value="1">1 جرام</option>
                 <option value="10">10 جرام</option>
                 <option value="31.1">أونصة</option>
+                <option value="100">100 جرام</option>
             </select>
             <div class="company-grid">
                 <button class="company-btn" onclick="comp('BTC', 125)">بي تي سي (BTC)</button>
                 <button class="company-btn" onclick="comp('SAM', 120)">سام (SAM)</button>
+                <button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
+                <button class="company-btn" onclick="comp('سويس جولد', 130)">سويس جولد</button>
             </div>
-            <div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border-radius:10px;">
-                <span id="c-name" style="color:#f1c40f"></span>: <span id="c-price" style="font-size:25px; font-weight:bold;">0</span> ج.م
+            <div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border-radius:10px; border: 1px dashed #f1c40f;">
+                <span id="c-name" style="color:#f1c40f"></span>: <br>
+                <span id="c-price" style="font-size:25px; font-weight:bold;">0</span> ج.م
             </div>
         </div>
     </div>
 
-    <!-- 3. الحاسبة -->
+    <!-- 3. صفحة الحاسبة -->
     <div id="calc-page" class="page-section">
         <div class="bullion-box">
-            <h3 style="color:#f1c40f;">🧮 حاسبة السعر</h3>
-            <input type="number" id="g-w" class="input-style" placeholder="الوزن">
-            <select id="g-c" class="input-style"><option value="21">عيار 21</option></select>
-            <button class="btn-gold" onclick="runGoldCalc()">احسب</button>
-            <div id="g-res" style="display:none; margin-top:10px; color:#f1c40f;"> الإجمالي: <span id="g-val">0</span> ج.م</div>
+            <h3 style="color:#f1c40f;">🧮 حاسبة السعر والزكاة</h3>
+            <input type="number" id="g-w" class="input-style" placeholder="الوزن بالجرام">
+            <select id="g-c" class="input-style">
+                <option value="24">عيار 24</option>
+                <option value="21">عيار 21</option>
+                <option value="18">عيار 18</option>
+            </select>
+            <button class="btn-gold" onclick="runGoldCalc()">احسب السعر</button>
+            <div id="g-res" style="display:none; margin-top:10px; color:#f1c40f; font-size: 20px;"> الإجمالي: <span id="g-val">0</span> ج.م</div>
         </div>
     </div>
 
+    <!-- روابط Firebase والمقالات -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
+        // إعدادات Firebase
         const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // وظيفة تبديل الأقسام (Tabs)
         function showTab(id, el) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
             document.getElementById(id).classList.add('active-page');
@@ -145,55 +165,68 @@
             window.scrollTo(0,0);
         }
 
+        // لوحة الإدارة السرية
         function openSecretPanel() {
-            let p = prompt("كلمة السر:");
+            let p = prompt("كلمة السر يا قبطان:");
             if(p === "1230") {
                 document.getElementById('main-body').classList.add('admin-mode');
                 document.getElementById('admin-panel-emosha').style.display = 'block';
+                alert("تم تفعيل وضع الإدارة ✅");
             }
         }
 
+        // إضافة مقال جديد لـ Firebase
         function addPost() {
             const t = document.getElementById('post-title').value;
             const c = document.getElementById('post-content').value;
+            const img = document.getElementById('post-image').value;
             if(t && c) {
-                database.ref('posts').push({ title: t, content: c }).then(() => {
-                    alert("تم النشر ✅");
+                database.ref('posts').push({ title: t, content: c, image: img }).then(() => {
+                    alert("تم النشر بنجاح ✅");
                     document.getElementById('post-title').value = "";
                     document.getElementById('post-content').value = "";
                 });
             }
         }
 
+        // جلب المقالات وعرضها
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
+            const ticker = document.getElementById('news-ticker');
             container.innerHTML = "";
             const data = snapshot.val();
             if(data) {
+                const titles = [];
                 Object.keys(data).reverse().forEach(id => {
                     const post = data[id];
+                    titles.push("🔱 " + post.title);
                     container.innerHTML += `
                         <div class="article-item">
                             <strong>${post.title}</strong>
-                            <p>${post.content}</p>
+                            ${post.image ? `<img src="${post.image}" style="width:100%; border-radius:10px; margin:10px 0;">` : ""}
+                            <p style="white-space: pre-wrap;">${post.content}</p>
                             <div class="admin-controls">
-                                <button onclick="database.ref('posts/${id}').remove()" style="background:red; color:white; border:none; padding:5px; border-radius:5px; cursor:pointer;">حذف</button>
+                                <button onclick="database.ref('posts/${id}').remove()" style="background:red; color:white; border:none; padding:8px; border-radius:5px; cursor:pointer;">حذف المقال</button>
                             </div>
                         </div>`;
                 });
+                ticker.innerText = titles.join(" . . . . ");
             }
         });
 
+        // تحديث الأسعار التلقائي
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
                 document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+                
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
                 const p24 = (globalPrice / 31.1035) * currentUSD;
+                
                 document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
                 document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
@@ -203,19 +236,21 @@
         updatePrices();
         setInterval(updatePrices, 30000);
 
+        // حسابات السبائك والحاسبة
         function comp(name, fee) {
             const w = parseFloat(document.getElementById('b-weight').value);
-            const p = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-            if(!isNaN(p)) {
+            const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
+            if(!isNaN(p24)) {
                 document.getElementById('c-name').innerText = name;
-                document.getElementById('c-price').innerText = Math.round((p + fee) * w).toLocaleString();
+                document.getElementById('c-price').innerText = Math.round((p24 + fee) * w).toLocaleString();
                 document.getElementById('res-bullion').style.display = 'block';
             }
         }
 
         function runGoldCalc() {
             const w = parseFloat(document.getElementById('g-w').value);
-            const p = parseFloat(document.getElementById('p21').innerText.replace(/,/g, ''));
+            const c = document.getElementById('g-c').value;
+            const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
             if(w > 0 && !isNaN(p)) {
                 document.getElementById('g-val').innerText = Math.round(p * w).toLocaleString();
                 document.getElementById('g-res').style.display = 'block';
