@@ -13,7 +13,7 @@
         .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* نظام الصفحات المستقلة */
+        /* نظام الصفحات */
         .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 120px; }
         .active-page { display: block !important; }
 
@@ -32,63 +32,74 @@
         .sidebar { flex: 1; }
         .sidebar-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; text-align: right; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid #f1c40f; z-index: 99999; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid #f1c40f; z-index: 99999; }
         .nav-item { color: #888; text-align: center; font-size: 12px; cursor: pointer; flex: 1; }
         .nav-item.active { color: #f1c40f; font-weight: bold; }
+
+        /* لوحة الإدارة */
+        #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
+        .input-style { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
+        .btn-gold { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+        .admin-mode .admin-controls { display: flex !important; margin-top: 10px; gap: 5px; }
+        .admin-controls { display: none; }
 
         .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px; text-align: center; }
         .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .company-btn { background: #222; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-size: 12px; }
-        .input-style { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
-        .btn-gold { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         .article-item { background: #111; border-radius: 12px; margin-bottom: 15px; padding: 15px; border-right: 4px solid #f1c40f; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <!-- البار السفلي الثابت -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showTab('home-page', this)">🏠<br>الرئيسية</div>
         <div class="nav-item" onclick="showTab('bullion-page', this)">🏆<br>السبائك</div>
         <div class="nav-item" onclick="showTab('calc-page', this)">🧮<br>الحاسبة والزكاة</div>
     </div>
 
-    <!-- 1. الصفحة الرئيسية: تشمل الأسعار والمقالات فقط -->
+    <!-- 1. الرئيسية -->
     <div id="home-page" class="page-section active-page">
-        <div style="text-align: center;">
-            <div class="main-title">شروق الذهب</div>
-            <div class="gateway-text">EMOSHA GOLD</div>
-            <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">جاري التحميل...</div></div>
-            
-            <div class="market-stats">
-                <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-                <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
-            </div>
+        <div class="main-title">شروق الذهب</div>
+        <div class="gateway-text">EMOSHA GOLD</div>
+        <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">جاري التحميل...</div></div>
+        
+        <div class="market-stats">
+            <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
+            <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
+        </div>
 
-            <div class="gold-container">
-                <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
-                <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
-                <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
-            </div>
+        <div class="gold-container">
+            <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
+            <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
+            <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
+        </div>
 
-            <div class="main-layout">
-                <div class="articles-main">
-                    <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
-                    <div id="posts-container">جاري التحميل...</div>
+        <div class="main-layout">
+            <div class="articles-main">
+                <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
+                <div id="posts-container">جاري التحميل...</div>
+            </div>
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <h3>👤 عن القبطان</h3>
+                    <p style="font-size: 14px; color: #bbb;">منصة "شروق الذهب" بإشراف القبطان إيهاب شرف.</p>
+                    <a href="https://www.facebook.com/ehabsharaf19" target="_blank" style="color:#f1c40f; text-decoration:none; display:block; margin:10px 0;">📘 فيسبوك</a>
+                    <span onclick="openSecretPanel()" style="cursor: pointer; color: #444; font-size: 12px; display: block; text-align: center; margin-top: 20px;">إدارة المحتوى</span>
                 </div>
-                <aside class="sidebar">
-                    <div class="sidebar-box">
-                        <h3>👤 عن القبطان</h3>
-                        <p style="font-size: 14px; color: #bbb;">منصة "شروق الذهب" بإشراف القبطان إيهاب شرف.</p>
-                        <a href="https://www.facebook.com/ehabsharaf19" target="_blank" style="color:#f1c40f; text-decoration:none; display:block; margin:10px 0;">📘 فيسبوك</a>
-                        <a href="https://youtube.com/@ehabsharaf19" target="_blank" style="color:#f1c40f; text-decoration:none; display:block;">📺 يوتيوب</a>
-                    </div>
-                </aside>
-            </div>
+            </aside>
+        </div>
+
+        <!-- لوحة الإدارة (تظهر فقط في الرئيسية عند الطلب) -->
+        <div id="admin-panel-emosha">
+            <h3 id="admin-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
+            <input type="hidden" id="edit-post-id">
+            <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
+            <textarea id="post-content" class="input-style" rows="5" placeholder="نص التقرير..."></textarea>
+            <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
         </div>
     </div>
 
-    <!-- 2. صفحة السبايك المستقلة -->
+    <!-- 2. السبائك -->
     <div id="bullion-page" class="page-section">
         <div class="main-title" style="font-size: 22px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 أسعار الشركات والسبائك</div>
         <div class="bullion-box">
@@ -96,33 +107,25 @@
                 <option value="1">1 جرام</option>
                 <option value="10">10 جرام</option>
                 <option value="31.1">أونصة</option>
-                <option value="100">100 جرام</option>
             </select>
             <div class="company-grid">
                 <button class="company-btn" onclick="comp('BTC', 125)">بي تي سي (BTC)</button>
                 <button class="company-btn" onclick="comp('SAM', 120)">سام (SAM)</button>
-                <button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
-                <!-- يمكنك إضافة باقي الشركات هنا بنفس النمط -->
             </div>
             <div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border-radius:10px;">
-                <span id="c-name" style="color:#f1c40f"></span>: <br>
-                <span id="c-price" style="font-size:25px; font-weight:bold; color:#f1c40f;">0</span> ج.م
+                <span id="c-name" style="color:#f1c40f"></span>: <span id="c-price" style="font-size:25px; font-weight:bold;">0</span> ج.م
             </div>
         </div>
     </div>
 
-    <!-- 3. صفحة الحاسبة والزكاة المستقلة -->
+    <!-- 3. الحاسبة -->
     <div id="calc-page" class="page-section">
         <div class="bullion-box">
             <h3 style="color:#f1c40f;">🧮 حاسبة السعر</h3>
-            <input type="number" id="g-w" class="input-style" placeholder="الوزن بالجرام">
-            <select id="g-c" class="input-style">
-                <option value="24">عيار 24</option>
-                <option value="21">عيار 21</option>
-                <option value="18">عيار 18</option>
-            </select>
+            <input type="number" id="g-w" class="input-style" placeholder="الوزن">
+            <select id="g-c" class="input-style"><option value="21">عيار 21</option></select>
             <button class="btn-gold" onclick="runGoldCalc()">احسب</button>
-            <div id="g-res" style="display:none; margin-top:10px; font-size:20px; color:#f1c40f;"> الإجمالي: <span id="g-val">0</span> ج.م</div>
+            <div id="g-res" style="display:none; margin-top:10px; color:#f1c40f;"> الإجمالي: <span id="g-val">0</span> ج.م</div>
         </div>
     </div>
 
@@ -135,17 +138,33 @@
         const database = firebase.database();
 
         function showTab(id, el) {
-            // إخفاء كل الصفحات
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
-            // إظهار الصفحة المطلوبة فقط
             document.getElementById(id).classList.add('active-page');
-            // تحديث شكل الأزرار
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             el.classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // جلب المقالات
+        function openSecretPanel() {
+            let p = prompt("كلمة السر:");
+            if(p === "1230") {
+                document.getElementById('main-body').classList.add('admin-mode');
+                document.getElementById('admin-panel-emosha').style.display = 'block';
+            }
+        }
+
+        function addPost() {
+            const t = document.getElementById('post-title').value;
+            const c = document.getElementById('post-content').value;
+            if(t && c) {
+                database.ref('posts').push({ title: t, content: c }).then(() => {
+                    alert("تم النشر ✅");
+                    document.getElementById('post-title').value = "";
+                    document.getElementById('post-content').value = "";
+                });
+            }
+        }
+
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
@@ -153,23 +172,27 @@
             if(data) {
                 Object.keys(data).reverse().forEach(id => {
                     const post = data[id];
-                    container.innerHTML += `<div class="article-item"><strong>${post.title}</strong><p>${post.content}</p></div>`;
+                    container.innerHTML += `
+                        <div class="article-item">
+                            <strong>${post.title}</strong>
+                            <p>${post.content}</p>
+                            <div class="admin-controls">
+                                <button onclick="database.ref('posts/${id}').remove()" style="background:red; color:white; border:none; padding:5px; border-radius:5px; cursor:pointer;">حذف</button>
+                            </div>
+                        </div>`;
                 });
             }
         });
 
-        // تحديث الأسعار
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
                 document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-                
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
-                
                 const p24 = (globalPrice / 31.1035) * currentUSD;
                 document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
                 document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
@@ -177,6 +200,8 @@
                 document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
             } catch (e) {}
         }
+        updatePrices();
+        setInterval(updatePrices, 30000);
 
         function comp(name, fee) {
             const w = parseFloat(document.getElementById('b-weight').value);
@@ -190,16 +215,12 @@
 
         function runGoldCalc() {
             const w = parseFloat(document.getElementById('g-w').value);
-            const c = document.getElementById('g-c').value;
-            const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
+            const p = parseFloat(document.getElementById('p21').innerText.replace(/,/g, ''));
             if(w > 0 && !isNaN(p)) {
                 document.getElementById('g-val').innerText = Math.round(p * w).toLocaleString();
                 document.getElementById('g-res').style.display = 'block';
             }
         }
-
-        updatePrices();
-        setInterval(updatePrices, 30000);
     </script>
 </body>
 </html>
