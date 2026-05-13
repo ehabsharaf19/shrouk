@@ -4,86 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إيموشا جولد | جاري التحويل</title>
-    <!-- مكتبات فايربيز الأساسية -->
+    <!-- مكتبة فايربيز المختصرة -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <style>
-        body { 
-            font-family: 'Arial', sans-serif; 
-            background-color: #1a1a1a; 
-            color: #ffd700; 
-            text-align: center; 
-            padding-top: 100px; 
-            margin: 0;
-        }
-        .container { 
-            border: 2px solid #ffd700; 
-            display: inline-block; 
-            padding: 30px; 
-            border-radius: 15px; 
-            background: #262626;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-        }
-        .loader { 
-            border: 5px solid #333; 
-            border-top: 5px solid #ffd700; 
-            border-radius: 50%; 
-            width: 50px; 
-            height: 50px; 
-            animation: spin 1s linear infinite; 
-            margin: 20px auto; 
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        h1 { font-size: 24px; margin-bottom: 10px; }
-        p { color: #ccc; }
+        body { font-family: sans-serif; background-color: #1a1a1a; color: #ffd700; text-align: center; padding-top: 100px; }
+        .box { border: 2px solid #ffd700; display: inline-block; padding: 20px; border-radius: 10px; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>إيموشا جولد - EMOSHA GOLD</h1>
-        <div class="loader"></div>
-        <p id="status">جاري البحث عن الرابط وتوجيهك...</p>
+    <div class="box">
+        <h2>إيموشا جولد - EMOSHA GOLD</h2>
+        <p id="msg">انتظر ثواني...</p>
     </div>
 
     <script>
-        // --- ضع بيانات مشروعك هنا (shrouk-ehab) ---
+        // --- بياناتك الشخصية (تأكد من نقلها بدقة من Firebase Settings) ---
         const firebaseConfig = {
-            apiKey: "ضع_هنا_الـ_API_KEY", 
+            apiKey: "ضع_هنا_API_KEY",
             databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
             projectId: "shrouk-ehab",
-            appId: "ضع_هنا_الـ_APP_ID"
+            appId: "ضع_هنا_APP_ID"
         };
         
-        // بدء تشغيل فايربيز
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 
-        // 1. الحصول على الـ ID من الرابط (مثلاً id=today)
-        const urlParams = new URLSearchParams(window.location.search);
-        const linkID = urlParams.get('id');
+        const params = new URLSearchParams(window.location.search);
+        const myId = params.get('id');
 
-        if (linkID) {
-            // 2. الوصول لفرع الذهب في قاعدة بياناتك
-            const dbRef = firebase.database().ref('gold/' + linkID);
-            
-            dbRef.once('value').then((snapshot) => {
-                const longUrl = snapshot.val();
-                if (longUrl) {
-                    // 3. التحويل للرابط المطلوب
-                    window.location.href = longUrl;
+        if (myId) {
+            // لاحظ هنا استخدمت 'gold/' لأنك أنشأت المجلد بهذا الاسم في الصورة 1778639192676.jpeg
+            firebase.database().ref('gold/' + myId).on('value', (s) => {
+                const url = s.val();
+                if (url) {
+                    window.location.replace(url);
                 } else {
-                    document.getElementById('status').innerHTML = "عذراً، هذا الرابط غير موجود في قاعدة بياناتنا.";
+                    document.getElementById('msg').innerHTML = "الرابط غير موجود في قاعدة البيانات";
                 }
-            }).catch((error) => {
-                console.error(error);
-                document.getElementById('status').innerHTML = "حدث خطأ في الاتصال، تأكد من إعدادات القواعد (Rules).";
             });
         } else {
-            // إذا فتح الشخص الصفحة بدون ID، يتم تحويله لموقعك الرئيسي
-            window.location.href = "https://shrouk-two.vercel.app/";
+            window.location.replace("https://shrouk-two.vercel.app/");
         }
     </script>
-
 </body>
 </html>
