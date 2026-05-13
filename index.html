@@ -9,9 +9,9 @@
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         
-        /* شريط الأخبار: دقيقة ونصف للدورة الواحدة */
+        /* شريط الأخبار: هادئ جداً (150 ثانية) */
         .ticker-wrap { width: 100%; background: #f1c40f; color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 17px; margin-bottom: 25px; border-bottom: 2px solid #fff; }
-        .ticker-move { display: inline-block; animation: ticker 90s linear infinite; padding-left: 100%; }
+        .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
         .ticker-move:hover { animation-play-state: paused; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
@@ -62,7 +62,7 @@
     <div class="gateway-text">EMOSHA GOLD</div>
 
     <div class="ticker-wrap">
-        <div class="ticker-move" id="news-ticker">تحميل أحدث تحليلات القبطان إيهاب شرف...</div>
+        <div class="ticker-move" id="news-ticker">تحميل أحدث تقارير القبطان إيهاب شرف...</div>
     </div>
     
     <div class="market-stats">
@@ -110,7 +110,11 @@
         <button id="submit-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
     </div>
 
+    <!-- الجزء اللي طلبت إرجاعه (الصفحات القانونية) -->
     <div class="footer-gold">
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 15px; font-weight:bold;">سياسة الخصوصية</a>
         <p style="margin-top:25px; color:#666; font-size:12px;">جميع الحقوق محفوظة لموقع شروق الذهب © 2026 | القبطان إيهاب شرف</p>
     </div>
 
