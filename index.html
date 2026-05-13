@@ -30,26 +30,22 @@
         .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
         .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; }
         
-        .article-item { border-bottom: 1px solid #333; margin-bottom: 20px; background: #111; border-radius: 12px; overflow: hidden; display: none; }
+        .article-item { display: none; border-bottom: 1px solid #333; margin-bottom: 15px; background: #111; border-radius: 12px; overflow: hidden; }
         .article-item.visible { display: block; }
         .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; cursor: pointer; font-weight: bold; font-size: 18px; border-right: 4px solid transparent; transition: 0.3s; }
         .article-header:hover { border-right-color: #f1c40f; background: #222; }
         .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.4s ease-out; overflow: hidden; }
-        .article-item.active .article-content { max-height: 5000px; padding: 25px; border-top: 1px solid #333; }
-        .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; display: block; }
-
-        .admin-controls { display: none; margin-top: 15px; gap: 10px; border-top: 1px solid #333; padding-top: 15px; }
-        .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
-        .btn-delete { background: #c0392b; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
+        .article-item.active .article-content { max-height: 4000px; padding: 25px; border-top: 1px solid #333; }
+        .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
 
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
+
+        .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; }
+        .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; }
 
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
         .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
-
-        .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; }
-        .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; }
 
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
     </style>
@@ -81,14 +77,16 @@
         <aside class="sidebar">
             <div class="sidebar-box">
                 <h3>👤 عن القبطان</h3>
-                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان إيهاب شرف.</p>
+                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان إيهاب شرف، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
             </div>
             <div class="sidebar-box">
                 <h3>📱 منصاتنا</h3>
                 <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك الشخصي</a>
                 <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
+                <!-- الرابط الحقيقي الذي أرسلته -->
                 <a href="https://www.facebook.com/groups/1322491319816622/?ref=share_group_link" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
                 <a href="https://chat.whatsapp.com/GjN9Q8lQ2k0K8X" target="_blank" class="social-link-btn">💬 جروب الواتساب</a>
+                
                 <hr style="border:0; border-top:1px solid #222; margin:15px 0;">
                 <span onclick="openSecretPanel()" style="cursor: pointer; color: #444; font-size: 12px; display: block; text-align: center;">إدارة المحتوى</span>
             </div>
@@ -96,16 +94,17 @@
     </div>
 
     <div id="admin-panel-emosha">
-        <h3 id="panel-title" style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
-        <input type="hidden" id="edit-post-id">
+        <h3 style="color: #f1c40f; text-align: center;">إضافة تقرير جديد</h3>
         <input type="text" id="post-title" class="input-style" placeholder="عنوان التقرير...">
         <input type="text" id="post-image" class="input-style" placeholder="رابط الصورة...">
         <textarea id="post-content" class="input-style" rows="6" placeholder="اكتب تقريرك هنا..."></textarea>
-        <button id="main-action-btn" class="btn-gold" onclick="addPost()">نشر الآن</button>
-        <button id="cancel-edit-btn" style="display:none; margin-top:10px; background:#444; color:#fff;" class="btn-gold" onclick="resetAdminPanel()">إلغاء</button>
+        <button class="btn-gold" onclick="addPost()">نشر الآن</button>
     </div>
 
     <div class="footer-gold">
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
         <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب شرف</p>
     </div>
 
@@ -117,7 +116,6 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         let visibleCount = 3;
-        let isAdmin = false;
 
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
@@ -133,7 +131,7 @@
                     titles.push("🔱 " + post.title);
                     const isVisible = index < visibleCount ? 'visible' : '';
                     container.innerHTML += `
-                        <div class="article-item ${isVisible}" id="post-${id}">
+                        <div class="article-item ${isVisible}">
                             <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                             <div class="article-content">
                                 ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
@@ -141,10 +139,6 @@
                                 <div style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:10px; border-right:4px solid #f1c40f; font-size:14px;">
                                     <span style="color:#f1c40f; display:block; margin-bottom:5px;">📅 تاريخ النشر: ${post.date || 'تم النشر مؤخراً'}</span>
                                     📝 تحرير: القبطان إيهاب شرف
-                                </div>
-                                <div class="admin-controls" id="controls-${id}" style="display: ${isAdmin ? 'flex' : 'none'}">
-                                    <button class="btn-edit" onclick="prepareEdit('${id}', '${post.title.replace(/'/g, "\\'")}', '${post.image}', \`${post.content.replace(/`/g, "\\`")}\`)">تعديل</button>
-                                    <button class="btn-delete" onclick="deletePost('${id}')">حذف</button>
                                 </div>
                             </div>
                         </div>`;
@@ -165,50 +159,24 @@
             const t = document.getElementById('post-title').value;
             const img = document.getElementById('post-image').value;
             const c = document.getElementById('post-content').value;
-            const editId = document.getElementById('edit-post-id').value;
             const now = new Date();
             const dateString = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
             if(t && c) {
-                const ref = editId ? database.ref('posts/' + editId) : database.ref('posts');
-                const action = editId ? ref.update({ title: t, image: img, content: c }) : ref.push({ title: t, image: img, content: c, date: dateString });
-                
-                action.then(() => {
-                    alert("تمت العملية بنجاح ✅");
-                    resetAdminPanel();
-                }).catch(e => alert("خطأ: " + e.message));
+                database.ref('posts').push({ title: t, image: img, content: c, date: dateString }).then(() => {
+                    alert("تم نشر تقرير القبطان بنجاح ✅");
+                    document.getElementById('post-title').value = "";
+                    document.getElementById('post-content').value = "";
+                    document.getElementById('admin-panel-emosha').style.display = 'none';
+                });
             }
         }
 
-        function prepareEdit(id, title, image, content) {
-            document.getElementById('edit-post-id').value = id;
-            document.getElementById('post-title').value = title;
-            document.getElementById('post-image').value = image;
-            document.getElementById('post-content').value = content;
-            document.getElementById('panel-title').innerText = "تعديل التقرير";
-            document.getElementById('main-action-btn').innerText = "حفظ التعديل";
-            document.getElementById('cancel-edit-btn').style.display = "block";
-            document.getElementById('admin-panel-emosha').style.display = 'block';
-            window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop, behavior: 'smooth' });
-        }
-
-        function deletePost(id) {
-            if(confirm("حذف نهائي؟")) database.ref('posts/' + id).remove();
-        }
-
-        function resetAdminPanel() {
-            document.getElementById('edit-post-id').value = "";
-            document.getElementById('post-title').value = "";
-            document.getElementById('post-image').value = "";
-            document.getElementById('post-content').value = "";
-            document.getElementById('admin-panel-emosha').style.display = 'none';
-        }
-
         function openSecretPanel() { 
-            if(prompt("كلمة السر:") === "1230") {
-                isAdmin = true;
+            let p = prompt("كلمة السر:"); 
+            if(p === "1230") {
                 document.getElementById('admin-panel-emosha').style.display = 'block';
-                document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'flex');
+                window.scrollTo({ top: document.getElementById('admin-panel-emosha').offsetTop, behavior: 'smooth' });
             }
         }
 
@@ -217,11 +185,11 @@
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
+                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
                 const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
                 const goldData = await goldRes.json();
                 const globalPrice = parseFloat(goldData.price);
                 const p24 = (globalPrice / 31.1035) * currentUSD;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
                 document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
                 document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
                 document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
