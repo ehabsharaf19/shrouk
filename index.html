@@ -255,17 +255,25 @@
    <!-- كود موقعك الأصلي بالكامل يكون هنا -->
 </div>
 <style>
-    /* تثبيت الأزرار بالأسفل */
+    /* تثبيت الأزرار بالأسفل بشكل دائم */
     .bottom-nav {
-        position: fixed; bottom: 0; left: 0; width: 100%;
-        background: #111; display: flex; justify-content: space-around;
-        padding: 12px 0; border-top: 2px solid #f1c40f; z-index: 10000;
+        position: fixed; 
+        bottom: 0; 
+        left: 0; 
+        width: 100%;
+        background: #111; 
+        display: flex; 
+        justify-content: space-around;
+        padding: 15px 0; 
+        border-top: 2px solid #f1c40f; 
+        z-index: 99999; /* لضمان ظهوره فوق كل شيء */
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
     }
-    .nav-item { color: #666; text-align: center; font-size: 11px; cursor: pointer; flex: 1; }
-    .nav-item.active { color: #f1c40f; font-weight: bold; }
+    .nav-item { color: #888; text-align: center; font-size: 12px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .nav-item.active { color: #f1c40f; font-weight: bold; transform: scale(1.1); }
 
     /* تنسيق الصفحات */
-    .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 100px; }
+    .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 120px; }
     .active-page { display: block !important; }
 
     /* تنسيق الكروت */
@@ -276,9 +284,14 @@
     .input-style { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
     .btn-gold { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
     .btn-zakat { background: #27ae60; color: #fff; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+
+    /* تنسيق شروط الزكاة */
+    .zakat-rules { text-align: right; background: #222; padding: 15px; border-radius: 10px; margin-top: 20px; border-right: 4px solid #27ae60; }
+    .zakat-rules h4 { color: #27ae60; margin-bottom: 10px; font-size: 16px; }
+    .zakat-rules ul { padding-right: 20px; color: #ccc; font-size: 13px; line-height: 1.6; }
 </style>
 
-<!-- الأزرار السفلية الثابتة -->
+<!-- الأزرار السفلية الثابتة (Navigation) -->
 <div class="bottom-nav">
     <div class="nav-item active" onclick="showTab('home-page', this)">🏠<br>الرئيسية</div>
     <div class="nav-item" onclick="showTab('bullion-page', this)">🏆<br>السبائك</div>
@@ -340,9 +353,9 @@
     </div>
 </div>
 
-<!-- 2. صفحة الحاسبة والزكاة (المطورة) -->
+<!-- 2. صفحة الحاسبة والزكاة -->
 <div id="calc-page" class="page-section">
-    <!-- حاسبة الذهب بالمصنعية -->
+    <!-- حاسبة الذهب -->
     <div class="bullion-box">
         <h3 style="color:#f1c40f;">🧮 حاسبة السعر بالمصنعية</h3>
         <input type="number" id="g-w" class="input-style" placeholder="أدخل الوزن بالجرام">
@@ -350,18 +363,16 @@
             <option value="24">عيار 24</option>
             <option value="21">عيار 21</option>
             <option value="18">عيار 18</option>
-            <option value="14">عيار 14</option>
         </select>
         <input type="number" id="g-m" class="input-style" placeholder="قيمة المصنعية للجرام">
         <button class="btn-gold" onclick="runGoldCalc()">احسب الإجمالي</button>
         <div id="g-res" style="display:none; margin-top:10px; font-size:20px; color:#f1c40f;"> السعر النهائي: <span id="g-val">0</span> ج.م</div>
     </div>
 
-    <!-- حاسبة الزكاة المتطورة بالعيارات -->
+    <!-- حاسبة الزكاة -->
     <div class="bullion-box">
         <h3 style="color:#f1c40f;">🕌 حاسبة زكاة الذهب</h3>
         <input type="number" id="z-w" class="input-style" placeholder="إجمالي وزن الذهب لديك">
-        <label style="color:#888; font-size:12px;">اختر العيار لحساب قيمته:</label>
         <select id="z-c" class="input-style">
             <option value="24">عيار 24</option>
             <option value="22">عيار 22</option>
@@ -370,8 +381,19 @@
         </select>
         <button class="btn-zakat" onclick="runZakat()">احسب مقدار الزكاة</button>
         <div id="z-res" style="display:none; margin-top:10px;">
-            <div style="color:#27ae60; font-size:20px;">الزكاة المطلوبة: <span id="z-val">0</span> ج.م</div>
+            <div style="color:#27ae60; font-size:20px;">الزكاة: <span id="z-val">0</span> ج.م</div>
             <p id="z-status" style="font-size:12px; margin-top:5px;"></p>
+        </div>
+
+        <!-- شروط وجوب الزكاة -->
+        <div class="zakat-rules">
+            <h4>📋 شروط وجوب زكاة الذهب:</h4>
+            <ul>
+                <li><b>بلوغ النصاب:</b> أن يصل الذهب إلى 85 جراماً من عيار 24 (أو ما يعادل قيمتها).</li>
+                <li><b>مرور الحول:</b> أن يمضي عام هجري كامل على امتلاك الذهب.</li>
+                <li><b>الملك التام:</b> أن يكون الذهب ملكاً خالصاً لصاحبه.</li>
+                <li><b>القصد من الاقتناء:</b> تجب الزكاة في الذهب المعد للادخار أو التجارة. أما ذهب الزينة (الحلي) ففيه خلاف والأحوط إخراج الزكاة عنه إذا بلغ النصاب.</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -403,8 +425,7 @@
         const w = parseFloat(document.getElementById('g-w').value);
         const c = document.getElementById('g-c').value;
         const m = parseFloat(document.getElementById('g-m').value) || 0;
-        const pStr = document.getElementById('p' + c).innerText;
-        const p = parseFloat(pStr.replace(/,/g, ''));
+        const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
         if(w > 0 && !isNaN(p)) {
             document.getElementById('g-val').innerText = Math.round((p + m) * w).toLocaleString();
             document.getElementById('g-res').style.display = 'block';
@@ -414,33 +435,26 @@
     function runZakat() {
         const w = parseFloat(document.getElementById('z-w').value);
         const c = document.getElementById('z-c').value;
-        const pStr = document.getElementById('p' + c).innerText;
-        const p = parseFloat(pStr.replace(/,/g, ''));
-        const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-
+        const p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
         if(w > 0 && !isNaN(p)) {
-            // حساب الزكاة: 2.5% من القيمة الإجمالية للذهب بالعيار المختار
             let totalValue = w * p;
-            let zakatAmount = totalValue * 0.025;
-            
+            let zakatAmount = totalValue * 0.025; // نسبة 2.5%
             document.getElementById('z-val').innerText = Math.round(zakatAmount).toLocaleString();
             document.getElementById('z-res').style.display = 'block';
             
-            // حساب النصاب (النصاب شرعاً يُحسب بـ 85 جرام عيار 24)
-            // تحويل وزن المستخدم إلى ما يعادله من عيار 24
             let equivalent24 = (w * parseInt(c)) / 24;
             const status = document.getElementById('z-status');
-            
             if(equivalent24 >= 85) {
-                status.innerText = "✅ هذا الوزن بلغ النصاب الشرعي";
+                status.innerText = "✅ بلغت النصاب الشرعي";
                 status.style.color = "#27ae60";
             } else {
-                status.innerText = "⚠️ لم يبلغ النصاب (أقل من 85 جم عيار 24)";
+                status.innerText = "⚠️ لم تبلغ النصاب (أقل من 85 جم عيار 24)";
                 status.style.color = "#e74c3c";
             }
         }
     }
 </script>
+
 
 </body>
 </html>
