@@ -19,12 +19,12 @@
     </div>
 
     <script>
-        // --- بياناتك الشخصية (تأكد من نقلها بدقة من Firebase Settings) ---
+        // --- البيانات الحقيقية من صورتك يا قبطان ---
         const firebaseConfig = {
-            apiKey: "ضع_هنا_API_KEY",
+            apiKey: "AIzaSyCp-m2DkIIWiokUeuntHLvDbEclB6P_yXg",
             databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
             projectId: "shrouk-ehab",
-            appId: "ضع_هنا_APP_ID"
+            appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
         };
         
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
@@ -33,7 +33,7 @@
         const myId = params.get('id');
 
         if (myId) {
-            // لاحظ هنا استخدمت 'gold/' لأنك أنشأت المجلد بهذا الاسم في الصورة 1778639192676.jpeg
+            // البحث في مجلد gold اللي عملناه في فايربيز
             firebase.database().ref('gold/' + myId).on('value', (s) => {
                 const url = s.val();
                 if (url) {
@@ -43,6 +43,7 @@
                 }
             });
         } else {
+            // لو مفيش id في الرابط، يرجع للموقع الرئيسي
             window.location.replace("https://shrouk-two.vercel.app/");
         }
     </script>
