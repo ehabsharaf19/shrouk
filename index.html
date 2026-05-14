@@ -123,17 +123,13 @@
 
         <div class="main-layout">
             <div class="articles-main">
-    
-    
-
-    <!-- الزرار اللي بيودي لصفحة المقالات الكاملة -->
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="blog.html" style="background: #f1c40f; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
-            مشاهدة كل المقالات 👈
-        </a>
-    </div>
+                <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
+                <div id="posts-container">جاري التحميل...</div>
+                <div style="text-align: center; margin-top: 20px;">
+    <a href="blog.html" style="background: #f1c40f; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+        مشاهدة كل المقالات 👈
+    </a>
 </div>
-
 
 
             <aside class="sidebar">
@@ -199,8 +195,16 @@
             }
         });
 
-        
-          container.innerHTML += `
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            allPostsData.forEach((post, index) => {
+                const isVisible = index < visibleCount ? 'visible' : '';
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
                     <div class="article-item ${isVisible}">
                         <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                         <div class="article-content">
@@ -212,7 +216,7 @@
                         </div>
                     </div>`;
             });
-    }
+
             const loadMoreBtn = document.getElementById('load-more-btn');
             if (visibleCount < allPostsData.length) {
                 loadMoreBtn.style.display = 'block';
@@ -263,7 +267,7 @@
         
 
         function openSecretPanel() { 
-            if(prompt("كلمة السر يا قبطان:") === "123010111  55Ee") {
+            if(prompt("كلمة السر يا قبطان:") === "1230") {
                 document.getElementById('main-body').classList.add('admin-mode');
                 document.getElementById('admin-panel-emosha').style.display='block';
             }
