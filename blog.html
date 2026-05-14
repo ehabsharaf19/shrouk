@@ -76,35 +76,48 @@
         });
 
         function renderPosts() {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = "";
-            allPostsData.forEach((post, index) => {
-                const isVisible = index < visibleCount ? 'visible' : '';
-                // جلب التاريخ من البيانات أو وضع تاريخ افتراضي إذا لم يوجد
-                const postDate = post.date ? post.date : "2026-05-14"; 
+    const container = document.getElementById('posts-container');
+    if (!container) return;
+    container.innerHTML = "";
+    
+    allPostsData.forEach((post) => {
+        const safeTitle = (post.title || "").replace(/'/g, "\\'");
+        const safeImage = (post.image || "").replace(/'/g, "\\'");
+        const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
 
-                container.innerHTML += `
-                    <div class="article-item ${isVisible}">
-                        <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
-                        <div class="article-content">
-                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                            <div class="meta-info">
-                                <span style="color:#666;">📅 تاريخ النشر: ${postDate}</span>
-                                <span>✍️ القبطان إيهاب شرف</span>
-                            </div>
-                        </div>
-                    </div>`;
-            });
+        container.innerHTML += `
+            <div class="article-item visible">
+                <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
+                <div class="article-content">
+                    ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                    <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; font-size: 12px; color: #f1c40f;">
+                        <span>🖋️ القبطان إيهاب شرف</span>
+                        <span style="color: #888;">📅 15 مايو 2026</span>
+                    </div>
 
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            loadMoreBtn.style.display = visibleCount < allPostsData.length ? 'block' : 'none';
-        }
+                    <div class="admin-controls" style="display: flex; gap: 10px; margin-top: 15px; border-top: 1px dotted #444; padding-top: 10px;">
+                        <button style="background:#f1c40f; color:#000; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
+                            onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل ✏️</button>
+                        
+                        <button style="background:#e74c3c; color:#fff; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
+                            onclick="deletePost('${post.id}')">حذف نهائي 🗑️</button>
+                    </div>
+                </div>
+            </div>`;
+    });
+}
 
-        function loadThreeMore() {
-            visibleCount += 3;
-            renderPosts();
-        }
+// وظيفة الحذف اللي هتمسح من الفايربيز فعلياً
+function deletePost(id) {
+    if(confirm("يا قبطان إيهاب، هل أنت متأكد إنك عاوز تمسح المقال ده نهائياً؟")) {
+        database.ref('posts/' + id).remove()
+            .then(() => { alert("تم الحذف بنجاح ✅"); })
+            .catch((e) => { alert("في مشكلة حصلت: " + e.message); });
+    }
+}
+
     </script>
 </body>
 </html>
