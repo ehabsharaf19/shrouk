@@ -74,24 +74,47 @@
                 renderPosts();
             }
         });
+function renderPosts() {
+    const container = document.getElementById('posts-container');
+    if (!container) return;
+    container.innerHTML = "";
+    
+    allPostsData.forEach((post) => {
+        // تجهيز البيانات عشان التعديل يشتغل من غير أخطاء
+        const safeTitle = (post.title || "").replace(/'/g, "\\'");
+        const safeImage = (post.image || "").replace(/'/g, "\\'");
+        const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
 
-// وظيفة الحذف المؤمنة
+        container.innerHTML += `
+            <div class="article-item visible">
+                <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
+                <div class="article-content">
+                    ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                    <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; font-size: 12px; color: #f1c40f;">
+                        <span>🖋️ القبطان إيهاب شرف</span>
+                        <span style="color: #888;">📅 15 مايو 2026</span>
+                    </div>
+
+                    <div class="admin-controls" style="display: none; gap: 10px; margin-top: 15px; border-top: 1px dotted #444; padding-top: 10px;">
+                        <button class="btn-edit" style="background:#f1c40f; color:#000; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
+                            onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل ✏️</button>
+                        
+                        <button style="background:#e74c3c; color:#fff; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
+                            onclick="deletePost('${post.id}')">حذف 🗑️</button>
+                    </div>
+                </div>
+            </div>`;
+    });
+}
+
+// وظيفة الحذف (مؤمنة برسالة تأكيد)
 function deletePost(id) {
-    if(confirm("يا قبطان، متأكد إنك عاوز تمسح المقال ده؟")) {
+    if(confirm("يا قبطان، هل أنت متأكد من الحذف؟")) {
         database.ref('posts/' + id).remove().then(() => {
             alert("تم الحذف بنجاح ✅");
         });
-    }
-}
-function openSecretPanel() { 
-    let pass = prompt("كلمة السر يا قبطان:");
-    if(pass === "123010111  55Ee") {
-        // ده السطر اللي بيخلي الأزرار تظهر
-        document.body.classList.add('admin-mode'); 
-        document.getElementById('admin-panel-emosha').style.display='block';
-        alert("أهلاً بك يا قبطان، أزرار التعديل والحذف متاحة الآن.");
-    } else {
-        alert("كلمة السر خطأ!");
     }
 }
 
