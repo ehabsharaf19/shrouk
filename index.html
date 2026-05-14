@@ -204,18 +204,24 @@
                 const safeImage = (post.image || "").replace(/'/g, "\\'");
                 const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
 
-                container.innerHTML += `
+                                container.innerHTML += `
                     <div class="article-item ${isVisible}">
                         <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                         <div class="article-content">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px;">
+                                <span style="color: #f1c40f; font-size: 12px; font-weight: bold;">🖋️ القبطان إيهاب شرف</span>
+                                <span style="color: #888; font-size: 11px;">📅 15 مايو 2026</span>
+                            </div>
+
                             <div class="admin-controls">
-                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)"></button>
                             </div>
                         </div>
                     </div>`;
-            });
+
 
             const loadMoreBtn = document.getElementById('load-more-btn');
             if (visibleCount < allPostsData.length) {
