@@ -318,24 +318,23 @@
         }
 
     </script>
+<!-- شريط التنقل العلوي الثابت - تصميم القبطان إيهاب شرف -->
 <style>
-   <!-- القائمة السفلية الثابتة 100% - تصميم القبطان إيهاب شرف -->
-<style>
-  .shrouk-bottom-bar {
-    position: fixed !important; /* تثبيت الزرار في مكانه مهما طلعنا ونزلنا */
-    bottom: 0 !important; /* لصق الأزرار في أسفل الشاشة */
+  .top-nav-shrouk {
+    position: fixed !important;
+    top: 0 !important; /* تثبيت فوق خالص */
     left: 0 !important;
     width: 100% !important;
-    background: #111 !important; /* أسود زي كود السبائك */
-    display: flex !important; /* رص الأزرار أفقياً جنب بعضها */
+    background: #111 !important; /* لون أسود فخم */
+    display: flex !important; /* رص الأزرار أفقياً */
     justify-content: space-around !important;
     padding: 10px 0 !important;
-    border-top: 2px solid #f1c40f !important; /* الخط الذهبي المشهور */
-    z-index: 9999999 !important; /* ضمان الظهور فوق كل محتوى الصفحة */
+    border-bottom: 2px solid #f1c40f !important; /* الخط الذهبي من أسفل */
+    z-index: 9999999 !important; /* ضمان الظهور فوق أي محتوى */
   }
 
-  .shrouk-bottom-bar a {
-    color: #888 !important;
+  .top-nav-shrouk a {
+    color: #fff !important;
     text-decoration: none !important;
     text-align: center !important;
     flex: 1 !important;
@@ -343,20 +342,32 @@
     flex-direction: column !important;
     align-items: center !important;
     font-size: 11px !important;
+    background: #222 !important; /* خلفية الزرار */
+    margin: 0 3px !important;
+    padding: 8px 0 !important;
+    border-radius: 6px !important;
+    border: 1px solid #444 !important;
   }
 
-  .shrouk-bottom-bar a i {
-    font-size: 20px !important;
+  .top-nav-shrouk a i {
+    font-size: 18px !important;
     margin-bottom: 4px !important;
-  }
-
-  /* اللون الأصفر للصفحة النشطة */
-  .shrouk-bottom-bar a.active {
     color: #f1c40f !important;
   }
+
+  /* تمييز الزرار النشط */
+  .top-nav-shrouk a.active {
+    background: #f1c40f !important;
+    color: #000 !important;
+    border-color: #fff !important;
+  }
+  .top-nav-shrouk a.active i { color: #000 !important; }
+
+  /* إزاحة المحتوى لتحت عشان الشريط ما يغطيهوش */
+  body { padding-top: 85px !important; }
 </style>
 
-<div class="shrouk-bottom-bar">
+<div class="top-nav-shrouk">
     <a href="index.html" class="active">
         <i class="fas fa-home"></i>
         <span>الرئيسية</span>
@@ -378,6 +389,7 @@
         <span>الزكاة</span>
     </a>
 </div>
+
     
 </body>
 </html>
