@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <html lang="ar" dir="rtl">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -317,86 +319,71 @@
 
     </script>
 <style>
-<!-- تنسيق القائمة السفلية الأفقية الثابتة - تصميم القبطان إيهاب شرف -->
+      <!-- القائمة السفلية الاحترافية - شروق الذهب -->
 <style>
-  /* حاوية القائمة: ثابتة بالأسفل وأفقية */
-  .bottom-nav-fixed {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #111; /* نفس لون الخلفية الداكن */
-    display: flex; /* تجعل الزراير جنب بعضها أفقياً */
-    justify-content: space-around;
-    padding: 10px 0;
-    border-top: 2px solid #f1c40f; /* الخط الذهبي المميز */
-    z-index: 10000;
+  /* القائمة ثابتة تحت وبتعرض الزراير بالعرض (أفقي) */
+  .shrouk-nav { 
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    background: #111 !important; /* أسود داكن */
+    display: flex !important; /* ده اللي بيخليهم جنب بعض */
+    justify-content: space-around; 
+    padding: 10px 0; 
+    border-top: 2px solid #f1c40f; /* الخط الذهبي */
+    z-index: 99999; 
   }
 
-  /* تنسيق الزرار كـ "زرار حقيقي" وليس مجرد كلمة */
-  .nav-item-fixed {
-    color: #888;
-    text-align: center;
-    text-decoration: none;
-    font-size: 10px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: 0.3s;
+  .shrouk-item { 
+    color: #888; 
+    text-align: center; 
+    text-decoration: none !important; 
+    font-size: 11px; 
+    flex: 1; 
   }
 
-  /* الأيقونات */
-  .nav-item-fixed i {
-    display: block;
-    font-size: 18px;
-    margin-bottom: 4px;
+  .shrouk-item i { 
+    display: block; 
+    font-size: 20px; 
+    margin-bottom: 5px; 
   }
 
-  /* اللون الأصفر للزرار النشط أو عند اللمس */
-  .nav-item-fixed:hover, .nav-item-fixed.active {
-    color: #f1c40f;
+  /* اللون الأصفر للصفحة اللي أنت واقف فيها */
+  .shrouk-item.active, .shrouk-item:hover { 
+    color: #f1c40f !important; 
   }
 
-  /* مسافة أمان أسفل الصفحة عشان الزراير ما تغطيش الكلام */
-  body {
-    padding-bottom: 70px;
-  }
+  /* مسافة عشان الزراير ما تغطيش الكلام اللي في آخر الصفحة */
+  body { padding-bottom: 70px !important; }
 </style>
 
-<div class="bottom-nav-fixed">
-    <!-- الرابط للرئيسية -->
-    <a href="index.html" class="nav-item-fixed active">
+<div class="shrouk-nav">
+    <a href="index.html" class="shrouk-item active">
         <i class="fas fa-home"></i>
         <span>الرئيسية</span>
     </a>
     
-    <!-- الرابط للسبائك -->
-    <a href="prices.html" class="nav-item-fixed">
+    <a href="prices.html" class="shrouk-item">
         <i class="fas fa-cube"></i>
         <span>السبائك</span>
     </a>
     
-    <!-- الرابط للمقالات -->
-    <a href="blog.html" class="nav-item-fixed">
+    <a href="blog.html" class="shrouk-item">
         <i class="fas fa-newspaper"></i>
         <span>المقالات</span>
     </a>
 
-    <!-- الرابط للحاسبة -->
-    <a href="calculator.html" class="nav-item-fixed">
+    <a href="calculator.html" class="shrouk-item">
         <i class="fas fa-calculator"></i>
         <span>الحاسبة</span>
     </a>
 
-    <!-- الرابط للزكاة -->
-    <a href="zakat.html" class="nav-item-fixed">
+    <a href="zakat.html" class="shrouk-item">
         <i class="fas fa-mosque"></i>
         <span>الزكاة</span>
     </a>
 </div>
-
-
-
+  
 </body>
 </html>
