@@ -13,11 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مقالات شروق الذهب - EMOSHA Gold</title>
     <style>
-        /* التنسيقات الأصلية بالكامل - القبطان إيهاب شرف */
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
-        
         .articles-main { width: 95%; max-width: 1100px; margin-top: 20px; }
         .article-item { display: none; border-bottom: 1px solid #333; margin-bottom: 15px; background: #111; border-radius: 12px; overflow: hidden; }
         .article-item.visible { display: block; }
@@ -26,12 +24,10 @@
         .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.4s ease-out; overflow: hidden; text-align: right; }
         .article-item.active .article-content { max-height: none; padding: 25px; border-top: 1px solid #333; }
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
-        
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
-        
-        /* تذييل الصفحة وتوقيع القبطان */
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; box-sizing: border-box; }
         .back-btn { display: inline-block; margin-top: 20px; color: #f1c40f; text-decoration: none; border: 1px solid #f1c40f; padding: 10px 25px; border-radius: 8px; font-weight: bold; }
+        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #222; color: #f1c40f; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -48,7 +44,6 @@
         <center><a href="index.html" class="back-btn">العودة للرئيسية</a></center>
     </div>
 
-    <!-- التوقيع الأصلي والحقوق -->
     <div class="footer-gold">
         <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
         <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
@@ -80,14 +75,19 @@
             container.innerHTML = "";
             allPostsData.forEach((post, index) => {
                 const isVisible = index < visibleCount ? 'visible' : '';
+                // جلب التاريخ من البيانات أو وضع تاريخ افتراضي إذا لم يوجد
+                const postDate = post.date ? post.date : "2026-05-14"; 
+
                 container.innerHTML += `
                     <div class="article-item ${isVisible}">
                         <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                         <div class="article-content">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                            <hr style="border:0; border-top:1px solid #222; margin:20px 0;">
-                            <div style="text-align:left; color:#f1c40f; font-size:14px; font-weight:bold;">✍️ القبطان إيهاب شرف</div>
+                            <div class="meta-info">
+                                <span style="color:#666;">📅 تاريخ النشر: ${postDate}</span>
+                                <span>✍️ القبطان إيهاب شرف</span>
+                            </div>
                         </div>
                     </div>`;
             });
