@@ -316,53 +316,37 @@
         }
 
     </script>
-<!-- تنسيق القائمة لضمان عدم التداخل -->
 <style>
-  .bottom-nav { 
-    position: fixed; bottom: 0; width: 100%; background: #000; 
-    display: flex; justify-content: space-around; padding: 12px 0; 
-    border-top: 1px solid #f1c40f; z-index: 10000; left: 0; 
-  }
-  .nav-item { color: #888; text-align: center; cursor: pointer; font-size: 11px; flex: 1; transition: 0.3s; }
-  .nav-item i { display: block; font-size: 18px; margin-bottom: 3px; }
-  .nav-item.active, .nav-item:hover { color: #f1c40f; }
+/* تنسيق احترافي للقائمة من القبطان إيهاب شرف */
+.bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 10px 0; border-top: 2px solid #f1c40f; z-index: 999; left: 0; }
+.nav-item { color: #888; text-align: center; cursor: pointer; font-size: 12px; flex: 1; }
+.nav-item i { display: block; font-size: 20px; margin-bottom: 5px; }
+.nav-item:hover, .nav-item.active { color: #f1c40f; }
 </style>
 
 <div class="bottom-nav">
-    <!-- الزراير دي هتشغل برمجتك القديمة اللي جوه الصفحة (عشان ميدي مش Error 404) -->
-    <div class="nav-item active" onclick="showTab('home-page', this)">
-        <i class="fas fa-home"></i><span>الرئيسية</span>
+    <div class="nav-item" onclick="window.location.href='index.html'">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
     </div>
-    <div class="nav-item" onclick="showTab('bullion-page', this)">
-        <i class="fas fa-cube"></i><span>السبائك</span>
+    <div class="nav-item" onclick="window.location.href='prices.html'">
+        <i class="fas fa-chart-line"></i>
+        <span>الأسعار</span>
     </div>
-    <div class="nav-item" onclick="showTab('calc-page', this)">
-        <i class="fas fa-calculator"></i><span>الحاسبة</span>
+    <div class="nav-item" onclick="window.location.href='calculator.html'">
+        <i class="fas fa-calculator"></i>
+        <span>الحاسبة</span>
     </div>
-    <!-- زرار المقالات الجديد هيروح لصفحة المقالات اللي عملناها -->
     <div class="nav-item" onclick="window.location.href='blog.html'">
-        <i class="fas fa-newspaper"></i><span>المقالات</span>
+        <i class="fas fa-newspaper"></i>
+        <span>المقالات</span>
+    </div>
+    <div class="nav-item" onclick="window.location.href='zakat.html'">
+        <i class="fas fa-mosque"></i>
+        <span>الزكاة</span>
     </div>
 </div>
 
-<script>
-// دي الدالة اللي هتشغل الزراير القديمة وتمنع الـ 404
-function showTab(id, el) {
-    // إخفاء كل الأقسام
-    document.querySelectorAll('.page-section').forEach(section => {
-        section.style.display = 'none';
-    });
-    // إظهار القسم المطلوب ببرمجته الأصلية
-    const target = document.getElementById(id);
-    if(target) {
-        target.style.display = 'block';
-    }
-    // تغيير شكل الزرار النشط
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    el.classList.add('active');
-    window.scrollTo(0,0);
-}
-</script>
 
 </body>
 </html>
