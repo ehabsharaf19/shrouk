@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5NVYG4VND5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقالات وتحليلات القبطان - شروق الذهب</title>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-title { font-size: 28px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-bottom: 20px; }
+        .articles-container { width: 100%; max-width: 800px; }
+        .article-card { background: #111; border: 1px solid #333; border-radius: 15px; margin-bottom: 20px; overflow: hidden; transition: 0.3s; }
+        .article-header { padding: 20px; background: #1a1a1a; color: #f1c40f; font-weight: bold; font-size: 20px; cursor: pointer; text-align: right; }
+        .article-content { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; color: #ccc; line-height: 1.8; text-align: right; }
+        .article-card.active .article-content { max-height: 2000px; padding: 20px; border-top: 1px solid #333; }
+        .article-image { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .back-btn { margin-top: 20px; color: #f1c40f; text-decoration: none; border: 1px solid #444; padding: 10px 20px; border-radius: 8px; }
+        .load-more { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 10px 25px; border-radius: 8px; cursor: pointer; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="main-title">📰 مقالات وتحليلات شروق الذهب</div>
+
+    <div id="posts-container" class="articles-container">جاري جلب أحدث التقارير...</div>
+    
+    <button id="load-more-btn" class="load-more" onclick="loadMore()" style="display:none;">عرض المزيد من المقالات</button>
+
+    <a href="index.html" class="back-btn">⬅️ العودة للرئيسية</a>
+
+    <!-- ربط Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let visibleCount = 5;
+        let allPosts = [];
+
+        database.ref('posts').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                allPosts = Object.keys(data).map(id => ({ id, ...data[id] })).reverse();
+                renderBlog();
+            }
+        });
+
+        function renderBlog() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            allPosts.slice(0, visibleCount).forEach(post => {
+                container.innerHTML += `
+                    <div class="article-card" onclick="this.classList.toggle('active')">
+                        <div class="article-header">${post.title}</div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap;">${post.content}</div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('load-more-btn').style.display = visibleCount < allPosts.length ? 'block' : 'none';
+        }
+
+        function loadMore() {
+            visibleCount += 5;
+            renderBlog();
+        }
+    </script>
+</body>
+</html>
