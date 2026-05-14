@@ -252,101 +252,77 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
+                const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        let visibleCount = 3;
+        
+        let visibleCount = 3; // العدد الافتراضي للمقالات عند الفتح
+        let allPostsData = []; // مخزن مؤقت لحفظ كل المقالات
 
-        // وظيفة التبديل بين الصفحات
-        function showTab(id, el) {
-            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(id).classList.add('active-page');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        // تحديث الأسعار
-        async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                const p24 = (globalPrice / 31.1035) * currentUSD;
-
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) {}
-        }
-        updatePrices(); setInterval(updatePrices, 30000);
-        // جلب المقالات وتحديث عرضها بناءً على العدد المطلوب
+        // الوظيفة الأساسية لجلب البيانات من فيربيز
         database.ref('posts').on('value', (snapshot) => {
-            const container = document.getElementById('posts-container');
-            const ticker = document.getElementById('news-ticker');
-            container.innerHTML = "";
             const data = snapshot.val();
-            
             if(data) {
-                const titles = [];
-                const keys = Object.keys(data).reverse(); // ترتيب من الأحدث للأقدم
+                // تحويل البيانات لمصفوفة وترتيبها من الأحدث للأقدم
+                allPostsData = Object.keys(data).map(id => ({
+                    id: id,
+                    ...data[id]
+                })).reverse();
                 
-                keys.forEach((id, index) => {
-                    const post = data[id];
-                    titles.push("🔱 " + post.title);
-                    
-                    // الإصلاح البرمجي لضمان ظهور المقالات عند الضغط على "المزيد"
-                    const isVisible = index < visibleCount ? 'visible' : '';
-                    
-                    const safeTitle = post.title.replace(/'/g, "\\'");
-                    const safeImage = (post.image || "").replace(/'/g, "\\'");
-                    const safeContent = post.content.replace(/`/g, "\\`").replace(/'/g, "\\'");
-
-                    container.innerHTML += `
-                        <div class="article-item ${isVisible}">
-                            <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
-                            <div class="article-content">
-                                ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                                <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                                <div class="admin-controls">
-                                    <button class="btn-edit" onclick="prepareEdit('${id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
-                                </div>
-                            </div>
-                        </div>`;
-                });
-                
-                ticker.innerText = titles.join(" . . . . ");
-                
-                // تحديث حالة زر "عرض المزيد" ليختفي عند انتهاء المقالات
-                const loadMoreBtn = document.getElementById('load-more-btn');
-                if (visibleCount < keys.length) {
-                    loadMoreBtn.style.display = 'block';
-                } else {
-                    loadMoreBtn.style.display = 'none';
-                }
+                renderPosts(); // استدعاء وظيفة الرسم
+                updateTicker(); // تحديث شريط الأخبار
             }
         });
 
-        // وظيفة عرض 3 مقالات إضافية عند الضغط على الزر
-        function loadThreeMore() {
-            visibleCount += 3;
-            // تحديث العرض فورياً
-            database.ref('posts').once('value', (snapshot) => {
-                // سيقوم التحديث التلقائي لـ Firebase بإعادة بناء القائمة بالعدد الجديد
+        // وظيفة رسم المقالات في الصفحة (التي تتحكم في الـ 3 مقالات)
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            
+            allPostsData.forEach((post, index) => {
+                // إظهار المقالات حسب العدد المسموح به فقط
+                const isVisible = index < visibleCount ? 'visible' : '';
+                
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item ${isVisible}">
+                        <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
             });
-        }
- {
-            visibleCount += 3;
-            database.ref('posts').once('value', () => {});
+
+            // التحكم في زر "عرض المزيد"
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            if (visibleCount < allPostsData.length) {
+                loadMoreBtn.style.display = 'block';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
         }
 
-        // وظائف الحسابات والشركات
+        // وظيفة شريط الأخبار العلوي
+        function updateTicker() {
+            const ticker = document.getElementById('news-ticker');
+            const titles = allPostsData.map(post => "🔱 " + post.title);
+            ticker.innerText = titles.join(" . . . . ");
+        }
+
+        // الوظيفة التي كانت تسبب لك المشكلة (تم إصلاحها هنا)
+        function loadThreeMore() {
+            visibleCount += 3; // زيادة العدد 3 مقالات إضافية
+            renderPosts(); // إعادة رسم المقالات فوراً بدون انتظار فيربيز
+        }
+
+        // --- باقي وظائف الموقع (الشركات، الحسابات، الإدارة) لا تغيرها ---
         function comp(name, fee) {
             const w = parseFloat(document.getElementById('b-weight').value);
             const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
@@ -383,7 +359,6 @@
             }
         }
 
-        // وظائف الإدارة
         function openSecretPanel() { 
             if(prompt("كلمة السر يا قبطان:") === "1230") {
                 document.getElementById('main-body').classList.add('admin-mode');
@@ -425,6 +400,35 @@
             document.getElementById('submit-btn').innerText = "نشر الآن";
             document.getElementById('cancel-btn').style.display = "none";
         }
+
+        async function updatePrices() {
+            try {
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const globalPrice = parseFloat(goldData.price);
+                const p24 = (globalPrice / 31.1035) * currentUSD;
+
+                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
+                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+            } catch (e) {}
+        }
+        updatePrices(); setInterval(updatePrices, 30000);
+
+        function showTab(id, el) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(id).classList.add('active-page');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            window.scrollTo(0,0);
+        }
+
     </script>
 </body>
 </html>
