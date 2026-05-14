@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5NVYG4VND5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة زكاة الذهب - شروق الذهب</title>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-title { font-size: 25px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-bottom: 20px; text-align: center; }
+        .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 25px; text-align: center; width: 90%; max-width: 500px; }
+        .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; font-size: 16px; }
+        .btn-zakat { background: #27ae60; color: #fff; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 18px; }
+        .zakat-rules { text-align: right; background: #222; padding: 15px; border-radius: 10px; margin-top: 20px; border-right: 4px solid #27ae60; }
+        .zakat-rules h4 { color: #27ae60; margin-bottom: 10px; font-size: 16px; margin-top: 0; }
+        .zakat-rules ul { padding-right: 20px; color: #ccc; font-size: 14px; line-height: 1.6; }
+        .back-btn { margin-top: 25px; color: #f1c40f; text-decoration: none; border: 1px solid #444; padding: 10px 20px; border-radius: 8px; font-size: 14px; }
+        #z-res { margin-top: 15px; padding: 15px; background: #000; border-radius: 10px; border: 1px dashed #27ae60; }
+    </style>
+</head>
+<body>
+
+    <div class="main-title">🕌 حاسبة زكاة الذهب الشرعية</div>
+
+    <div class="bullion-box">
+        <input type="number" id="z-w" class="input-style" placeholder="أدخل وزن الذهب الكلي بالجرام">
+        <select id="z-c" class="input-style">
+            <option value="24">عيار 24</option>
+            <option value="22">عيار 22</option>
+            <option value="21">عيار 21</option>
+            <option value="18">عيار 18</option>
+        </select>
+        <button class="btn-zakat" onclick="runZakat()">احسب قيمة الزكاة الآن</button>
+        
+        <div id="z-res" style="display:none;">
+            <div style="color:#27ae60; font-size:22px; font-weight:bold;">قيمة الزكاة: <span id="z-val">0</span> ج.م</div>
+            <p id="z-status" style="font-size:14px; margin-top:10px; font-weight:bold;"></p>
+        </div>
+
+        <div class="zakat-rules">
+            <h4>📋 شروط وجوب الزكاة:</h4>
+            <ul>
+                <li>أن يصل الذهب إلى النصاب (85 جراماً عيار 24).</li>
+                <li>مرور عام هجري كامل على ملكيته.</li>
+                <li>أن يكون الذهب ملكاً خالصاً ومدخراً.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- حقل مخفي لجلب سعر عيار 24 لحظياً -->
+    <span id="p24" style="display:none;">0</span>
+
+    <a href="index.html" class="back-btn">⬅️ العودة للصفحة الرئيسية</a>
+
+    <script>
+        // دالة لجلب السعر الحالي عشان الحساب يكون دقيق لحظة بلحظة
+        async function getPrice() {
+            try {
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const p24 = (parseFloat(goldData.price) / 31.1035) * currentUSD;
+                document.getElementById('p24').innerText = p24;
+            } catch (e) { console.log("Error fetching price"); }
+        }
+        getPrice();
+
+        function runZakat() {
+            const w = parseFloat(document.getElementById('z-w').value);
+            const c = document.getElementById('z-c').value;
+            const p24 = parseFloat(document.getElementById('p24').innerText);
+
+            if(w > 0 && p24 > 0) {
+                let currentPrice;
+                if(c === "24") currentPrice = p24;
+                else if(c === "22") currentPrice = p24 * 0.916;
+                else if(c === "21") currentPrice = p24 * 0.875;
+                else if(c === "18") currentPrice = p24 * 0.75;
+
+                let zakatValue = (w * currentPrice) * 0.025;
+                document.getElementById('z-val').innerText = Math.round(zakatValue).toLocaleString();
+                document.getElementById('z-res').style.display = 'block';
+
+                let eq24 = (w * parseInt(c)) / 24;
+                const status = document.getElementById('z-status');
+                if(eq24 >= 85) {
+                    status.innerText = "✅ بلغت النصاب الشرعي (ما يعادل " + eq24.toFixed(1) + " جرام عيار 24)";
+                    status.style.color = "#27ae60";
+                } else {
+                    status.innerText = "⚠️ لم تبلغ النصاب الشرعي بعد";
+                    status.style.color = "#e74c3c";
+                }
+            } else {
+                alert("يرجى إدخال الوزن والانتظار حتى تحميل السعر");
+            }
+        }
+    </script>
+</body>
+</html>
