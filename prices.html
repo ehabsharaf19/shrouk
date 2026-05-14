@@ -1,56 +1,109 @@
 <!DOCTYPE html>
-<!-- 2. صفحة السبائك -->
-<div id="bullion-page" class="page-section">
-<div class="main-title" style="font-size: 25px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 أسعار الشركات والسبائك</div>
-<div class="bullion-box">
-<label style="color:#888; font-size:12px;">اختر وزن السبيكة:</label>
-<select id="b-weight" class="input-style">
-<optgroup label="أوزان صغيرة">
-<option value="0.25">ربع جرام</option>
-<option value="0.5">نصف جرام</option>
-<option value="1">1 جرام</option>
-<option value="2.5">2.5 جرام</option>
-<option value="5">5 جرام</option>
-</optgroup>
-<optgroup label="أوزان متوسطة">
-<option value="10">10 جرام</option>
-<option value="15.5">نصف أونصة (15.5 جم)</option>
-<option value="20">20 جرام</option>
-<option value="31.1">أونصة كاملة (31.1 جم)</option>
-<option value="50">50 جرام</option>
-<option value="100">100 جرام</option>
-</optgroup>
-<optgroup label="أوزان ثقيلة">
-<option value="250">ربع كيلو (250 جم)</option>
-<option value="500">نصف كيلو (500 جم)</option>
-<option value="1000">1 كيلو (1000 جم)</option>
-</optgroup>
-</select>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسعار السبائك - شروق الذهب</title>
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; padding-bottom: 80px; }
+        .main-title { font-size: 25px; text-align:center; color:#f1c40f; margin-top:30px; }
+        .bullion-box { padding: 20px; max-width: 500px; margin: auto; }
+        .input-style { width: 100%; padding: 12px; background: #222; color: #fff; border: 1px solid #f1c40f; border-radius: 8px; margin-bottom: 20px; }
+        .company-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .company-btn { background: #333; color: #fff; border: 1px solid #444; padding: 15px 5px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .company-btn:hover { border-color: #f1c40f; color: #f1c40f; }
+        #res-bullion { display:none; margin-top:20px; padding:15px; background:#111; border:1px dashed #f1c40f; border-radius:10px; text-align: center; }
+        
+        /* تنسيق القائمة السفلية */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 10px 0; border-top: 2px solid #f1c40f; z-index: 999; left: 0; }
+        .nav-item { color: #888; text-align: center; cursor: pointer; font-size: 12px; flex: 1; text-decoration: none; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 5px; }
+        .nav-item.active { color: #f1c40f; }
+    </style>
+</head>
+<body>
 
-<div class="company-grid">
-<button class="company-btn" onclick="comp('BTC', 125)">BTC</button>
-<button class="company-btn" onclick="comp('SAM', 120)">SAM</button>
-<button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
-<button class="company-btn" onclick="comp('سويس جولد', 130)">سويس جولد</button>
-<button class="company-btn" onclick="comp('لازوردي', 145)">لازوردي</button>
-<button class="company-btn" onclick="comp('إيجيبت جولد', 115)">إيجيبت جولد</button>
-<button class="company-btn" onclick="comp('ماستر جولد', 120)">ماستر جولد</button>
-<button class="company-btn" onclick="comp('سليمة جولد', 125)">سليمة جولد</button>
-<button class="company-btn" onclick="comp('القدس', 110)">القدس</button>
-<button class="company-btn" onclick="comp('ملوك الذهب', 115)">ملوك الذهب</button>
-<button class="company-btn" onclick="comp('جالي جولد', 120)">جالي جولد</button>
-<button class="company-btn" onclick="comp('فينوس', 130)">فينوس</button>
-<button class="company-btn" onclick="comp('العقاد', 110)">العقاد</button>
-<button class="company-btn" onclick="comp('داماس', 150)">داماس</button>
-<button class="company-btn" onclick="comp('طيبة', 125)">طيبة</button>
-</div>
+    <div class="main-title">🏆 أسعار الشركات والسبائك</div>
 
-<div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border:1px dashed #f1c40f; border-radius:10px;">
-<span id="c-name" style="color:#f1c40f"></span>: <br>
-<span id="c-price" style="font-size:25px; font-weight:bold; color:#f1c40f;">0</span> ج.م
-</div>
-</div>
-</div>
+    <div class="bullion-box">
+        <label style="color:#888; font-size:12px;">اختر وزن السبيكة:</label>
+        <select id="b-weight" class="input-style">
+            <optgroup label="أوزان صغيرة">
+                <option value="0.25">ربع جرام</option>
+                <option value="0.5">نصف جرام</option>
+                <option value="1">1 جرام</option>
+                <option value="2.5">2.5 جرام</option>
+                <option value="5">5 جرام</option>
+            </optgroup>
+            <optgroup label="أوزان متوسطة">
+                <option value="10">10 جرام</option>
+                <option value="15.5">نصف أونصة (15.5 جم)</option>
+                <option value="20">20 جرام</option>
+                <option value="31.1">أونصة كاملة (31.1 جم)</option>
+                <option value="50">50 جرام</option>
+                <option value="100">100 جرام</option>
+            </optgroup>
+            <optgroup label="أوزان ثقيلة">
+                <option value="250">ربع كيلو (250 جم)</option>
+                <option value="500">نصف كيلو (500 جم)</option>
+                <option value="1000">1 كيلو (1000 جم)</option>
+            </optgroup>
+        </select>
+
+        <div class="company-grid">
+            <button class="company-btn" onclick="comp('BTC', 125)">BTC</button>
+            <button class="company-btn" onclick="comp('SAM', 120)">SAM</button>
+            <button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
+            <button class="company-btn" onclick="comp('سويس جولد', 130)">سويس جولد</button>
+            <button class="company-btn" onclick="comp('لازوردي', 145)">لازوردي</button>
+            <button class="company-btn" onclick="comp('إيجيبت جولد', 115)">إيجيبت جولد</button>
+            <button class="company-btn" onclick="comp('ماستر جولد', 120)">ماستر جولد</button>
+            <button class="company-btn" onclick="comp('سليمة جولد', 125)">سليمة جولد</button>
+            <button class="company-btn" onclick="comp('القدس', 110)">القدس</button>
+            <button class="company-btn" onclick="comp('ملوك الذهب', 115)">ملوك الذهب</button>
+            <button class="company-btn" onclick="comp('جالي جولد', 120)">جالي جولد</button>
+            <button class="company-btn" onclick="comp('فينوس', 130)">فينوس</button>
+            <button class="company-btn" onclick="comp('العقاد', 110)">العقاد</button>
+            <button class="company-btn" onclick="comp('داماس', 150)">داماس</button>
+            <button class="company-btn" onclick="comp('طيبة', 125)">طيبة</button>
+        </div>
+
+        <div id="res-bullion">
+            <span id="c-name" style="color:#f1c40f"></span>: <br>
+            <span id="c-price" style="font-size:25px; font-weight:bold; color:#f1c40f;">0</span> ج.م
+        </div>
+    </div>
+
+    <!-- القائمة السفلية للتنقل -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="prices.html" class="nav-item active"><i class="fas fa-cube"></i><span>السبائك</span></a>
+        <a href="calculator.html" class="nav-item"><i class="fas fa-calculator"></i><span>الحاسبة</span></a>
+        <a href="blog.html" class="nav-item"><i class="fas fa-newspaper"></i><span>المقالات</span></a>
+        <a href="zakat.html" class="nav-item"><i class="fas fa-mosque"></i><span>الزكاة</span></a>
+    </div>
+
+    <script>
+        // دالة الحساب البرمجية
+        async function comp(name, fee) {
+            const weight = parseFloat(document.getElementById('b-weight').value);
+            
+            try {
+                // جلب سعر الذهب من API أو من الذاكرة المحلية (هنا نفترض سعر تقريبي لعيار 24)
+                // يفضل ربطها بملف الـ JavaScript الرئيسي عندك لجلب السعر اللحظي
+                let price24 = 4100; // يمكنك تغيير هذا السعر ليكون ديناميكياً
+
+                let total = (price24 + fee) * weight;
+
+                document.getElementById('c-name').innerText = "شركة " + name + " - وزن " + weight + " جرام";
+                document.getElementById('c-price').innerText = total.toLocaleString('en-US');
+                document.getElementById('res-bullion').style.display = 'block';
+            } catch (e) {
+                alert("خطأ في جلب السعر اللحظي");
+            }
+        }
     </script>
 </body>
 </html>
