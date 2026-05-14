@@ -201,27 +201,6 @@
         });
 
         
-      function renderPosts() {
-    const container = document.getElementById('posts-container');
-    container.innerHTML = "";
-    
-    allPostsData.forEach((post, index) => {
-        // بنحدد يظهر 3 مقالات بس في الرئيسية
-        const isVisible = index < visibleCount; 
-        
-        container.innerHTML += `
-            <div class="article-item ${isVisible ? 'visible' : ''}" style="background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333;">
-                <h3 style="color: #f1c40f; margin-bottom: 10px;">${post.title}</h3>
-                <p style="color: #ccc; font-size: 14px; line-height: 1.6;">${post.content}</p>
-                
-                <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">
-                    <span style="color: #f1c40f; font-size: 12px; font-weight: bold;">🖋️ القبطان إيهاب شرف</span>
-                    <span style="color: #888; font-size: 11px;">📅 14 مايو 2026</span>
-                </div>
-            </div>
-        `;
-    });
-}
         
           container.innerHTML += `
                     <div class="article-item ${isVisible}">
@@ -235,7 +214,7 @@
                         </div>
                     </div>`;
             });
-        }
+    }
             const loadMoreBtn = document.getElementById('load-more-btn');
             if (visibleCount < allPostsData.length) {
                 loadMoreBtn.style.display = 'block';
@@ -286,7 +265,7 @@
         
 
         function openSecretPanel() { 
-            if(prompt("كلمة السر يا قبطان:") === "1230") {
+            if(prompt("كلمة السر يا قبطان:") === "123010111  55Ee") {
                 document.getElementById('main-body').classList.add('admin-mode');
                 document.getElementById('admin-panel-emosha').style.display='block';
             }
