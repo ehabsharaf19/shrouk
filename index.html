@@ -317,70 +317,66 @@
 
     </script>
 <style>
-<!-- تنسيق القائمة السفلية الموحد - شروق الذهب -->
+<!-- القائمة السفلية الذكية لـ index.html -->
 <style>
   .bottom-nav { 
-    position: fixed; 
-    bottom: 0; 
-    width: 100%; 
-    background: #111; 
-    display: flex; 
-    justify-content: space-around; 
-    padding: 12px 0; 
-    border-top: 2px solid #f1c40f; 
-    z-index: 10000; 
-    left: 0; 
+    position: fixed; bottom: 0; width: 100%; background: #111; 
+    display: flex; justify-content: space-around; padding: 12px 0; 
+    border-top: 2px solid #f1c40f; z-index: 10000; left: 0; 
   }
   .nav-item { 
-    color: #888; 
-    text-align: center; 
-    text-decoration: none; 
-    font-size: 11px; 
-    flex: 1; 
-    transition: 0.3s;
+    color: #888; text-align: center; cursor: pointer; font-size: 11px; flex: 1; 
   }
-  .nav-item i { 
-    display: block; 
-    font-size: 18px; 
-    margin-bottom: 4px; 
-  }
-  /* لون الزرار لما تضغط عليه أو تروح له */
-  .nav-item:hover, .nav-item.active { 
-    color: #f1c40f; 
-  }
+  .nav-item i { display: block; font-size: 20px; margin-bottom: 5px; }
+  .nav-item.active { color: #f1c40f; }
 </style>
 
 <div class="bottom-nav">
-    <!-- 1. الصفحة الرئيسية -->
-    <a href="index.html" class="nav-item">
-        <i class="fas fa-home"></i>
-        <span>الرئيسية</span>
-    </a>
+    <!-- هنا استخدمنا onclick عشان تشغل البرمجة بتاعتك القديمة -->
+    <div class="nav-item active" onclick="showTab('home-page', this)">
+        <i class="fas fa-home"></i><span>الرئيسية</span>
+    </div>
     
-    <!-- 2. صفحة السبائك -->
-    <a href="prices.html" class="nav-item">
-        <i class="fas fa-cube"></i>
-        <span>السبائك</span>
-    </a>
+    <div class="nav-item" onclick="showTab('bullion-page', this)">
+        <i class="fas fa-cube"></i><span>السبائك</span>
+    </div>
     
-    <!-- 3. صفحة المقالات -->
-    <a href="blog.html" class="nav-item">
-        <i class="fas fa-newspaper"></i>
-        <span>المقالات</span>
-    </a>
+    <!-- زرار المقالات هو الوحيد اللي يوديك لصفحة تانية -->
+    <div class="nav-item" onclick="window.location.href='blog.html'">
+        <i class="fas fa-newspaper"></i><span>المقالات</span>
+    </div>
 
-    <!-- 4. صفحة الحاسبة -->
-    <a href="calculator.html" class="nav-item">
-        <i class="fas fa-calculator"></i>
-        <span>الحاسبة</span>
-    </a>
+    <div class="nav-item" onclick="showTab('calc-page', this)">
+        <i class="fas fa-calculator"></i><span>الحاسبة</span>
+    </div>
 
-    <!-- 5. صفحة الزكاة -->
-    <a href="zakat.html" class="nav-item">
-        <i class="fas fa-mosque"></i>
-        <span>الزكاة</span>
-    </a>
+    <div class="nav-item" onclick="showTab('zakat-page', this)">
+        <i class="fas fa-mosque"></i><span>الزكاة</span>
+    </div>
 </div>
+
+<script>
+// دي "الدلالات" اللي بتخلي الزراير تنور وتخفي وتظهر الأقسام جوه index
+function showTab(id, el) {
+    // 1. إخفاء كل الأقسام (sections) اللي في الصفحة
+    document.querySelectorAll('.page-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // 2. إظهار القسم اللي ضغطنا عليه
+    const target = document.getElementById(id);
+    if(target) {
+        target.style.display = 'block';
+    }
+    
+    // 3. تغيير لون الزرار للأصفر (Active)
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+    
+    // 4. نطلع لفوق عشان العميل يشوف أول القسم
+    window.scrollTo(0,0);
+}
+</script>
 
 </body>
 </html>
