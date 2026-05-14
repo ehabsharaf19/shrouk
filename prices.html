@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5NVYG4VND5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسعار الذهب اليوم - شروق الذهب</title>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-title { font-size: 30px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-bottom: 20px; }
+        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-label { color: #888; font-size: 11px; display: block; }
+        .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
+        .gold-container { width: 100%; max-width: 450px; }
+        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; }
+        .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
+        .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; }
+        .back-btn { margin-top: 20px; color: #f1c40f; text-decoration: none; border: 1px solid #f1c40f; padding: 10px 20px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="main-title">أسعار الذهب لحظة بلحظة</div>
+    
+    <div class="market-stats">
+        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
+        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
+    </div>
+
+    <div class="gold-container">
+        <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
+        <div class="gold-card"><span style="color:#888">عيار 22</span><br><span class="card-price" id="p22">...</span></div>
+        <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
+        <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
+    </div>
+
+    <a href="index.html" class="back-btn">العودة للرئيسية</a>
+
+    <script>
+        async function updatePrices() {
+            try {
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const globalPrice = parseFloat(goldData.price);
+                const p24 = (globalPrice / 31.1035) * currentUSD;
+
+                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
+                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+                document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
+                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+            } catch (e) { console.log("Price Update Error"); }
+        }
+        updatePrices();
+        setInterval(updatePrices, 30000);
+    </script>
+</body>
+</html>
