@@ -316,49 +316,51 @@
         }
 
     </script>
-<!-- كود القائمة والتحكم لإظهار السبائك والأقسام -->
+<!-- تنسيق القائمة لضمان عدم التداخل -->
 <style>
-  /* تصميم القائمة السفلية */
   .bottom-nav { 
     position: fixed; bottom: 0; width: 100%; background: #000; 
     display: flex; justify-content: space-around; padding: 12px 0; 
     border-top: 1px solid #f1c40f; z-index: 10000; left: 0; 
   }
-  .nav-item { color: #fff; text-align: center; text-decoration: none; font-size: 11px; flex: 1; cursor: pointer; }
-  .nav-item i { display: block; font-size: 18px; margin-bottom: 3px; color: #f1c40f; }
-  
-  /* تأكيد ظهور الأقسام */
-  section { display: block !important; padding-bottom: 80px; }
+  .nav-item { color: #888; text-align: center; cursor: pointer; font-size: 11px; flex: 1; transition: 0.3s; }
+  .nav-item i { display: block; font-size: 18px; margin-bottom: 3px; }
+  .nav-item.active, .nav-item:hover { color: #f1c40f; }
 </style>
 
 <div class="bottom-nav">
-    <div onclick="showSection('home')" class="nav-item">
+    <!-- الزراير دي هتشغل برمجتك القديمة اللي جوه الصفحة (عشان ميدي مش Error 404) -->
+    <div class="nav-item active" onclick="showTab('home-page', this)">
         <i class="fas fa-home"></i><span>الرئيسية</span>
     </div>
-    <div onclick="showSection('prices')" class="nav-item">
-        <i class="fas fa-chart-line"></i><span>الأسعار</span>
-    </div>
-    <div onclick="showSection('bars')" class="nav-item">
+    <div class="nav-item" onclick="showTab('bullion-page', this)">
         <i class="fas fa-cube"></i><span>السبائك</span>
     </div>
-    <div onclick="showSection('calc')" class="nav-item">
+    <div class="nav-item" onclick="showTab('calc-page', this)">
         <i class="fas fa-calculator"></i><span>الحاسبة</span>
     </div>
-    <div onclick="showSection('zakat')" class="nav-item">
-        <i class="fas fa-mosque"></i><span>الزكاة</span>
+    <!-- زرار المقالات الجديد هيروح لصفحة المقالات اللي عملناها -->
+    <div class="nav-item" onclick="window.location.href='blog.html'">
+        <i class="fas fa-newspaper"></i><span>المقالات</span>
     </div>
 </div>
 
 <script>
-function showSection(id) {
-    // لو لسه شغال بنظام الصفحة الواحدة، الكود ده هينزلك للقسم المطلوب
-    const element = document.getElementById(id);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        // لو القسم مش موجود، هيروح للصفحة اللي عملناها
-        window.location.href = id + ".html";
+// دي الدالة اللي هتشغل الزراير القديمة وتمنع الـ 404
+function showTab(id, el) {
+    // إخفاء كل الأقسام
+    document.querySelectorAll('.page-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    // إظهار القسم المطلوب ببرمجته الأصلية
+    const target = document.getElementById(id);
+    if(target) {
+        target.style.display = 'block';
     }
+    // تغيير شكل الزرار النشط
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+    window.scrollTo(0,0);
 }
 </script>
 
