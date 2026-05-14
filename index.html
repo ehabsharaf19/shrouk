@@ -316,59 +316,51 @@
         }
 
     </script>
-    <!-- كود القائمة السفلية الموحد - شروق الذهب -->
+<!-- كود القائمة والتحكم لإظهار السبائك والأقسام -->
 <style>
+  /* تصميم القائمة السفلية */
   .bottom-nav { 
-    position: fixed; 
-    bottom: 0; 
-    width: 100%; 
-    background: #000; /* لون أسود ليتماشى مع تصميمك */
-    display: flex; 
-    justify-content: space-around; 
-    padding: 12px 0; 
-    border-top: 1px solid #f1c40f; 
-    z-index: 10000; 
-    left: 0; 
+    position: fixed; bottom: 0; width: 100%; background: #000; 
+    display: flex; justify-content: space-around; padding: 12px 0; 
+    border-top: 1px solid #f1c40f; z-index: 10000; left: 0; 
   }
-  .nav-item { 
-    color: #fff; 
-    text-align: center; 
-    text-decoration: none;
-    font-size: 11px;
-    flex: 1;
-  }
-  .nav-item i { 
-    display: block; 
-    font-size: 18px; 
-    margin-bottom: 3px; 
-    color: #f1c40f; 
-  }
-  /* لإعطاء مساحة في أسفل الصفحة حتى لا يغطي الشريط آخر المحتوى */
-  body { padding-bottom: 70px; }
+  .nav-item { color: #fff; text-align: center; text-decoration: none; font-size: 11px; flex: 1; cursor: pointer; }
+  .nav-item i { display: block; font-size: 18px; margin-bottom: 3px; color: #f1c40f; }
+  
+  /* تأكيد ظهور الأقسام */
+  section { display: block !important; padding-bottom: 80px; }
 </style>
 
 <div class="bottom-nav">
-    <a href="index.html" class="nav-item">
-        <i class="fas fa-home"></i>
-        <span>الرئيسية</span>
-    </a>
-    <a href="prices.html" class="nav-item">
-        <i class="fas fa-chart-line"></i>
-        <span>الأسعار</span>
-    </a>
-    <a href="calculator.html" class="nav-item">
-        <i class="fas fa-calculator"></i>
-        <span>الحاسبة</span>
-    </a>
-    <a href="blog.html" class="nav-item">
-        <i class="fas fa-newspaper"></i>
-        <span>المقالات</span>
-    </a>
-    <a href="zakat.html" class="nav-item">
-        <i class="fas fa-mosque"></i>
-        <span>الزكاة</span>
-    </a>
+    <div onclick="showSection('home')" class="nav-item">
+        <i class="fas fa-home"></i><span>الرئيسية</span>
+    </div>
+    <div onclick="showSection('prices')" class="nav-item">
+        <i class="fas fa-chart-line"></i><span>الأسعار</span>
+    </div>
+    <div onclick="showSection('bars')" class="nav-item">
+        <i class="fas fa-cube"></i><span>السبائك</span>
+    </div>
+    <div onclick="showSection('calc')" class="nav-item">
+        <i class="fas fa-calculator"></i><span>الحاسبة</span>
+    </div>
+    <div onclick="showSection('zakat')" class="nav-item">
+        <i class="fas fa-mosque"></i><span>الزكاة</span>
+    </div>
 </div>
+
+<script>
+function showSection(id) {
+    // لو لسه شغال بنظام الصفحة الواحدة، الكود ده هينزلك للقسم المطلوب
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        // لو القسم مش موجود، هيروح للصفحة اللي عملناها
+        window.location.href = id + ".html";
+    }
+}
+</script>
 
 </body>
 </html>
