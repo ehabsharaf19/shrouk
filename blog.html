@@ -13,6 +13,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مقالات شروق الذهب - EMOSHA Gold</title>
+    .admin-controls { display: none; } /* مخفي للكل */
+.admin-mode .admin-controls { display: flex !important; } /* يظهر فقط للقبطان */
+
     <style>
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
@@ -97,26 +100,38 @@
                         <span style="color: #888;">📅 15 مايو 2026</span>
                     </div>
 
-                    <div class="admin-controls" style="display: flex; gap: 10px; margin-top: 15px; border-top: 1px dotted #444; padding-top: 10px;">
+                    <div class="admin-controls" style="display: none; gap: 10px; margin-top: 15px; border-top: 1px dotted #444; padding-top: 10px;">
                         <button style="background:#f1c40f; color:#000; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
                             onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل ✏️</button>
                         
                         <button style="background:#e74c3c; color:#fff; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
-                            onclick="deletePost('${post.id}')">حذف نهائي 🗑️</button>
+                            onclick="deletePost('${post.id}')">حذف 🗑️</button>
                     </div>
                 </div>
             </div>`;
     });
 }
 
-// وظيفة الحذف اللي هتمسح من الفايربيز فعلياً
+// وظيفة الحذف المؤمنة
 function deletePost(id) {
-    if(confirm("يا قبطان إيهاب، هل أنت متأكد إنك عاوز تمسح المقال ده نهائياً؟")) {
-        database.ref('posts/' + id).remove()
-            .then(() => { alert("تم الحذف بنجاح ✅"); })
-            .catch((e) => { alert("في مشكلة حصلت: " + e.message); });
+    if(confirm("يا قبطان، متأكد إنك عاوز تمسح المقال ده؟")) {
+        database.ref('posts/' + id).remove().then(() => {
+            alert("تم الحذف بنجاح ✅");
+        });
     }
 }
+function openSecretPanel() { 
+    let pass = prompt("كلمة السر يا قبطان:");
+    if(pass === "123010111  55Ee") {
+        // ده السطر اللي بيخلي الأزرار تظهر
+        document.body.classList.add('admin-mode'); 
+        document.getElementById('admin-panel-emosha').style.display='block';
+        alert("أهلاً بك يا قبطان، أزرار التعديل والحذف متاحة الآن.");
+    } else {
+        alert("كلمة السر خطأ!");
+    }
+}
+
 
     </script>
 </body>
