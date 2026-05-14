@@ -125,17 +125,8 @@
             <div class="articles-main">
     <h2 style="color: #f1c40f; text-align: center;">📰 أحدث مقالات شروق الذهب</h2>
     
-        <!-- المقال يوضع هنا مع التوقيع والتاريخ -->
-        <div style="background: #222; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #444;">
-            <h3 style="color: #f1c40f;">عنوان المقال الأول هنا</h3>
-            <p style="color: #ccc;">نبذة قصيرة عن محتوى المقال...</p>
-            <div style="display: flex; justify-content: space-between; margin-top: 10px; border-top: 1px solid #333; padding-top: 8px;">
-                <span style="color: #f1c40f; font-size: 12px;">🖋️ القبطان إيهاب شرف</span>
-                <span style="color: #888; font-size: 12px;">📅 14 مايو 2026</span>
-            </div>
-        </div>
-        <!-- كرر نفس المربع للمقال الثاني والثالث -->
-    </div>
+        <div id="posts-container"></div>
+
 
     <!-- الزرار اللي بيودي لصفحة المقالات الكاملة -->
     <div style="text-align: center; margin-top: 20px;">
@@ -210,16 +201,29 @@
             }
         });
 
-        function renderPosts() {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = "";
-            allPostsData.forEach((post, index) => {
-                const isVisible = index < visibleCount ? 'visible' : '';
-                const safeTitle = post.title.replace(/'/g, "\\'");
-                const safeImage = (post.image || "").replace(/'/g, "\\'");
-                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
-
-                container.innerHTML += `
+        
+      function renderPosts() {
+    const container = document.getElementById('posts-container');
+    container.innerHTML = "";
+    
+    allPostsData.forEach((post, index) => {
+        // بنحدد يظهر 3 مقالات بس في الرئيسية
+        const isVisible = index < visibleCount; 
+        
+        container.innerHTML += `
+            <div class="article-item ${isVisible ? 'visible' : ''}" style="background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333;">
+                <h3 style="color: #f1c40f; margin-bottom: 10px;">${post.title}</h3>
+                <p style="color: #ccc; font-size: 14px; line-height: 1.6;">${post.content}</p>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #444; padding-top: 10px;">
+                    <span style="color: #f1c40f; font-size: 12px; font-weight: bold;">🖋️ القبطان إيهاب شرف</span>
+                    <span style="color: #888; font-size: 11px;">📅 14 مايو 2026</span>
+                </div>
+            </div>
+        `;
+    });
+}
+          container.innerHTML += `
                     <div class="article-item ${isVisible}">
                         <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
                         <div class="article-content">
