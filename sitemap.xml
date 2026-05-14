@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- الرابط الرئيسي للموقع -->
+  <url>
+    <loc>https://shrouk-two.vercel.app/</loc>
+    <lastmod>2026-05-14</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <!-- صفحة المقالات (جوجل سيزحف إليها ويجد الـ 35 مقالاً تلقائياً) -->
+  <url>
+    <loc>https://shrouk-two.vercel.app/#posts-container</loc>
+    <lastmod>2026-05-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+</urlset>
