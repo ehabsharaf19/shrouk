@@ -1,70 +1,52 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5NVYG4VND5');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أسعار الذهب اليوم - شروق الذهب</title>
-    <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .main-title { font-size: 30px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-bottom: 20px; }
-        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 100%; max-width: 420px; }
-        .stat-item { text-align: center; flex: 1; }
-        .stat-label { color: #888; font-size: 11px; display: block; }
-        .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
-        .gold-container { width: 100%; max-width: 450px; }
-        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; }
-        .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
-        .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; }
-        .back-btn { margin-top: 20px; color: #f1c40f; text-decoration: none; border: 1px solid #f1c40f; padding: 10px 20px; border-radius: 8px; }
-    </style>
-</head>
-<body>
-    <div class="main-title">أسعار الذهب لحظة بلحظة</div>
-    
-    <div class="market-stats">
-        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
-    </div>
+<!-- 2. صفحة السبائك -->
+<div id="bullion-page" class="page-section">
+<div class="main-title" style="font-size: 25px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 أسعار الشركات والسبائك</div>
+<div class="bullion-box">
+<label style="color:#888; font-size:12px;">اختر وزن السبيكة:</label>
+<select id="b-weight" class="input-style">
+<optgroup label="أوزان صغيرة">
+<option value="0.25">ربع جرام</option>
+<option value="0.5">نصف جرام</option>
+<option value="1">1 جرام</option>
+<option value="2.5">2.5 جرام</option>
+<option value="5">5 جرام</option>
+</optgroup>
+<optgroup label="أوزان متوسطة">
+<option value="10">10 جرام</option>
+<option value="15.5">نصف أونصة (15.5 جم)</option>
+<option value="20">20 جرام</option>
+<option value="31.1">أونصة كاملة (31.1 جم)</option>
+<option value="50">50 جرام</option>
+<option value="100">100 جرام</option>
+</optgroup>
+<optgroup label="أوزان ثقيلة">
+<option value="250">ربع كيلو (250 جم)</option>
+<option value="500">نصف كيلو (500 جم)</option>
+<option value="1000">1 كيلو (1000 جم)</option>
+</optgroup>
+</select>
 
-    <div class="gold-container">
-        <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
-        <div class="gold-card"><span style="color:#888">عيار 22</span><br><span class="card-price" id="p22">...</span></div>
-        <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
-        <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
-    </div>
+<div class="company-grid">
+<button class="company-btn" onclick="comp('BTC', 125)">BTC</button>
+<button class="company-btn" onclick="comp('SAM', 120)">SAM</button>
+<button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
+<button class="company-btn" onclick="comp('سويس جولد', 130)">سويس جولد</button>
+<button class="company-btn" onclick="comp('لازوردي', 145)">لازوردي</button>
+<button class="company-btn" onclick="comp('إيجيبت جولد', 115)">إيجيبت جولد</button>
+<button class="company-btn" onclick="comp('ماستر جولد', 120)">ماستر جولد</button>
+<button class="company-btn" onclick="comp('سليمة جولد', 125)">سليمة جولد</button>
+<button class="company-btn" onclick="comp('القدس', 110)">القدس</button>
+<button class="company-btn" onclick="comp('ملوك الذهب', 115)">ملوك الذهب</button>
+<button class="company-btn" onclick="comp('جالي جولد', 120)">جالي جولد</button>
+<button class="company-btn" onclick="comp('فينوس', 130)">فينوس</button>
+<button class="company-btn" onclick="comp('العقاد', 110)">العقاد</button>
+<button class="company-btn" onclick="comp('داماس', 150)">داماس</button>
+<button class="company-btn" onclick="comp('طيبة', 125)">طيبة</button>
+</div>
 
-    <a href="index.html" class="back-btn">العودة للرئيسية</a>
-
-    <script>
-        async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                const p24 = (globalPrice / 31.1035) * currentUSD;
-
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-                document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
-                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) { console.log("Price Update Error"); }
-        }
-        updatePrices();
-        setInterval(updatePrices, 30000);
-    </script>
-</body>
-</html>
+<div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border:1px dashed #f1c40f; border-radius:10px;">
+<span id="c-name" style="color:#f1c40f"></span>: <br>
+<span id="c-price" style="font-size:25px; font-weight:bold; color:#f1c40f;">0</span> ج.م
+</div>
+</div>
+</div>
