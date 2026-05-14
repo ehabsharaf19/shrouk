@@ -325,26 +325,25 @@
     top: 0; 
     left: 0;
     width: 100%;
-    background: #111;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 5px;
+    background: #111; 
+    display: flex; 
+    justify-content: space-around; 
+    padding: 10px 5px; 
     border-bottom: 2px solid #f1c40f; 
     z-index: 10000;
   }
 
-  /* شكل الزرار "المنسق" اللي طلبته */
   .nav-btn {
     flex: 1;
-    margin: 0 4px;
+    margin: 0 3px;
     padding: 8px 2px;
     background: #222; 
-    border: 1px solid #f1c40f; /* برواز ذهبي خفيف */
+    border: 1px solid #f1c40f; 
     border-radius: 6px; 
     color: #fff;
     text-decoration: none;
     text-align: center;
-    font-size: 11px;
+    font-size: 10px; /* صغرنا الخط شوية عشان الـ 5 زراير يكفوا جنب بعض */
     font-weight: bold;
     display: flex;
     flex-direction: column;
@@ -355,7 +354,7 @@
   .nav-btn i {
     font-size: 16px;
     margin-bottom: 4px;
-    color: #f1c40f; /* لون الأيقونة ذهبي */
+    color: #f1c40f;
   }
 
   .nav-btn.active {
@@ -367,35 +366,37 @@
     color: #000;
   }
 
-  /* مسافة عشان المحتوى ما يدخلش تحت الزراير */
-  body { padding-top: 75px; }
+  body { padding-top: 80px; }
 </style>
 
 <div class="fixed-nav-menu">
-    <!-- الرابط لملف الصفحة الرئيسية -->
     <a href="index.html" class="nav-btn active">
         <i class="fas fa-home"></i>
         <span>الرئيسية</span>
     </a>
     
-    <!-- الرابط لملف صفحة السبائك -->
     <a href="prices.html" class="nav-btn">
         <i class="fas fa-cube"></i>
         <span>السبائك</span>
     </a>
     
-    <!-- الرابط لملف صفحة المقالات -->
     <a href="blog.html" class="nav-btn">
         <i class="fas fa-newspaper"></i>
         <span>المقالات</span>
     </a>
 
-    <!-- الرابط لملف صفحة الحاسبة -->
     <a href="calculator.html" class="nav-btn">
         <i class="fas fa-calculator"></i>
         <span>الحاسبة</span>
     </a>
+
+    <!-- رجعنا زرار الزكاة برابط ملفه المباشر -->
+    <a href="zakat.html" class="nav-btn">
+        <i class="fas fa-mosque"></i>
+        <span>الزكاة</span>
+    </a>
 </div>
+
 
 </body>
 </html>
