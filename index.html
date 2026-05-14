@@ -36,10 +36,6 @@
         .page-section { display: none; width: 100%; min-height: 100vh; padding-bottom: 120px; }
         .active-page { display: block !important; }
 
-        /* القائمة السفلية الثابتة */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid #f1c40f; z-index: 99999; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); }
-        .nav-item { color: #888; text-align: center; font-size: 12px; cursor: pointer; flex: 1; transition: 0.3s; }
-        .nav-item.active { color: #f1c40f; font-weight: bold; transform: scale(1.1); }
 
         /* كروت الذهب */
         .gold-container { width: 100%; max-width: 450px; margin: 0 auto 30px; }
@@ -91,12 +87,7 @@
 </head>
 <body id="main-body">
 
-    <!-- التنقل السفلي -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="showTab('home-page', this)">🏠<br>الرئيسية</div>
-        <div class="nav-item" onclick="showTab('bullion-page', this)">🏆<br>السبائك</div>
-        <div class="nav-item" onclick="showTab('calc-page', this)">🧮<br>الحاسبة والزكاة</div>
-    </div>
+ 
 
     <!-- 1. صفحة الرئيسية -->
     <div id="home-page" class="page-section active-page">
@@ -165,104 +156,7 @@
         </div>
     </div>
 
-    <!-- 2. صفحة السبائك -->
-    <div id="bullion-page" class="page-section">
-        <div class="main-title" style="font-size: 25px; text-align:center; color:#f1c40f; margin-top:30px;">🏆 أسعار الشركات والسبائك</div>
-        <div class="bullion-box">
-            <label style="color:#888; font-size:12px;">اختر وزن السبيكة:</label>
-            <select id="b-weight" class="input-style">
-                <optgroup label="أوزان صغيرة">
-                    <option value="0.25">ربع جرام</option>
-                    <option value="0.5">نصف جرام</option>
-                    <option value="1">1 جرام</option>
-                    <option value="2.5">2.5 جرام</option>
-                    <option value="5">5 جرام</option>
-                </optgroup>
-                <optgroup label="أوزان متوسطة">
-                    <option value="10">10 جرام</option>
-                    <option value="15.5">نصف أونصة (15.5 جم)</option>
-                    <option value="20">20 جرام</option>
-                    <option value="31.1">أونصة كاملة (31.1 جم)</option>
-                    <option value="50">50 جرام</option>
-                    <option value="100">100 جرام</option>
-                </optgroup>
-                <optgroup label="أوزان ثقيلة">
-                    <option value="250">ربع كيلو (250 جم)</option>
-                    <option value="500">نصف كيلو (500 جم)</option>
-                    <option value="1000">1 كيلو (1000 جم)</option>
-                </optgroup>
-            </select>
-            
-            <div class="company-grid">
-                <button class="company-btn" onclick="comp('BTC', 125)">BTC</button>
-                <button class="company-btn" onclick="comp('SAM', 120)">SAM</button>
-                <button class="company-btn" onclick="comp('جولدن كينج', 115)">جولدن كينج</button>
-                <button class="company-btn" onclick="comp('سويس جولد', 130)">سويس جولد</button>
-                <button class="company-btn" onclick="comp('لازوردي', 145)">لازوردي</button>
-                <button class="company-btn" onclick="comp('إيجيبت جولد', 115)">إيجيبت جولد</button>
-                <button class="company-btn" onclick="comp('ماستر جولد', 120)">ماستر جولد</button>
-                <button class="company-btn" onclick="comp('سليمة جولد', 125)">سليمة جولد</button>
-                <button class="company-btn" onclick="comp('القدس', 110)">القدس</button>
-                <button class="company-btn" onclick="comp('ملوك الذهب', 115)">ملوك الذهب</button>
-                <button class="company-btn" onclick="comp('جالي جولد', 120)">جالي جولد</button>
-                <button class="company-btn" onclick="comp('فينوس', 130)">فينوس</button>
-                <button class="company-btn" onclick="comp('العقاد', 110)">العقاد</button>
-                <button class="company-btn" onclick="comp('داماس', 150)">داماس</button>
-                <button class="company-btn" onclick="comp('طيبة', 125)">طيبة</button>
-            </div>
-            
-            <div id="res-bullion" style="display:none; margin-top:20px; padding:15px; background:#222; border:1px dashed #f1c40f; border-radius:10px;">
-                <span id="c-name" style="color:#f1c40f"></span>: <br>
-                <span id="c-price" style="font-size:25px; font-weight:bold; color:#f1c40f;">0</span> ج.م
-            </div>
-        </div>
-    </div>
 
-    <!-- 3. صفحة الحاسبة والزكاة -->
-    <div id="calc-page" class="page-section">
-        <div class="main-title" style="font-size: 25px; text-align:center; color:#f1c40f; margin-top:30px;">🧮 الحاسبة والزكاة</div>
-        
-        <div class="bullion-box">
-            <h3 style="color:#f1c40f;">🧮 حاسبة السعر بالمصنعية</h3>
-            <input type="number" id="g-w" class="input-style" placeholder="أدخل الوزن بالجرام">
-            <select id="g-c" class="input-style">
-                <option value="24">عيار 24</option>
-                <option value="22">عيار 22</option>
-
-         
-                <option value="21">عيار 21</option>
-                <option value="18">عيار 18</option>
-            </select>
-            <input type="number" id="g-m" class="input-style" placeholder="قيمة المصنعية للجرام">
-            <button class="btn-gold" onclick="runGoldCalc()">احسب الإجمالي</button>
-            <div id="g-res" style="display:none; margin-top:10px; font-size:20px; color:#f1c40f;"> الإجمالي: <span id="g-val">0</span> ج.م</div>
-        </div>
-
-        <div class="bullion-box">
-            <h3 style="color:#27ae60;">🕌 حاسبة زكاة الذهب</h3>
-            <input type="number" id="z-w" class="input-style" placeholder="وزن الذهب الكلي">
-            <select id="z-c" class="input-style">
-                <option value="24">عيار 24</option>
-                <option value="22">عيار 22</option>
-                <option value="21">عيار 21</option>
-                <option value="18">عيار 18</option>
-            </select>
-            <button class="btn-zakat" onclick="runZakat()">احسب الزكاة</button>
-            <div id="z-res" style="display:none; margin-top:10px;">
-                <div style="color:#27ae60; font-size:20px;">قيمة الزكاة: <span id="z-val">0</span> ج.م</div>
-                <p id="z-status" style="font-size:12px; margin-top:5px;"></p>
-            </div>
-
-            <div class="zakat-rules">
-                <h4>📋 شروط الزكاة:</h4>
-                <ul>
-                    <li>أن يصل الذهب إلى 85 جراماً عيار 24.</li>
-                    <li>مرور عام هجري كامل.</li>
-                    <li>أن يكون الذهب ملكاً خالصاً ومدخراً.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <!-- البرمجة -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -356,41 +250,9 @@
         updatePrices(); setInterval(updatePrices, 30000);
 
         // --- حاسبة السعر والزكاة والشركات ---
-        function runGoldCalc() {
-            const w = parseFloat(document.getElementById('g-w').value);
-            const c = document.getElementById('g-c').value;
-            const m = parseFloat(document.getElementById('g-m').value) || 0;
-            let p;
-            if(c === "22") {
-                const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-                p = p24 * 0.916;
-            } else {
-                p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, ''));
-            }
-            
-            if(w > 0 && !isNaN(p)) {
-                document.getElementById('g-val').innerText = Math.round((p + m) * w).toLocaleString();
-                document.getElementById('g-res').style.display = 'block';
-            }
-        }
+        
 
-        function runZakat() {
-            const w = parseFloat(document.getElementById('z-w').value);
-            const c = document.getElementById('z-c').value;
-            let p;
-            const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-            if(c === "22") { p = p24 * 0.916; } 
-            else { p = parseFloat(document.getElementById('p' + c).innerText.replace(/,/g, '')); }
-
-            if(w > 0 && !isNaN(p)) {
-                let zakat = (w * p) * 0.025;
-                document.getElementById('z-val').innerText = Math.round(zakat).toLocaleString();
-                document.getElementById('z-res').style.display = 'block';
-                let eq24 = (w * parseInt(c)) / 24;
-                document.getElementById('z-status').innerText = eq24 >= 85 ? "✅ بلغت النصاب الشرعي" : "⚠️ لم تبلغ النصاب";
-                document.getElementById('z-status').style.color = eq24 >= 85 ? "#27ae60" : "#e74c3c";
-            }
-        }
+        
 
         function openSecretPanel() { 
             if(prompt("كلمة السر يا قبطان:") === "1230") {
@@ -454,6 +316,59 @@
         }
 
     </script>
-    
+    <!-- كود القائمة السفلية الموحد - شروق الذهب -->
+<style>
+  .bottom-nav { 
+    position: fixed; 
+    bottom: 0; 
+    width: 100%; 
+    background: #000; /* لون أسود ليتماشى مع تصميمك */
+    display: flex; 
+    justify-content: space-around; 
+    padding: 12px 0; 
+    border-top: 1px solid #f1c40f; 
+    z-index: 10000; 
+    left: 0; 
+  }
+  .nav-item { 
+    color: #fff; 
+    text-align: center; 
+    text-decoration: none;
+    font-size: 11px;
+    flex: 1;
+  }
+  .nav-item i { 
+    display: block; 
+    font-size: 18px; 
+    margin-bottom: 3px; 
+    color: #f1c40f; 
+  }
+  /* لإعطاء مساحة في أسفل الصفحة حتى لا يغطي الشريط آخر المحتوى */
+  body { padding-bottom: 70px; }
+</style>
+
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
+    </a>
+    <a href="prices.html" class="nav-item">
+        <i class="fas fa-chart-line"></i>
+        <span>الأسعار</span>
+    </a>
+    <a href="calculator.html" class="nav-item">
+        <i class="fas fa-calculator"></i>
+        <span>الحاسبة</span>
+    </a>
+    <a href="blog.html" class="nav-item">
+        <i class="fas fa-newspaper"></i>
+        <span>المقالات</span>
+    </a>
+    <a href="zakat.html" class="nav-item">
+        <i class="fas fa-mosque"></i>
+        <span>الزكاة</span>
+    </a>
+</div>
+
 </body>
 </html>
