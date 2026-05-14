@@ -99,7 +99,7 @@ function renderPosts() {
 
                     <div class="admin-controls" style="display: none; gap: 10px; margin-top: 15px; border-top: 1px dotted #444; padding-top: 10px;">
                         <button class="btn-edit" style="background:#f1c40f; color:#000; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
-                            onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل ✏️</button>
+                            onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}`)">تعديل ✏️</button>
                         
                         <button style="background:#e74c3c; color:#fff; border:none; padding: 8px 15px; border-radius: 5px; cursor:pointer; font-weight:bold;" 
                             onclick="deletePost('${post.id}')">حذف 🗑️</button>
