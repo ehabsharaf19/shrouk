@@ -319,27 +319,24 @@
 
     </script>
 <style>
-       <!-- القائمة السفلية النهائية الاحترافية - تصميم القبطان إيهاب شرف -->
+   <!-- القائمة السفلية الثابتة 100% - تصميم القبطان إيهاب شرف -->
 <style>
-  /* السطر ده بيجبر القائمة تكون أفقية وتحت خالص */
-  .footer-nav {
-    position: fixed !important;
-    bottom: 0 !important;
+  .shrouk-bottom-bar {
+    position: fixed !important; /* تثبيت الزرار في مكانه مهما طلعنا ونزلنا */
+    bottom: 0 !important; /* لصق الأزرار في أسفل الشاشة */
     left: 0 !important;
     width: 100% !important;
-    background: #111 !important; /* لون أسود فخم */
-    display: flex !important; /* ده اللي بيخليهم جنب بعض أفقياً */
-    flex-direction: row !important; /* تأكيد إنهم صف واحد */
+    background: #111 !important; /* أسود زي كود السبائك */
+    display: flex !important; /* رص الأزرار أفقياً جنب بعضها */
     justify-content: space-around !important;
     padding: 10px 0 !important;
-    border-top: 2px solid #f1c40f !important; /* الخط الذهبي */
-    z-index: 999999 !important;
-    margin: 0 !important;
+    border-top: 2px solid #f1c40f !important; /* الخط الذهبي المشهور */
+    z-index: 9999999 !important; /* ضمان الظهور فوق كل محتوى الصفحة */
   }
 
-  .footer-nav a {
+  .shrouk-bottom-bar a {
+    color: #888 !important;
     text-decoration: none !important;
-    color: #888 !important; /* لون رمادي هادي للزراير الغير نشطة */
     text-align: center !important;
     flex: 1 !important;
     display: flex !important;
@@ -348,21 +345,18 @@
     font-size: 11px !important;
   }
 
-  .footer-nav a i {
+  .shrouk-bottom-bar a i {
     font-size: 20px !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 4px !important;
   }
 
-  /* الزرار النشط باللون الأصفر الذهبي */
-  .footer-nav a.active, .footer-nav a:hover {
+  /* اللون الأصفر للصفحة النشطة */
+  .shrouk-bottom-bar a.active {
     color: #f1c40f !important;
   }
-
-  /* مسافة عشان الكلام ما يجيش ورا الزراير */
-  body { padding-bottom: 70px !important; }
 </style>
 
-<div class="footer-nav">
+<div class="shrouk-bottom-bar">
     <a href="index.html" class="active">
         <i class="fas fa-home"></i>
         <span>الرئيسية</span>
@@ -384,6 +378,6 @@
         <span>الزكاة</span>
     </a>
 </div>
-   
+    
 </body>
 </html>
