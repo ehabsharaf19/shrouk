@@ -86,36 +86,41 @@
                 renderPosts();
             }
         });
+// الكود الأصلي - رجوع لحالة الاستقرار
 let visibleCount = 3; 
 let allPostsData = []; 
 
-// جلب المقالات من فيربيز
+// 1. الربط مع قاعدة البيانات (تأكد إن الجزء ده موجود)
 database.ref('posts').on('value', (snapshot) => {
     const data = snapshot.val();
     if(data) {
         allPostsData = Object.keys(data).map(id => ({
             id: id,
             ...data[id]
-        })).reverse();
+        })).reverse(); // الترتيب من الأحدث للأقدم
         renderPosts();
+    } else {
+        document.getElementById('posts-container').innerHTML = "لا توجد مقالات حالياً.";
     }
 });
 
+// 2. وظيفة عرض المقالات الأصلية
 function renderPosts() {
     const container = document.getElementById('posts-container');
     if (!container) return;
     container.innerHTML = "";
     
-    // عرض 3 مقالات فقط عشان الصفحة تبقى خفيفة
     const limitedPosts = allPostsData.slice(0, visibleCount);
 
     limitedPosts.forEach((post) => {
         container.innerHTML += `
-            <div class="article-item visible">
-                <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
+            <div class="article-item visible" style="display: block; margin-bottom: 20px;">
+                <div class="article-header" onclick="this.parentElement.classList.toggle('active')" style="cursor: pointer;">
+                    ${post.title}
+                </div>
                 <div class="article-content">
-                    ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                    <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                    ${post.image ? `<img src="${post.image}" class="article-image" style="width:100%; border-radius:10px;">` : ""}
+                    <div style="white-space: pre-wrap; line-height: 1.9; padding: 15px;">${post.content}</div>
                     
                     <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; font-size: 12px; color: #f1c40f;">
                         <span>🖋️ القبطان إيهاب شرف</span>
@@ -132,10 +137,12 @@ function renderPosts() {
     }
 }
 
+// 3. وظيفة تحميل المزيد
 function loadThreeMore() {
     visibleCount += 3;
     renderPosts();
 }
+
 
     </script>
 </body>
