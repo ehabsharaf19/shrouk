@@ -86,24 +86,30 @@
                 renderPosts();
             }
         });
+let visibleCount = 3; 
+let allPostsData = []; 
 
-// --- كود الإدارة المجمع للقبطان إيهاب ---
-
-let visibleCount = 3; // عشان الصفحة تكون خفيفة
+// جلب المقالات من فيربيز
+database.ref('posts').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if(data) {
+        allPostsData = Object.keys(data).map(id => ({
+            id: id,
+            ...data[id]
+        })).reverse();
+        renderPosts();
+    }
+});
 
 function renderPosts() {
     const container = document.getElementById('posts-container');
     if (!container) return;
     container.innerHTML = "";
     
-    // نظام الـ 3 مقالات (عرض جزء من البيانات)
+    // عرض 3 مقالات فقط عشان الصفحة تبقى خفيفة
     const limitedPosts = allPostsData.slice(0, visibleCount);
 
     limitedPosts.forEach((post) => {
-        const safeTitle = (post.title || "").replace(/'/g, "\\'");
-        const safeImage = (post.image || "").replace(/'/g, "\\'");
-        const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
-
         container.innerHTML += `
             <div class="article-item visible">
                 <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
@@ -115,51 +121,21 @@ function renderPosts() {
                         <span>🖋️ القبطان إيهاب شرف</span>
                         <span>📅 15 مايو 2026</span>
                     </div>
-
-                    <div class="admin-controls" style="display: none; gap: 10px; margin-top: 15px;">
-                        <button style="background:#f1c40f; color:#000; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;" 
-                            onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل ✏️</button>
-                        
-                        <button style="background:#e74c3c; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;" 
-                            onclick="deletePost('${post.id}')">حذف 🗑️</button>
-                    </div>
                 </div>
             </div>`;
     });
-    
-    // زرار تحميل المزيد
+
+    // إظهار زرار تحميل المزيد
     const loadMoreBtn = document.getElementById('load-more-btn');
     if (loadMoreBtn) {
         loadMoreBtn.style.display = (visibleCount < allPostsData.length) ? 'block' : 'none';
     }
 }
 
-// وظيفة الباسورد (1230) لإظهار الأزرار
-function openSecretPanel() { 
-    if(prompt("كلمة السر يا قبطان:") === "1230") {
-        document.body.classList.add('admin-mode'); 
-        alert("أهلاً بك يا قبطان.. أزرار الحذف والتعديل ظهرت الآن ✅");
-        renderPosts(); // تحديث الصفحة لإظهار الأزرار
-    } else {
-        alert("كلمة السر خطأ!");
-    }
-}
-
-// وظيفة الحذف الفعلي من الفايربيز
-function deletePost(id) {
-    if(confirm("متأكد إنك عاوز تمسح المقال ده نهائياً؟")) {
-        database.ref('posts/' + id).remove().then(() => {
-            alert("تم الحذف بنجاح ✅");
-        });
-    }
-}
-
-// وظيفة تحميل المزيد
 function loadThreeMore() {
     visibleCount += 3;
     renderPosts();
 }
-
 
     </script>
 </body>
