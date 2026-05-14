@@ -124,7 +124,29 @@
         <div class="main-layout">
             <div class="articles-main">
     <h2 style="color: #f1c40f; text-align: center;">📰 أحدث مقالات شروق الذهب</h2>
+    function renderPosts() {
+    const container = document.getElementById('posts-container');
+    if (!container) return; 
+    container.innerHTML = "";
     
+    // عرض أول 3 مقالات فقط في الرئيسية
+    const limitedPosts = allPostsData.slice(0, 3); 
+
+    limitedPosts.forEach((post) => {
+        container.innerHTML += `
+            <div class="article-item visible" style="background: #111; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; text-align: right;">
+                <h3 style="color: #f1c40f; margin-bottom: 8px;">${post.title}</h3>
+                <p style="color: #ccc; font-size: 14px;">${post.content || 'اضغط لمشاهدة التفاصيل...'}</p>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 10px; border-top: 1px solid #444; padding-top: 8px;">
+                    <span style="color: #f1c40f; font-size: 11px; font-weight: bold;">🖋️ القبطان إيهاب شرف</span>
+                    <span style="color: #888; font-size: 11px;">📅 14 مايو 2026</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
 
     <!-- الزرار اللي بيودي لصفحة المقالات الكاملة -->
     <div style="text-align: center; margin-top: 20px;">
