@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5NVYG4VND5');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة سعر الذهب بالمصنعية - شروق الذهب</title>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-title { font-size: 25px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-bottom: 20px; text-align: center; }
+        .calc-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 25px; text-align: center; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        .input-group label { display: block; margin-bottom: 5px; color: #888; font-size: 14px; }
+        .input-style { width: 94%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; font-size: 16px; }
+        .btn-calc { background: #f1c40f; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .btn-calc:hover { background: #d4ac0d; }
+        #res-box { display: none; margin-top: 20px; padding: 20px; border-radius: 10px; background: #000; border: 1px dashed #f1c40f; }
+        .res-label { color: #888; font-size: 14px; }
+        .res-value { color: #f1c40f; font-size: 28px; font-weight: bold; display: block; margin-top: 5px; }
+        .back-btn { margin-top: 25px; color: #f1c40f; text-decoration: none; border: 1px solid #444; padding: 10px 20px; border-radius: 8px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-title">🧮 حاسبة سعر الذهب بالمصنعية</div>
+
+    <div class="calc-box">
+        <div class="input-group">
+            <label>وزن الذهب (جرام)</label>
+            <input type="number" id="g-w" class="input-style" placeholder="مثال: 10">
+        </div>
+
+        <div class="input-group">
+            <label>اختر العيار</label>
+            <select id="g-c" class="input-style">
+                <option value="24">عيار 24</option>
+                <option value="22">عيار 22</option>
+                <option value="21" selected>عيار 21</option>
+                <option value="18">عيار 18</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>المصنعية للجرام (ج.م)</label>
+            <input type="number" id="g-m" class="input-style" placeholder="مثال: 150">
+        </div>
+
+        <button class="btn-calc" onclick="calculateGold()">احسب الإجمالي الآن</button>
+        
+        <div id="res-box">
+            <span class="res-label">إجمالي السعر شاملاً المصنعية:</span>
+            <span id="g-val" class="res-value">0</span>
+            <small style="color:#555; margin-top:10px; display:block;">* السعر يعتمد على بيانات السوق اللحظية</small>
+        </div>
+    </div>
+
+    <!-- حقول مخفية لجلب الأسعار لحظياً من النظام -->
+    <span id="p24" style="display:none;">0</span>
+    <span id="p22" style="display:none;">0</span>
+    <span id="p21" style="display:none;">0</span>
+    <span id="p18" style="display:none;">0</span>
+
+    <a href="index.html" class="back-btn">⬅️ العودة للرئيسية</a>
+
+    <script>
+        // جلب الأسعار فور فتح الصفحة لضمان الدقة
+        async function fetchLivePrices() {
+            try {
+                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const usdData = await usdRes.json();
+                const currentUSD = usdData.rates.EGP;
+                
+                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+                const goldData = await goldRes.json();
+                const p24 = (parseFloat(goldData.price) / 31.1035) * currentUSD;
+
+                document.getElementById('p24').innerText = p24;
+                document.getElementById('p22').innerText = p24 * 0.916;
+                document.getElementById('p21').innerText = p24 * 0.875;
+                document.getElementById('p18').innerText = p24 * 0.75;
+            } catch (e) { console.error("Error fetching live prices"); }
+        }
+        fetchLivePrices();
+
+        function calculateGold() {
+            const weight = parseFloat(document.getElementById('g-w').value);
+            const caliber = document.getElementById('g-c').value;
+            const makingCharge = parseFloat(document.getElementById('g-m').value) || 0;
+            const pricePerGram = parseFloat(document.getElementById('p' + caliber).innerText);
+
+            if(weight > 0 && pricePerGram > 0) {
+                const total = (pricePerGram + makingCharge) * weight;
+                document.getElementById('g-val').innerText = Math.round(total).toLocaleString() + " ج.م";
+                document.getElementById('res-box').style.display = 'block';
+            } else {
+                alert("يرجى إدخال الوزن والانتظار ثانية لجلب السعر.");
+            }
+        }
+    </script>
+</body>
+</html>
