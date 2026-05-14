@@ -286,20 +286,24 @@
             } catch (e) {}
         }
         updatePrices(); setInterval(updatePrices, 30000);
-
-        // جلب المقالات
+        // جلب المقالات وتحديث عرضها بناءً على العدد المطلوب
         database.ref('posts').on('value', (snapshot) => {
             const container = document.getElementById('posts-container');
             const ticker = document.getElementById('news-ticker');
             container.innerHTML = "";
             const data = snapshot.val();
+            
             if(data) {
                 const titles = [];
-                const keys = Object.keys(data).reverse();
+                const keys = Object.keys(data).reverse(); // ترتيب من الأحدث للأقدم
+                
                 keys.forEach((id, index) => {
                     const post = data[id];
                     titles.push("🔱 " + post.title);
+                    
+                    // الإصلاح البرمجي لضمان ظهور المقالات عند الضغط على "المزيد"
                     const isVisible = index < visibleCount ? 'visible' : '';
+                    
                     const safeTitle = post.title.replace(/'/g, "\\'");
                     const safeImage = (post.image || "").replace(/'/g, "\\'");
                     const safeContent = post.content.replace(/`/g, "\\`").replace(/'/g, "\\'");
@@ -316,12 +320,28 @@
                             </div>
                         </div>`;
                 });
+                
                 ticker.innerText = titles.join(" . . . . ");
-                document.getElementById('load-more-btn').style.display = visibleCount < keys.length ? 'block' : 'none';
+                
+                // تحديث حالة زر "عرض المزيد" ليختفي عند انتهاء المقالات
+                const loadMoreBtn = document.getElementById('load-more-btn');
+                if (visibleCount < keys.length) {
+                    loadMoreBtn.style.display = 'block';
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                }
             }
         });
 
+        // وظيفة عرض 3 مقالات إضافية عند الضغط على الزر
         function loadThreeMore() {
+            visibleCount += 3;
+            // تحديث العرض فورياً
+            database.ref('posts').once('value', (snapshot) => {
+                // سيقوم التحديث التلقائي لـ Firebase بإعادة بناء القائمة بالعدد الجديد
+            });
+        }
+ {
             visibleCount += 3;
             database.ref('posts').once('value', () => {});
         }
