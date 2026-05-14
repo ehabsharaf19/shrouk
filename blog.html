@@ -13,19 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مقالات شروق الذهب - EMOSHA Gold</title>
-    <style> 
-        /* 1. إخفاء الأزرار عن الزوار */
-.admin-controls { 
-    display: none !important; 
-}
-
-/* 2. إظهارها للقبطان فقط بعد الباسورد */
-.admin-mode .admin-controls { 
-    display: flex !important; 
-    gap: 10px;
-    margin-top: 15px;
-}
-
+    <style>
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
@@ -86,64 +74,37 @@
                 renderPosts();
             }
         });
-// الكود الأصلي - رجوع لحالة الاستقرار
-let visibleCount = 3; 
-let allPostsData = []; 
 
-// 1. الربط مع قاعدة البيانات (تأكد إن الجزء ده موجود)
-database.ref('posts').on('value', (snapshot) => {
-    const data = snapshot.val();
-    if(data) {
-        allPostsData = Object.keys(data).map(id => ({
-            id: id,
-            ...data[id]
-        })).reverse(); // الترتيب من الأحدث للأقدم
-        renderPosts();
-    } else {
-        document.getElementById('posts-container').innerHTML = "لا توجد مقالات حالياً.";
-    }
-});
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            allPostsData.forEach((post, index) => {
+                const isVisible = index < visibleCount ? 'visible' : '';
+                // جلب التاريخ من البيانات أو وضع تاريخ افتراضي إذا لم يوجد
+                const postDate = post.date ? post.date : "2026-05-14"; 
 
-// 2. وظيفة عرض المقالات الأصلية
-function renderPosts() {
-    const container = document.getElementById('posts-container');
-    if (!container) return;
-    container.innerHTML = "";
-    
-    const limitedPosts = allPostsData.slice(0, visibleCount);
+                container.innerHTML += `
+                    <div class="article-item ${isVisible}">
+                        <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            <div class="meta-info">
+                                <span style="color:#666;">📅 تاريخ النشر: ${postDate}</span>
+                                <span>✍️ القبطان إيهاب شرف</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
 
-    limitedPosts.forEach((post) => {
-        container.innerHTML += `
-            <div class="article-item visible" style="display: block; margin-bottom: 20px;">
-                <div class="article-header" onclick="this.parentElement.classList.toggle('active')" style="cursor: pointer;">
-                    ${post.title}
-                </div>
-                <div class="article-content">
-                    ${post.image ? `<img src="${post.image}" class="article-image" style="width:100%; border-radius:10px;">` : ""}
-                    <div style="white-space: pre-wrap; line-height: 1.9; padding: 15px;">${post.content}</div>
-                    
-                    <div style="display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; font-size: 12px; color: #f1c40f;">
-                        <span>🖋️ القبطان إيهاب شرف</span>
-                        <span>📅 15 مايو 2026</span>
-                    </div>
-                </div>
-            </div>`;
-    });
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            loadMoreBtn.style.display = visibleCount < allPostsData.length ? 'block' : 'none';
+        }
 
-    // إظهار زرار تحميل المزيد
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    if (loadMoreBtn) {
-        loadMoreBtn.style.display = (visibleCount < allPostsData.length) ? 'block' : 'none';
-    }
-}
-
-// 3. وظيفة تحميل المزيد
-function loadThreeMore() {
-    visibleCount += 3;
-    renderPosts();
-}
-
-
+        function loadThreeMore() {
+            visibleCount += 3;
+            renderPosts();
+        }
     </script>
 </body>
 </html>
