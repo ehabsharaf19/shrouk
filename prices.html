@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <!-- الهيدر الموحد - شروق الذهب -->
 <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f;">
     <h1 style="color: #f1c40f; margin: 0; font-size: 24px;">✨ شروق الذهب ✨</h1>
@@ -85,14 +87,80 @@
         </div>
     </div>
 
-    <!-- القائمة السفلية للتنقل -->
-    <div class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="prices.html" class="nav-item active"><i class="fas fa-cube"></i><span>السبائك</span></a>
-        <a href="calculator.html" class="nav-item"><i class="fas fa-calculator"></i><span>الحاسبة</span></a>
-        <a href="blog.html" class="nav-item"><i class="fas fa-newspaper"></i><span>المقالات</span></a>
-        <a href="zakat.html" class="nav-item"><i class="fas fa-mosque"></i><span>الزكاة</span></a>
-    </div>
+    <!-- القائمة السفلية الثابتة - تصميم القبطان إيهاب أبو رتال -->
+<style>
+  .shrouk-bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important; /* التثبيت أسفل الشاشة */
+    left: 0 !important;
+    width: 100% !important;
+    background: #111 !important; /* لون الخلفية الداكن */
+    display: flex !important; /* رص الأزرار أفقياً */
+    justify-content: space-around !important;
+    padding: 10px 0 !important;
+    border-top: 2px solid #f1c40f !important; /* الخط الذهبي من فوق */
+    z-index: 9999999 !important;
+    margin: 0 !important;
+  }
+
+  .shrouk-bottom-nav a {
+    color: #fff !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    font-size: 11px !important;
+    background: #222 !important; /* لون الزرار */
+    margin: 0 4px !important;
+    padding: 8px 0 !important;
+    border-radius: 8px !important; /* زوايا الزرار الدائرية */
+    border: 1px solid #444 !important;
+    transition: 0.3s;
+  }
+
+  .shrouk-bottom-nav a i {
+    font-size: 20px !important;
+    margin-bottom: 4px !important;
+    color: #f1c40f !important; /* لون الأيقونة ذهبي */
+  }
+
+  /* الزرار النشط (أصفر كامل) */
+  .shrouk-bottom-nav a.active {
+    background: #f1c40f !important;
+    color: #000 !important;
+    border-color: #fff !important;
+  }
+  .shrouk-bottom-nav a.active i { color: #000 !important; }
+
+  /* مسافة عشان المحتوى ما يختفيش ورا القائمة */
+  body { padding-bottom: 80px !important; padding-top: 0 !important; }
+</style>
+
+<div class="shrouk-bottom-nav">
+    <a href="index.html" class="active">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
+    </a>
+    <a href="prices.html">
+        <i class="fas fa-cube"></i>
+        <span>السبائك</span>
+    </a>
+    <a href="blog.html">
+        <i class="fas fa-newspaper"></i>
+        <span>المقالات</span>
+    </a>
+    <a href="calculator.html">
+        <i class="fas fa-calculator"></i>
+        <span>الحاسبة</span>
+    </a>
+    <a href="zakat.html">
+        <i class="fas fa-mosque"></i>
+        <span>الزكاة</span>
+    </a>
+</div>
+
 
     <script>
         // دالة الحساب البرمجية
