@@ -24,9 +24,8 @@
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
-<marquee behavior="scroll" direction="right" id="ticker" scrollamount="6" style="font-size: 14px; color: #fff; padding: 5px;">
-    🔥 شروق الذهب: نتابع معكم حركة أسعار الصاغة والبورصة العالمية لحظة بلحظة | ⚠️ تنبيه: الأسعار المعروضة تُحدث تلقائياً وفقاً لشاشات البورصة العالمية ومصرف مصر المركزي | ✨ ترقبوا تحديثات السبائك والجنيهات الذهب أولاً بأول من قلب السوق.
-</marquee>
+        <marquee behavior="scroll" direction="right" id="ticker" scrollamount="9" style="font-size: 14px; color: #fff; padding: 5px;">🔥 شروق الذهب: نتابع معكم حركة أسعار الصاغة والبورصة العالمية لحظة بلحظة | ⚠️ تنبيه: الأسعار المعروضة تُحدث تلقائياً وفقاً لشاشات البورصة العالمية ومصرف مصر المركزي | ✨ ترقبوا تحديثات السبائك والجنيهات الذهب أولاً بأول من قلب السوق.</marquee>
+
 
         /* إحصائيات السوق */
         .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 90%; max-width: 420px; }
@@ -468,25 +467,6 @@ function startEgyptClock() {
     }
 }
 startEgyptClock();
-// كود تشغيل الساعة وملء شريط الأخبار - تصميم القبطان
-function ابدأ_تحديث_الموقع() {
-    // 1. تشغيل الساعة بتوقيت مصر
-    const clockElement = document.getElementById('egypt-time');
-    if (clockElement) {
-        setInterval(() => {
-            document.getElementById('egypt-time').innerText = new Date().toLocaleTimeString('ar-EG', {timeZone: 'Africa/Cairo'});
-        }, 1000);
-    }
-
-    // 2. وضع الأخبار والجمل الاحترافية في الشريط عشان يتحرك
-    // اتأكد إن الـ ID اللي جوه القوس هو نفس اسم الـ ID بتاع الشريط عندك (غالباً ticker-move أو news-content)
-    const newsElement = document.getElementById('news-content') || document.querySelector('.ticker-move');
-    if (newsElement) {
-        newsElement.innerHTML = " 🔥 شروق الذهب: نتابع معكم حركة أسعار الصاغة والبورصة العالمية لحظة بلحظة | ⚠️ تنبيه: الأسعار المعروضة تُحدث تلقائياً وفقاً لشاشات البورصة العالمية ومصرف مصر المركزي | ✨ ترقبوا تحديثات السبائك والجنيهات الذهب أولاً بأول.";
-    }
-}
-// تشغيل الدالة فوراً
-ابدأ_تحديث_الموقع();
 
 </script>
 
