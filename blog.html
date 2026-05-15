@@ -85,8 +85,13 @@
 
                 container.innerHTML += `
                     <div class="article-item ${isVisible}">
-                        <div class="article-header" onclick="this.parentElement.classList.toggle('active')">${post.title}</div>
-                        <div class="article-content">
+                        <div class="article-header">
+    <a href="post.html?id=${post.id}" style="color:inherit; text-decoration:none; display:block;">
+        ${post.title} 🔗
+    </a>
+</div>
+<div class="article-content">
+
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
                             <div class="meta-info">
