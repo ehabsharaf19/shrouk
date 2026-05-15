@@ -431,33 +431,30 @@
         <i class="fas fa-mosque"></i>
         <span>الزكاة</span>
     </a>
-</div>async function updatePrices() {
-    try {
-        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-        const usdData = await usdRes.json();
-        const currentUSD = usdData.rates.EGP;
-
-        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-        const goldData = await goldRes.json();
-        const globalPrice = parseFloat(goldData.price);
-        const p24 = (globalPrice / 31.1035) * currentUSD;
-
-        // تحديث الأرقام في الشاشة
-        document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-        document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-        document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-    } catch (e) { console.log("خطأ في تحديث الأسعار"); }
-}
-updatePrices();
-setInterval(updatePrices, 30000);
-startEgyptClock();
-
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js').catch(err => console.log('Service Worker Error', err));
     });
   }
+// كود الساعة المصرية - حطه قبل وسم الإغلاق script مباشرة
+function startEgyptClock() {
+    const clockElement = document.getElementById('egypt-time');
+    if (clockElement) {
+        setInterval(() => {
+            const now = new Date().toLocaleTimeString('ar-EG', {
+                timeZone: 'Africa/Cairo',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            clockElement.innerText = now;
+        }, 1000);
+    }
+}
+startEgyptClock();
+
 </script>
 
     
