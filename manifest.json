@@ -1,0 +1,21 @@
+{
+  "name": "شروق الذهب - إيموشا جولد",
+  "short_name": "شروق الذهب",
+  "description": "تحليلات وأسعار الذهب لحظة بلحظة مع القبطان إيهاب شرف",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#f1c40f",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/k5twKLRQ/file-00000000ae4c71f4977ef065fc44e64d.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/k5twKLRQ/file-00000000ae4c71f4977ef065fc44e64d.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
