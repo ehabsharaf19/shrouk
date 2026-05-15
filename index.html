@@ -67,6 +67,25 @@
         .admin-mode .admin-controls { display: flex !important; }
         .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
+// المحرك المصري - تحديث الـ 4 عيارات لحظة بلحظة
+database.ref('liveGoldPrice').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if(data && data.price24) {
+        const p24 = data.price24;
+        
+        // تحديث الأرقام في الشاشة بناءً على الـ ID بتاع كل عيار
+        document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+        
+        if(document.getElementById('p22')) {
+            document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
+        }
+        
+        document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+        
+        document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+    }
+});
+
 
         /* الصناديق والحسابات */
         .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px auto; text-align: center; width: 90%; max-width: 500px; }
@@ -260,30 +279,24 @@
             renderPosts();
         }
 
-        // --- تحديث الأسعار ليشمل عيار 22 ---
-        async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
-
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                const p24 = (globalPrice / 31.1035) * currentUSD;
-
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-                // إضافة عيار 22 برمجياً
-                if(document.getElementById('p22')) {
-                    document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
-                }
-                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) { console.log("Price Update Error"); }
+        // المحرك المصري - بيقرأ السعر اللي إنت بتحدده يا قبطان
+database.ref('liveGoldPrice').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if(data && data.price24) {
+        const p24 = data.price24;
+        
+        // تحديث كل العيارات أوتوماتيك بناءً على عيار 24 اللي إنت حطيته
+        document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+        document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+        document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+        
+        // لو في صفحة السبائك، هيحدث سعر السبيكة 10 جرام مثلاً
+        if(document.getElementById('price-10g')) {
+            document.getElementById('price-10g').innerText = Math.round((p24 * 10) + 300).toLocaleString();
         }
-        updatePrices(); setInterval(updatePrices, 30000);
+    }
+});
+
 
         // --- حاسبة السعر والزكاة والشركات ---
         
@@ -425,6 +438,16 @@
         <span>الزكاة</span>
     </a>
 </div>
+        function updateGoldPrice() {
+    const newPrice = document.getElementById('manual-p24').value;
+    if(newPrice) {
+        database.ref('liveGoldPrice').set({
+            price24: parseFloat(newPrice),
+            lastUpdate: new Date().toLocaleString('ar-EG')
+        }).then(() => alert("تم تحديث سعر الصاغة بنجاح ✅"));
+    }
+}
+
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
