@@ -181,6 +181,42 @@
                 alert("خطأ في جلب السعر اللحظي");
             }
         }
+  // --- كود تحديث الأسعار العالمي والمحلي - القبطان إيهاب شرف ---
+async function updatePrices() {
+    try {
+        // 1. جلب سعر الدولار مقابل الجنيه
+        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+        const usdData = await usdRes.json();
+        const currentUSD = usdData.rates.EGP;
+
+        // 2. جلب سعر الأونصة العالمي من بينانس
+        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+        const goldData = await goldRes.json();
+        const globalPrice = parseFloat(goldData.price);
+
+        // 3. حساب سعر عيار 24 (الأونصة / 31.1035 * سعر الدولار)
+        const p24 = (globalPrice / 31.1035) * currentUSD;
+
+        // 4. تحديث الأرقام في الصفحة (تأكد أن الـ IDs دي موجودة في صفحة السبايك)
+        if(document.getElementById('p24')) {
+            document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+        }
+        
+        // حساب سعر السبيكة 10 جرام مثلاً (سعر عيار 24 * 10) + المصنعية
+        if(document.getElementById('price-10g')) {
+            let total10g = (p24 * 10) + 350; // 350 دي المصنعية كمثال
+            document.getElementById('price-10g').innerText = Math.round(total10g).toLocaleString() + " ج.م";
+        }
+
+    } catch (e) { 
+        console.log("خطأ في تحديث الأسعار: ", e); 
+    }
+}
+
+// تشغيل التحديث فور فتح الصفحة وكل 30 ثانية
+updatePrices(); 
+setInterval(updatePrices, 30000);
+
     </script>
     <!-- تذييل الصفحة الموحد - السياسات ومعلومات القبطان -->
 <div style="text-align: center; padding: 30px 10px; background: #111; color: #fff; border-top: 1px solid #444; margin-top: 50px; margin-bottom: 80px;">
