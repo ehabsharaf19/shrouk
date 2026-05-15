@@ -268,28 +268,40 @@
 
         // --- تحديث الأسعار ليشمل عيار 22 ---
         async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+    try {
+        // 1. جلب سعر الدولار الرسمي
+        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+        const usdData = await usdRes.json();
+        const bankUSD = usdData.rates.EGP;
 
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                const p24 = (globalPrice / 31.1035) * currentUSD;
+        // 2. جلب سعر الأونصة العالمي
+        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+        const goldData = await goldRes.json();
+        const globalPrice = parseFloat(goldData.price);
 
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-                // إضافة عيار 22 برمجياً
-                if(document.getElementById('p22')) {
-                    document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
-                }
-                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) { console.log("Price Update Error"); }
-        }
-        updatePrices(); setInterval(updatePrices, 30000);
+        // 3. الحسبة المصرية (السعر العالمي + فرق دولار الصاغة والطلب)
+        // زودنا 300 جنيه هنا عشان نساوي سعر السوق المصري
+        const p24 = ((globalPrice / 31.1035) * bankUSD) + 300; 
+
+        // 4. عرض الأرقام في الشاشة
+        if(document.getElementById('p24')) document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+        if(document.getElementById('p21')) document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+        if(document.getElementById('p18')) document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+        
+        // لو في صفحة السبائك هيحدث عيار 22 كمان
+        if(document.getElementById('p22')) document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
+        
+        // تحديث سعر الأونصة والدولار للعلم فقط
+        if(document.getElementById('global-ounce')) document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
+        if(document.getElementById('usd-rate')) document.getElementById('usd-rate').innerText = bankUSD.toFixed(2) + " ج.م";
+
+    } catch (e) { 
+        console.log("خطأ في جلب البيانات، جاري المحاولة مرة أخرى..."); 
+    }
+}
+// التأكد من تشغيل الدالة
+updatePrices(); 
+setInterval(updatePrices, 30000); 
 
         // --- حاسبة السعر والزكاة والشركات ---
         
