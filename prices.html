@@ -216,6 +216,57 @@ async function updatePrices() {
 // تشغيل التحديث فور فتح الصفحة وكل 30 ثانية
 updatePrices(); 
 setInterval(updatePrices, 30000);
+// --- المحرك الخاص بتحديث الأسعار وحساب السبائك - تصميم القبطان إيهاب ---
+let currentGoldPrice24 = 0; // متغير لحفظ سعر عيار 24
+
+async function updateLivePrice() {
+    try {
+        // 1. جلب سعر الدولار
+        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+        const usdData = await usdRes.json();
+        const currentUSD = usdData.rates.EGP;
+
+        // 2. جلب سعر الأونصة العالمي
+        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+        const goldData = await goldRes.json();
+        const globalPrice = parseFloat(goldData.price);
+
+        // 3. حساب سعر عيار 24 الأساسي
+        currentGoldPrice24 = (globalPrice / 31.1035) * currentUSD;
+
+        // تحديث سعر عيار 24 في الصفحة لو موجود ID له
+        if(document.getElementById('p24')) {
+            document.getElementById('p24').innerText = Math.round(currentGoldPrice24).toLocaleString();
+        }
+    } catch (e) {
+        console.log("عطل فني في جلب السعر");
+    }
+}
+
+// دالة حساب سبيكة الشركة (التي تستدعيها الزراير عندك)
+function comp(name, fee) {
+    const w = parseFloat(document.getElementById('b-weight').value); // بياخد الوزن من خانة الإدخال
+    
+    if(isNaN(w) || w <= 0) {
+        alert("يا قبطان، ادخل وزن السبيكة أولاً!");
+        return;
+    }
+
+    if(currentGoldPrice24 > 0) {
+        // الحسبة: (سعر جرام 24 + مصنعية الشركة) × الوزن
+        let total = (currentGoldPrice24 + fee) * w;
+        
+        document.getElementById('c-name').innerText = "سعر سبيكة " + name;
+        document.getElementById('c-price').innerText = Math.round(total).toLocaleString();
+        document.getElementById('res-bullion').style.display = 'block';
+    } else {
+        alert("جاري تحديث السعر العالمي، لحظة واحدة...");
+    }
+}
+
+// تشغيل التحديث التلقائي
+updateLivePrice();
+setInterval(updateLivePrice, 30000); // تحديث كل 30 ثانية
 
     </script>
     <!-- تذييل الصفحة الموحد - السياسات ومعلومات القبطان -->
