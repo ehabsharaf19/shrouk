@@ -3,6 +3,7 @@
 
 <html lang="ar" dir="rtl">
 <head>
+    
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
 <script>
@@ -109,7 +110,12 @@
 </head>
 <body id="main-body">
 
- 
+ <div id="top-info-bar" style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999;">
+    <div style="margin-bottom: 5px;">🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
+    <div style="font-weight: bold;">⚠️ تنبيه: الأسعار عالمية | الفارق في الصاغة المصرية: <span style="color: #2ecc71;">+250 : +350 ج.م</span></div>
+    <div style="font-size: 10px; color: #777; margin-top: 3px;">(هذا الفارق ناتج عن تسعير دولار الصاغة والعرض والطلب المحلي)</div>
+</div>
+
 
     <!-- 1. صفحة الرئيسية -->
     <div id="home-page" class="page-section active-page">
@@ -352,6 +358,7 @@
         }
 
     </script>
+        
     <!-- القائمة السفلية الثابتة - تصميم القبطان إيهاب أبو رتال -->
 <style>
   .shrouk-bottom-nav {
@@ -424,7 +431,27 @@
         <i class="fas fa-mosque"></i>
         <span>الزكاة</span>
     </a>
-</div>
+</div>async function updatePrices() {
+    try {
+        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+        const usdData = await usdRes.json();
+        const currentUSD = usdData.rates.EGP;
+
+        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+        const goldData = await goldRes.json();
+        const globalPrice = parseFloat(goldData.price);
+        const p24 = (globalPrice / 31.1035) * currentUSD;
+
+        // تحديث الأرقام في الشاشة
+        document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+        document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+        document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+    } catch (e) { console.log("خطأ في تحديث الأسعار"); }
+}
+updatePrices();
+setInterval(updatePrices, 30000);
+startEgyptClock();
+
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -435,4 +462,5 @@
 
     
 </body>
+    
         </html>
