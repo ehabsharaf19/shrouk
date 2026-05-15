@@ -471,6 +471,25 @@ function startEgyptClock() {
     }
 }
 startEgyptClock();
+// كود تشغيل الساعة وملء شريط الأخبار - تصميم القبطان
+function ابدأ_تحديث_الموقع() {
+    // 1. تشغيل الساعة بتوقيت مصر
+    const clockElement = document.getElementById('egypt-time');
+    if (clockElement) {
+        setInterval(() => {
+            document.getElementById('egypt-time').innerText = new Date().toLocaleTimeString('ar-EG', {timeZone: 'Africa/Cairo'});
+        }, 1000);
+    }
+
+    // 2. وضع الأخبار والجمل الاحترافية في الشريط عشان يتحرك
+    // اتأكد إن الـ ID اللي جوه القوس هو نفس اسم الـ ID بتاع الشريط عندك (غالباً ticker-move أو news-content)
+    const newsElement = document.getElementById('news-content') || document.querySelector('.ticker-move');
+    if (newsElement) {
+        newsElement.innerHTML = " 🔥 شروق الذهب: نتابع معكم حركة أسعار الصاغة والبورصة العالمية لحظة بلحظة | ⚠️ تنبيه: الأسعار المعروضة تُحدث تلقائياً وفقاً لشاشات البورصة العالمية ومصرف مصر المركزي | ✨ ترقبوا تحديثات السبائك والجنيهات الذهب أولاً بأول.";
+    }
+}
+// تشغيل الدالة فوراً
+ابدأ_تحديث_الموقع();
 
 </script>
 
