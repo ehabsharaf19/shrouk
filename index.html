@@ -266,30 +266,40 @@
             renderPosts();
         }
 
-        // --- تحديث الأسعار ليشمل عيار 22 ---
         async function updatePrices() {
-            try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
-                document.getElementById('usd-rate').innerText = currentUSD.toFixed(2) + " ج.م";
+    try {
+        // 1. بيجيب سعر الدولار أوتوماتيك
+        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
+        const usdData = await usdRes.json();
+        const currentUSD = usdData.rates.EGP;
 
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
-                const goldData = await goldRes.json();
-                const globalPrice = parseFloat(goldData.price);
-                const p24 = (globalPrice / 31.1035) * currentUSD;
+        // 2. بيجيب سعر الذهب العالمي من البورصة أوتوماتيك
+        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
+        const goldData = await goldRes.json();
+        const globalPrice = parseFloat(goldData.price);
 
-                document.getElementById('global-ounce').innerText = "$" + globalPrice.toLocaleString();
-                document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
-                // إضافة عيار 22 برمجياً
-                if(document.getElementById('p22')) {
-                    document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
-                }
-                document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
-                document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
-            } catch (e) { console.log("Price Update Error"); }
+        // 3. الحسبة اللي بتخلي السعر "مصري" أوتوماتيك (السعر العالمي + فرق الصاغة)
+        const p24 = ((globalPrice / 31.1035) * currentUSD) + 300; 
+
+        // 4. بيعرض النتائج في الموقع لوحده
+        document.getElementById('p24').innerText = Math.round(p24).toLocaleString();
+        document.getElementById('p21').innerText = Math.round(p24 * 0.875).toLocaleString();
+        document.getElementById('p18').innerText = Math.round(p24 * 0.75).toLocaleString();
+        
+        // لو في صفحة السبائك هيحدث عيار 22
+        if(document.getElementById('p22')) {
+            document.getElementById('p22').innerText = Math.round(p24 * 0.916).toLocaleString();
         }
-        updatePrices(); setInterval(updatePrices, 30000);
+        
+        console.log("تم تحديث الأسعار أوتوماتيكياً بتوقيت مصر");
+    } catch (e) { 
+        console.log("عطل في الاتصال بالبورصة، جاري المحاولة..."); 
+    }
+}
+
+// السطرين دول هم اللي بيخلوه يشتغل "لوحده"
+updatePrices(); 
+setInterval(updatePrices, 30000); 
 
         // --- حاسبة السعر والزكاة والشركات ---
         
