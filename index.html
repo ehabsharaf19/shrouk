@@ -266,50 +266,46 @@
             renderPosts();
         }
 
-
 async function updatePrices() {
     try {
-        // 1. جلب الدولار والذهب العالمي (كمصدر أساسي وسريع)
-        const [usdRes, goldRes] = await Promise.all([
-            fetch('https://open.er-api.com/v6/latest/USD'),
-            fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT')
-        ]);
-        
+        // 1. جلب سعر الدولار الرسمي (البنك)
+        const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
         const usdData = await usdRes.json();
+        const currentUSD = usdData.rates.EGP;
+
+        // 2. جلب سعر الأونصة من بورصة بينانس العالمية
+        const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT');
         const goldData = await goldRes.json();
-        
-        const bankUSD = usdData.rates.EGP;
-        const globalOunce = parseFloat(goldData.price);
+        const globalPrice = parseFloat(goldData.price);
 
-        // 2. الحسبة المصرية الأوتوماتيكية (بدون تدخل يدوي)
-        // بنستخدم "معامل الصاغة" اللي بيخلي السعر مطابق لمحلات مصر
-        const p24 = (globalOunce / 31.1035) * bankUSD * 1.05; 
+        // 3. الحسبة العالمية الصافية (بدون أي إضافات مصرية)
+        const p24 = (globalPrice / 31.1035) * currentUSD;
 
-        // 3. عرض البيانات (حتى لو خانة مش موجودة الكود مش هيقف)
-        const safeSet = (id, value) => {
+        // 4. عرض البيانات في الخانات المخصصة لها
+        const display = (id, text) => {
             const el = document.getElementById(id);
-            if (el) el.innerText = value;
+            if (el) el.innerText = text;
         };
 
-        safeSet('p24', Math.round(p24).toLocaleString());
-        safeSet('p21', Math.round(p24 * 0.875).toLocaleString());
-        safeSet('p18', Math.round(p24 * 0.75).toLocaleString());
-        safeSet('p22', Math.round(p24 * 0.916).toLocaleString());
-        
-        // إظهار الأونصة والدولار اللي كانوا بيختفوا
-        safeSet('global-ounce', "$" + Math.round(globalOunce).toLocaleString());
-        safeSet('usd-rate', bankUSD.toFixed(2) + " ج.م");
+        // تحديث العيارات
+        display('p24', Math.round(p24).toLocaleString());
+        display('p21', Math.round(p24 * 0.875).toLocaleString());
+        display('p18', Math.round(p24 * 0.75).toLocaleString());
+        display('p22', Math.round(p24 * 0.916).toLocaleString());
 
-        console.log("تم تحديث أسعار شروق الذهب بنجاح ✅");
+        // إظهار الأونصة والدولار اللي كنت بتسأل عليهم
+        display('global-ounce', "$" + Math.round(globalPrice).toLocaleString());
+        display('usd-rate', currentUSD.toFixed(2) + " ج.م");
 
     } catch (e) {
-        console.error("عطل مؤقت، جاري الحفاظ على آخر سعر معروض...");
+        console.log("جاري الاتصال بـ البورصة العالمية...");
     }
 }
 
-// تشغيل فوري وتحديث كل 30 ثانية
+// تشغيل فوري وتحديث تلقائي
 updatePrices();
 setInterval(updatePrices, 30000);
+
 
 
         // --- حاسبة السعر والزكاة والشركات ---
