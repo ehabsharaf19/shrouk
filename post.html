@@ -4,40 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المقال - شروق الذهب</title>
-    </head>
-<body style="background: #000; color: #fff; font-family: Arial, sans-serif; padding: 20px;">
+    <style>
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; line-height: 1.8; }
+        .post-container { max-width: 800px; margin: auto; background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; }
+        h1 { color: #f1c40f; text-align: center; }
+        img { width: 100%; border-radius: 12px; margin: 20px 0; border: 1px solid #333; }
+        .content { font-size: 18px; white-space: pre-wrap; text-align: right; }
+        .back-btn { display: block; text-align: center; margin-top: 30px; color: #f1c40f; text-decoration: none; border: 1px solid #f1c40f; padding: 10px; border-radius: 8px; }
+    </style>
+</head>
+<body>
 
-    <div id="single-post-container" style="max-width: 800px; margin: auto;">
-        <p style="text-align:center;">جاري تحميل المقال يا قبطان...</p>
+    <div class="post-container" id="single-post">
+        <p style="text-align:center;">⚓ جاري تحميل مقال القبطان...</p>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
-        // حط هنا الـ firebaseConfig بتاعك
-        const firebaseConfig = { /* بيانات الفايربيز بتاعتك */ };
+        // نفس الـ Config اللي شغال عندك في صفحة البلوج
+        const firebaseConfig = { 
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" 
+        };
+        
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // كود سحب الـ ID من الرابط وعرض المقال
+        // جلب الـ ID من الرابط
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get('id');
 
         if (postId) {
+            // سحب بيانات المقال من قاعدة البيانات
             database.ref('posts/' + postId).once('value').then((snapshot) => {
                 const post = snapshot.val();
                 if (post) {
-                    document.title = post.title + " - شروق الذهب";
-                    document.getElementById('single-post-container').innerHTML = `
-                        <h1 style="color:#f1c40f; margin-bottom:20px;">${post.title}</h1>
-                        ${post.image ? `<img src="${post.image}" style="width:100%; border-radius:15px; margin-bottom:20px;">` : ""}
-                        <div style="line-height:1.9; font-size:18px; white-space:pre-wrap;">${post.content}</div>
-                        <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
-                        <p style="color:#f1c40f;">🖋️ القبطان إيهاب شرف</p>
-                        <a href="blog.html" style="color:#fff; text-decoration:underline;">العودة للمقالات</a>
+                    document.title = post.title + " | شروق الذهب";
+                    document.getElementById('single-post').innerHTML = `
+                        <h1>${post.title}</h1>
+                        ${post.image ? `<img src="${post.image}">` : ""}
+                        <div class="content">${post.content}</div>
+                        <div style="margin-top:20px; padding-top:10px; border-top:1px solid #333; color:#f1c40f; font-size:14px;">
+                            📅 تاريخ النشر: ${post.date ? post.date : "2026-05-15"} | ✍️ القبطان إيهاب شرف
+                        </div>
+                        <a href="blog.html" class="back-btn">العودة لقائمة المقالات</a>
                     `;
+                } else {
+                    document.getElementById('single-post').innerHTML = "<h2>المقال غير موجود يا قبطان!</h2><a href='blog.html' class='back-btn'>العودة</a>";
                 }
+            }).catch(error => {
+                console.error(error);
+                document.getElementById('single-post').innerHTML = "حدث خطأ في الاتصال بالبيانات.";
             });
+        } else {
+            window.location.href = 'blog.html';
         }
     </script>
 </body>
