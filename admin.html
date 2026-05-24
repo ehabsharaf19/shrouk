@@ -32,69 +32,79 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
-            authDomain: "shrouk-ehab.firebaseapp.com",
-            projectId: "shrouk-ehab",
-            storageBucket: "shrouk-ehab.firebasestorage.app",
-            messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:ca1a44d98bb9224ff7643e"
-        };
+    // 1. إعدادات الاتصال (مأخوذة من بياناتك الصحيحة)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+        authDomain: "shrouk-ehab.firebaseapp.com",
+        projectId: "shrouk-ehab",
+        storageBucket: "shrouk-ehab.firebasestorage.app",
+        messagingSenderId: "1015714183835",
+        appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    // 2. تهيئة التطبيق
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // مراقبة حالة التسجيل (لو فاتح يفضل فاتح، ولو قفلت يطلب دخول)
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-            } else {
-                document.getElementById('login-form').style.display = 'block';
-                document.getElementById('admin-panel').style.display = 'none';
-            }
-        });
+    // 3. التحكم في ظهور اللوحة بناءً على تسجيل الدخول
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+        } else {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('admin-panel').style.display = 'none';
+        }
+    });
 
-        window.login = async () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
-            try { await signInWithEmailAndPassword(auth, e, p); } 
-            catch (err) { alert("خطأ في بيانات الدخول يا قبطان!"); }
-        };
+    // 4. وظيفة تسجيل الدخول
+    window.login = async () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('password').value;
+        try { 
+            await signInWithEmailAndPassword(auth, e, p); 
+        } catch (err) { 
+            alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر."); 
+        }
+    };
 
-        window.logout = () => { signOut(auth); };
+    // 5. وظيفة تسجيل الخروج
+    window.logout = () => { signOut(auth); };
 
-        window.publish = async () => {
-            const t = document.getElementById('title').value;
-            const c = document.getElementById('content').value;
-            const i = document.getElementById('image').value;
-            const btn = document.getElementById('pub-btn');
+    // 6. وظيفة النشر في Firestore
+    window.publish = async () => {
+        const t = document.getElementById('title').value;
+        const c = document.getElementById('content').value;
+        const i = document.getElementById('image').value;
+        const btn = document.getElementById('pub-btn');
 
-            if(!t || !c) return alert("اكمل البيانات أولاً");
+        if(!t || !c) return alert("أكمل البيانات أولاً!");
 
-            btn.innerText = "جاري النشر المباشر...";
-            btn.disabled = true;
+        btn.innerText = "جاري النشر...";
+        btn.disabled = true;
 
-            try {
-                await addDoc(collection(db, "posts"), {
-                    title: t,
-                    content: c,
-                    image: i,
-                    timestamp: serverTimestamp() // ده اللي هيخلي index.html يقرأ صح
-                });
-                alert("✅ تم النشر بنجاح!");
-                location.reload();
-            } catch (err) {
-                alert("فشل النشر: " + err.message);
-                btn.disabled = false;
-                btn.innerText = "نشر الآن ✅";
-            }
-        };
-    </script>
+        try {
+            await addDoc(collection(db, "posts"), {
+                title: t,
+                content: c,
+                image: i,
+                timestamp: serverTimestamp()
+            });
+            alert("✅ تم النشر بنجاح!");
+            location.reload();
+        } catch (err) {
+            console.error(err);
+            alert("فشل النشر: " + err.message);
+            btn.disabled = false;
+            btn.innerText = "نشر الآن ✅";
+        }
+    };
+</script>
+
 </body>
 </html>
