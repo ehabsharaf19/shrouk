@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shrouk-two.vercel.app/sitemap.xml
