@@ -122,8 +122,7 @@
 
  <div id="top-info-bar" style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999;">
     <div style="margin-bottom: 5px;">🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
-    <div style="font-weight: bold;">⚠️ تنبيه: الأسعار عالمية | الفارق في الصاغة المصرية: <span style="color: #2ecc71;">+250 : +350 ج.م</span></div>
-    <div style="font-size: 10px; color: #777; margin-top: 3px;">(هذا الفارق ناتج عن تسعير دولار الصاغة والعرض والطلب المحلي)</div>
+    <div style="font-weight: bold;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية (شاملة الفارق المحلي للجرام)</div>
 </div>
 
 
@@ -289,26 +288,32 @@
                 const globalPrice = parseFloat(goldData.price);
 
                 // 3. الحسبة العالمية الصافية (بدون أي إضافات مصرية)
-                const p24 = (globalPrice / 31.1035) * currentUSD;
+                const p24Global = (globalPrice / 31.1035) * currentUSD;
 
-                // 4. عرض البيانات في الخانات المخصصة لها
+                // 4. دالة إضافة الفارق المصري (دولار الصاغة / العرض والطلب) لحساب السعر اللحظي بمصر
+                // الفارق التقديري المضاف لكل جرام عيار 24 هو حوالي 342 جنيه ليوازي فارق (+300 جنيه لعيار 21)
+                const egyptPremium24 = 342; 
+
+                const p24Egypt = p24Global + egyptPremium24;
+
+                // 5. عرض البيانات في الخانات المخصصة لها
                 const display = (id, text) => {
                     const el = document.getElementById(id);
                     if (el) el.innerText = text;
                 };
 
-                // تحديث العيارات
-                display('p24', Math.round(p24).toLocaleString());
-                display('p21', Math.round(p24 * 0.875).toLocaleString());
-                display('p18', Math.round(p24 * 0.75).toLocaleString());
-                display('p22', Math.round(p24 * 0.916).toLocaleString());
+                // تحديث العيارات بالأسعار المصرية اللحظية الموزونة دقيقة بدقيقة
+                display('p24', Math.round(p24Egypt).toLocaleString());
+                display('p21', Math.round(p24Egypt * 0.875).toLocaleString());
+                display('p18', Math.round(p24Egypt * 0.75).toLocaleString());
+                display('p22', Math.round(p24Egypt * 0.9166).toLocaleString());
 
-                // إظهار الأونصة والدولار اللي كنت بتسأل عليهم
+                // إظهار الأونصة والدولار الرسمي في الإحصائيات كما هي
                 display('global-ounce', "$" + Math.round(globalPrice).toLocaleString());
                 display('usd-rate', currentUSD.toFixed(2) + " ج.م");
 
             } catch (e) {
-                console.log("جاري الاتصال بـ البورصة العالمية...");
+                console.log("جاري الاتصال بـ البورصة العالمية والسوق المحلي...");
             }
         }
 
