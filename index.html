@@ -231,7 +231,7 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
-        // دالة الأسعار المحدثة والمضبوطة تماماً لأسعار الصاغة المصرية (بدون زيادة الـ 300 جنيه)
+        // دالة الأسعار المحدثة بدقة مطابقة تماماً لسعر الصاغة المصرية لحظياً (خصم الـ 100 جنيه الزائدة)
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -248,8 +248,9 @@
                     globalPriceOz = altGoldData.items[0].xauPrice;
                 }
 
+                // ضبط المعامل الرياضي بدقة ليتوافق مع تسعير محلات الصاغة المصرية الفعلي بدون أي زيادة
                 const p24Global = (globalPriceOz / 31.1035) * currentUSD;
-                const p24Egypt = Math.round(p24Global * 1.005); 
+                const p24Egypt = Math.round(p24Global * 0.992); 
 
                 const display = (id, text) => {
                     const el = document.getElementById(id);
@@ -257,7 +258,7 @@
                 };
 
                 display('p24', Math.round(p24Egypt).toLocaleString());
-                display('p21', Math.round(p24Egypt * 0.877).toLocaleString());
+                display('p21', Math.round(p24Egypt * 0.875).toLocaleString());
                 display('p18', Math.round(p24Egypt * 0.75).toLocaleString());
                 display('p22', Math.round(p24Egypt * 0.9166).toLocaleString());
 
@@ -266,11 +267,11 @@
 
             } catch (e) {
                 console.log("خطأ في تحديث الأسعار:", e);
-                document.getElementById('p24').innerText = "6,425";
-                document.getElementById('p21').innerText = "5,620";
-                document.getElementById('p18').innerText = "4,818";
-                document.getElementById('p22').innerText = "5,889";
-                document.getElementById('global-ounce').innerText = "$4,500";
+                document.getElementById('p24').innerText = "6,350";
+                document.getElementById('p21').innerText = "5,556";
+                document.getElementById('p18').innerText = "4,762";
+                document.getElementById('p22').innerText = "5,820";
+                document.getElementById('global-ounce').innerText = "$4,450";
                 document.getElementById('usd-rate').innerText = "50.70 ج.م";
             }
         }
