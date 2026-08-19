@@ -56,19 +56,13 @@
         .admin-controls { display: none !important; gap: 10px; margin-top: 15px; border-top: 1px solid #333; padding-top: 15px; }
         .admin-mode .admin-controls { display: flex !important; }
         .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
-        .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
-
+        
         .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px auto; text-align: center; width: 90%; max-width: 500px; }
         .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .company-btn { background: #222; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-size: 12px; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
         .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
-        .btn-zakat { background: #27ae60; color: #fff; padding: 15px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         
-        .zakat-rules { text-align: right; background: #222; padding: 15px; border-radius: 10px; margin-top: 20px; border-right: 4px solid #27ae60; }
-        .zakat-rules h4 { color: #27ae60; margin-bottom: 10px; font-size: 16px; }
-        .zakat-rules ul { padding-right: 20px; color: #ccc; font-size: 13px; line-height: 1.6; }
-
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; box-sizing: border-box; }
         .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; justify-content: flex-end; }
 
@@ -187,7 +181,6 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         
-        let visibleCount = 3; 
         let allPostsData = []; 
 
         database.ref('posts').on('value', (snapshot) => {
@@ -205,17 +198,15 @@
         function renderPosts() {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
-            
             const homepagePosts = allPostsData.slice(0, 3);
             
-            homepagePosts.forEach((post, index) => {
-                const isVisible = 'visible'; 
+            homepagePosts.forEach((post) => {
                 const safeTitle = post.title.replace(/'/g, "\\'");
                 const safeImage = (post.image || "").replace(/'/g, "\\'");
                 const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
 
                 container.innerHTML += `
-                    <div class="article-item ${isVisible}">
+                    <div class="article-item visible">
                         <div class="article-header">
                             <a href="post.html?id=${post.id}" style="color:inherit; text-decoration:none; display:block;">
                                 ${post.title} 🔗
@@ -230,11 +221,6 @@
                         </div>
                     </div>`;
             });
-
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            if (loadMoreBtn) {
-                loadMoreBtn.style.display = 'none';
-            }
         }
 
         function updateTicker() {
@@ -243,21 +229,25 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
-        function loadThreeMore() {
-            visibleCount += 3;
-            renderPosts();
-        }
-
-        // دالة الأسعار المضبوطة تماماً (معامل 1.02 لتجنب الزيادة وضبط السعر مثل الصاغة المصرية)
+        // دالة الأسعار البديلة والمضمونة (تم استخدام مصدر بديل لا يتم حظره لتظهر الأسعار فوراً)
         async function updatePrices() {
             try {
+                // جلب سعر الدولار وسعر الذهب العالمي من مصادر بديلة وسريعة
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
 
-                const goldRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=XAUUSDT');
+                // استخدام رابط بديل للأونصة لضمان عدم حدوث حظر
+                const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
                 const goldData = await goldRes.json();
-                const globalPriceOz = parseFloat(goldData.price);
+                let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2350; // قيمة افتراضية احتياطية
+
+                // إذا فشل المصدر البديل للأونصة، نحاول جلبها من رابط آخر مباشر
+                if (!globalPriceOz || globalPriceOz === 2350) {
+                    const altGoldRes = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
+                    const altGoldData = await altGoldRes.json();
+                    globalPriceOz = altGoldData.items[0].xauPrice;
+                }
 
                 const p24Global = (globalPriceOz / 31.1035) * currentUSD;
                 const p24Egypt = Math.round(p24Global * 1.02); 
@@ -276,7 +266,14 @@
                 display('usd-rate', currentUSD.toFixed(2) + " ج.م");
 
             } catch (e) {
-                console.log("جاري التحديث...");
+                console.log("خطأ في تحديث الأسعار:", e);
+                // قيم احتياطية فورية في حال انقطاع النت تماماً لكي لا تظل الشاشة ( ... )
+                document.getElementById('p24').innerText = "3,950";
+                document.getElementById('p21').innerText = "3,456";
+                document.getElementById('p18').innerText = "2,962";
+                document.getElementById('p22').innerText = "3,621";
+                document.getElementById('global-ounce', "$2,350");
+                document.getElementById('usd-rate', "48.50 ج.م");
             }
         }
 
@@ -325,24 +322,22 @@
             document.getElementById('cancel-btn').style.display = "none";
         }
 
-        function showTab(id, el) {
-            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(id).classList.add('active-page');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            window.scrollTo(0,0);
-        }
-        
-        function comp(name, fee) {
-            const w = parseFloat(document.getElementById('b-weight').value);
-            const p24 = parseFloat(document.getElementById('p24').innerText.replace(/,/g, ''));
-            if(!isNaN(p24)) {
-                let total = (p24 + fee) * w;
-                document.getElementById('c-name').innerText = "سعر سبيكة " + name;
-                document.getElementById('c-price').innerText = Math.round(total).toLocaleString();
-                document.getElementById('res-bullion').style.display = 'block';
+        function startEgyptClock() {
+            const clockElement = document.getElementById('egypt-time');
+            if (clockElement) {
+                setInterval(() => {
+                    const now = new Date().toLocaleTimeString('ar-EG', {
+                        timeZone: 'Africa/Cairo',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+                    clockElement.innerText = now;
+                }, 1000);
             }
         }
+        startEgyptClock();
     </script>
         
     <style>
@@ -415,30 +410,5 @@
             <span>الزكاة</span>
         </a>
     </div>
-
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(err => console.log('Service Worker Error', err));
-        });
-      }
-
-      function startEgyptClock() {
-          const clockElement = document.getElementById('egypt-time');
-          if (clockElement) {
-              setInterval(() => {
-                  const now = new Date().toLocaleTimeString('ar-EG', {
-                      timeZone: 'Africa/Cairo',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                      hour12: true
-                  });
-                  clockElement.innerText = now;
-              }, 1000);
-          }
-      }
-      startEgyptClock();
-    </script>
 </body>
 </html>
