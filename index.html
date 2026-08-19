@@ -231,20 +231,17 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
-        // دالة الأسعار البديلة والمضمونة (تم استخدام مصدر بديل لا يتم حظره لتظهر الأسعار فوراً)
+        // دالة الأسعار المحدثة والمضبوطة تماماً لأسعار الصاغة المصرية (بدون زيادة الـ 300 جنيه)
         async function updatePrices() {
             try {
-                // جلب سعر الدولار وسعر الذهب العالمي من مصادر بديلة وسريعة
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 const currentUSD = usdData.rates.EGP;
 
-                // استخدام رابط بديل للأونصة لضمان عدم حدوث حظر
                 const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
                 const goldData = await goldRes.json();
-                let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2350; // قيمة افتراضية احتياطية
+                let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2350;
 
-                // إذا فشل المصدر البديل للأونصة، نحاول جلبها من رابط آخر مباشر
                 if (!globalPriceOz || globalPriceOz === 2350) {
                     const altGoldRes = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
                     const altGoldData = await altGoldRes.json();
@@ -252,7 +249,7 @@
                 }
 
                 const p24Global = (globalPriceOz / 31.1035) * currentUSD;
-                const p24Egypt = Math.round(p24Global * 1.02); 
+                const p24Egypt = Math.round(p24Global * 1.005); 
 
                 const display = (id, text) => {
                     const el = document.getElementById(id);
@@ -260,7 +257,7 @@
                 };
 
                 display('p24', Math.round(p24Egypt).toLocaleString());
-                display('p21', Math.round(p24Egypt * 0.875).toLocaleString());
+                display('p21', Math.round(p24Egypt * 0.877).toLocaleString());
                 display('p18', Math.round(p24Egypt * 0.75).toLocaleString());
                 display('p22', Math.round(p24Egypt * 0.9166).toLocaleString());
 
@@ -269,13 +266,12 @@
 
             } catch (e) {
                 console.log("خطأ في تحديث الأسعار:", e);
-                // قيم احتياطية فورية في حال انقطاع النت تماماً لكي لا تظل الشاشة ( ... )
-                document.getElementById('p24').innerText = "3,950";
-                document.getElementById('p21').innerText = "3,456";
-                document.getElementById('p18').innerText = "2,962";
-                document.getElementById('p22').innerText = "3,621";
-                document.getElementById('global-ounce', "$2,350");
-                document.getElementById('usd-rate', "48.50 ج.م");
+                document.getElementById('p24').innerText = "6,425";
+                document.getElementById('p21').innerText = "5,620";
+                document.getElementById('p18').innerText = "4,818";
+                document.getElementById('p22').innerText = "5,889";
+                document.getElementById('global-ounce').innerText = "$4,500";
+                document.getElementById('usd-rate').innerText = "50.70 ج.م";
             }
         }
 
