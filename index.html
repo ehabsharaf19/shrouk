@@ -207,10 +207,8 @@
 
                 container.innerHTML += `
                     <div class="article-item visible">
-                        <div class="article-header">
-                            <a href="post.html?id=${post.id}" style="color:inherit; text-decoration:none; display:block;">
-                                ${post.title} 🔗
-                            </a>
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
                         </div>
                         <div class="article-content">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
@@ -221,6 +219,11 @@
                         </div>
                     </div>`;
             });
+        }
+
+        function toggleArticle(header) {
+            const item = header.parentElement;
+            item.classList.toggle('active');
         }
 
         function updateTicker() {
@@ -246,7 +249,6 @@
                     globalPriceOz = altGoldData.items[0].xauPrice;
                 }
 
-                // معامل التصحيح الدقيق لمطابقة أسعار الصاغة لحظياً
                 const p24Global = (globalPriceOz / 31.1035) * currentUSD;
                 const p24Egypt = Math.round(p24Global * 0.992); 
 
@@ -269,8 +271,6 @@
                 document.getElementById('p21').innerText = "6,360";
                 document.getElementById('p18').innerText = "5,452";
                 document.getElementById('p22').innerText = "6,663";
-                document.getElementById('global-ounce', "$4,491");
-                document.getElementById('usd-rate', "50.77 ج.م");
             }
         }
 
@@ -349,8 +349,8 @@
         background: #222 !important; margin: 0 4px !important; padding: 8px 0 !important; border-radius: 8px !important; border: 1px solid #444 !important;
       }
       .shrouk-bottom-nav a i { font-size: 20px !important; margin-bottom: 4px !important; color: #f1c40f !important; }
-      .shrouk-bottom-nav a.active { background: #f1c40f !important; color: #000 !important; border-color: #fff !important; }
-      .shrouk-bottom-nav a.active i { color: #000 !important; }
+      .shrouk-bottom-nav a.active { background: #1f1f1f !important; color: #f1c40f !important; border-color: #f1c40f !important; }
+      .shrouk-bottom-nav a.active i { color: #f1c40f !important; }
       body { padding-bottom: 80px !important; }
     </style>
 
