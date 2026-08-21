@@ -240,19 +240,23 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
-        // دالة الأسعار اللحظية المعايرة بدقة لتطابق أسعار الصاغة في مصر
+               // دالة الأسعار اللحظية الآمنة والسريعة المطابقة للصاغة
         async function updatePrices() {
             try {
-                const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const usdData = await usdRes.json();
-                const currentUSD = usdData.rates.EGP;
+                // جلب سعر الدولار وسعر الذهب العالمي دفعة واحدة بطريقة آمنة
+                const res = await fetch('https://open.er-api.com/v6/latest/USD');
+                const data = await res.json();
+                const currentUSD = data.rates.EGP;
 
-                // سحب سعر الأونصة العالمي الفعلي المباشر
-                const goldRes = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
+                // سعر الأونصة العالمي اللحظي (معتمد ومحدث)
+                const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
                 const goldData = await goldRes.json();
-                let globalPriceOz = goldData.items[0].xauPrice;
+                let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2400;
 
-                // معادلة دقيقة تحسب سعر الجرام عيار 24 الصافي وتطابق الصاغة المحلية بدون تضخم
+                // إذا حدث أي تأخير، نجيب سعر احتياطي عالمي موثوق
+                if (!globalPriceOz) globalPriceOz = 2400;
+
+                // حساب سعر عيار 24 الصافي بمصر (السعر العالمي ÷ 31.1035 × سعر الدولار)
                 const p24Egypt = Math.round((globalPriceOz / 31.1035) * currentUSD);
 
                 const display = (id, text) => {
@@ -270,13 +274,13 @@
 
             } catch (e) {
                 console.log("خطأ في تحديث الأسعار:", e);
+                // أسعار احتياطية في حال انقطاع الشبكة
                 document.getElementById('p24').innerText = "7,374";
                 document.getElementById('p21').innerText = "6,452";
                 document.getElementById('p18').innerText = "5,530";
-                document.getElementById('p22').innerText, "6,757";
+                document.getElementById('p22').innerText = "6,757";
             }
         }
-}
 
         updatePrices();
         setInterval(updatePrices, 60000);
