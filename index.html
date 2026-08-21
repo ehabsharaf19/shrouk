@@ -6,7 +6,6 @@
     <title>شروق الذهب - EMOSHA Gold</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- تثبيت الخلفية السوداء والذهبية فوراً لمنع أي ألوان غريبة أثناء الـ Refresh -->
     <style>
         html, body {
             background-color: #000 !important;
@@ -241,13 +240,13 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
-                // دالة الأسعار اللحظية المعايرة بدقة لتطابق أسعار الصاغة في مصر تماماً
+        // دالة الأسعار اللحظية المعايرة بدقة لتطابق أسعار الصاغة في مصر تماماً
         async function updatePrices() {
             try {
                 const usdRes = await fetch('https://open.er-api.com/v6/latest/USD');
                 const usdData = await usdRes.json();
                 
-                // سعر الصادفة أو السوق الموازي/الصاغة الفعلي (أقل بحوالي نصف جنيه عن البنك لضبط معادلة الذهب)
+                // سعر الدولار الحقيقي المتوافق مع سوق الصاغة المحلي
                 const currentUSD = usdData.rates.EGP - 0.45; 
 
                 const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
@@ -261,7 +260,7 @@
                 }
 
                 const p24Global = (globalPriceOz / 31.1035) * currentUSD;
-                const p24Egypt = Math.round(p24Global * 0.992); 
+                const p24Egypt = Math.round(p24Global * 1.025); 
 
                 const display = (id, text) => {
                     const el = document.getElementById(id);
