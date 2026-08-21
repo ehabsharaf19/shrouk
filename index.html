@@ -78,7 +78,7 @@
 
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
     
-                        function renderPosts() {
+                                function renderPosts() {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
             const homepagePosts = allPostsData.slice(0, 3);
@@ -88,6 +88,31 @@
                 month: 'long',
                 day: 'numeric'
             });
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            <p style="color: #f1c40f; text-align: center; font-weight: bold; margin-top: 15px;">
+                                🖋️ القبطان إيهاب أبو رتال — 📅 ${todayDate}
+                            </p>
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
             
             homepagePosts.forEach((post) => {
                 const safeTitle = post.title.replace(/'/g, "\\'");
