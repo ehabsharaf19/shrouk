@@ -78,18 +78,19 @@
 
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
     
-                                function renderPosts() {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = "";
-            const homepagePosts = allPostsData.slice(0, 3);
-            
-            const todayDate = new Date().toLocaleDateString('ar-EG', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            
-            homepagePosts.forEach((post) => {
+                            .article-content::after {
+    content: "🖋️ القبطان إيهاب أبو رتال  —  📅 2026 أغسطس 17";
+    display: block;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+    color: #f1c40f;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+
+              homepagePosts.forEach((post) => {
                 const safeTitle = post.title.replace(/'/g, "\\'");
                 const safeImage = (post.image || "").replace(/'/g, "\\'");
                 const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
@@ -165,6 +166,17 @@
                     </div>`;
             });
         }
+.article-content::after {
+    content: "🖋️ القبطان إيهاب أبو رتال  —  📅 2026 أغسطس 17";
+    display: block;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+    color: #f1c40f;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
 
     </style>
     
