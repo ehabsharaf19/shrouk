@@ -6,105 +6,198 @@
     <title>إدارة إيموشا ⚓</title>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
-        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
-        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 500px; margin: auto; text-align: right; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; text-align: right; }
+        button { width: 100%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; font-size: 12px; width: auto; padding: 8px 20px; }
-        #admin-panel { display: none; } /* مخفي لحد ما تسجل دخول */
+        .post-card { background: #1a1a1a; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; text-align: right; }
+        .btn-action { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; margin-top: 5px; width: auto; display: inline-block; }
+        .btn-edit { background: #f1c40f; color: #000; margin-left: 5px; }
+        .btn-del { background: #e74c3c; color: #fff; }
+        #admin-panel { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="login-form" class="box">
+    <!-- نموذج تسجيل الدخول -->
+    <div id="login-form" class="box" style="text-align: center;">
         <h3>تسجيل دخول القبطان ⚓</h3>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
+        <input type="email" id="email" placeholder="البريد الإلكتروني" style="text-align: center;">
+        <input type="password" id="password" placeholder="كلمة المرور" style="text-align: center;">
         <button onclick="login()">دخول</button>
     </div>
 
+    <!-- لوحة التحكم -->
     <div id="admin-panel" class="box">
-        <h3>نشر مقال جديد - EMOSHA</h3>
+        <h3 id="panel-title" style="text-align: center; color: #f1c40f;">نشر أو تعديل مقال - EMOSHA</h3>
+        
+        <input type="hidden" id="edit-post-id">
         <input type="text" id="title" placeholder="عنوان المقال">
         <input type="text" id="image" placeholder="رابط الصورة (اختياري)">
-        <textarea id="content" rows="6" placeholder="اكتب التحليل هنا يا قبطان..."></textarea>
-        <button id="pub-btn" onclick="publish()">نشر الآن ✅</button>
-        <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
+        <textarea id="content" rows="5" placeholder="اكتب التحليل هنا يا إهاب..."></textarea>
+        
+        <button id="pub-btn" onclick="savePost()">نشر الآن ✅</button>
+        <button id="cancel-edit" style="display:none; background:#444; color:#fff;" onclick="resetForm()">إلغاء التعديل</button>
+
+        <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
+
+        <h4 style="color: #f1c40f; text-align: right;">المقالات المنشورة:</h4>
+        <div id="posts-list" style="max-height: 350px; overflow-y: auto;">
+            <p style="color: #888; text-align: center;">جاري تحميل المقالات...</p>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
+        </div>
     </div>
 
     <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 1. إعدادات الاتصال (مأخوذة من بياناتك الصحيحة)
-    const firebaseConfig = {
-        apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
-        authDomain: "shrouk-ehab.firebaseapp.com",
-        projectId: "shrouk-ehab",
-        storageBucket: "shrouk-ehab.firebasestorage.app",
-        messagingSenderId: "1015714183835",
-        appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+            authDomain: "shrouk-ehab.firebaseapp.com",
+            projectId: "shrouk-ehab",
+            storageBucket: "shrouk-ehab.firebasestorage.app",
+            messagingSenderId: "1015714183835",
+            appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
+        };
 
-    // 2. تهيئة التطبيق
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    // 3. التحكم في ظهور اللوحة بناءً على تسجيل الدخول
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
-        } else {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('admin-panel').style.display = 'none';
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadPosts();
+            } else {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('admin-panel').style.display = 'none';
+            }
+        });
+
+        window.login = async () => {
+            const e = document.getElementById('email').value.trim();
+            const p = document.getElementById('password').value.trim();
+            try { 
+                await signInWithEmailAndPassword(auth, e, p); 
+            } catch (err) { 
+                alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر."); 
+            }
+        };
+
+        window.logout = () => { signOut(auth); };
+
+        async function loadPosts() {
+            const listContainer = document.getElementById('posts-list');
+            listContainer.innerHTML = "<p style='color: #888; text-align: center;'>جاري التحميل...</p>";
+            try {
+                const querySnapshot = await getDocs(collection(db, "posts"));
+                listContainer.innerHTML = "";
+                if (querySnapshot.empty) {
+                    listContainer.innerHTML = "<p style='color: #888; text-align: center;'>لا توجد مقالات حالياً.</p>";
+                    return;
+                }
+                querySnapshot.forEach((documentSnapshot) => {
+                    const post = documentSnapshot.data();
+                    const id = documentSnapshot.id;
+                    const safeTitle = (post.title || "").replace(/'/g, "\\'");
+                    const safeImage = (post.image || "").replace(/'/g, "\\'");
+                    const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                    listContainer.innerHTML += `
+                        <div class="post-card">
+                            <h4 style="color: #f1c40f; margin: 0 0 5px 0;">${post.title}</h4>
+                            <p style="color: #ccc; font-size: 12px; margin: 0 0 8px 0; max-height: 40px; overflow: hidden;">${post.content}</p>
+                            <div>
+                                <button class="btn-action btn-edit" onclick="prepareEdit('${id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                                <button class="btn-action btn-del" onclick="deletePost('${id}')">حذف</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error(err);
+                listContainer.innerHTML = "<p style='color: #e74c3c; text-align: center;'>فشل تحميل المقالات.</p>";
+            }
         }
-    });
 
-    // 4. وظيفة تسجيل الدخول
-    window.login = async () => {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('password').value;
-        try { 
-            await signInWithEmailAndPassword(auth, e, p); 
-        } catch (err) { 
-            alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر."); 
-        }
-    };
+        window.savePost = async () => {
+            const t = document.getElementById('title').value.trim();
+            const c = document.getElementById('content').value.trim();
+            const i = document.getElementById('image').value.trim();
+            const editId = document.getElementById('edit-post-id').value;
+            const btn = document.getElementById('pub-btn');
 
-    // 5. وظيفة تسجيل الخروج
-    window.logout = () => { signOut(auth); };
+            if(!t || !c) return alert("أكمل العنوان والمحتوى أولاً!");
 
-    // 6. وظيفة النشر في Firestore
-    window.publish = async () => {
-        const t = document.getElementById('title').value;
-        const c = document.getElementById('content').value;
-        const i = document.getElementById('image').value;
-        const btn = document.getElementById('pub-btn');
+            btn.innerText = "جاري الحفظ...";
+            btn.disabled = true;
 
-        if(!t || !c) return alert("أكمل البيانات أولاً!");
+            try {
+                if (editId) {
+                    await updateDoc(doc(db, "posts", editId), {
+                        title: t,
+                        content: c,
+                        image: i
+                    });
+                    alert("✅ تم التعديل بنجاح!");
+                } else {
+                    await addDoc(collection(db, "posts"), {
+                        title: t,
+                        content: c,
+                        image: i,
+                        timestamp: serverTimestamp()
+                    });
+                    alert("✅ تم النشر بنجاح!");
+                }
+                resetForm();
+                loadPosts();
+            } catch (err) {
+                console.error(err);
+                alert("حدث خطأ: " + err.message);
+                btn.disabled = false;
+                btn.innerText = editId ? "حفظ التعديلات 💾" : "نشر الآن ✅";
+            }
+        };
 
-        btn.innerText = "جاري النشر...";
-        btn.disabled = true;
+        window.prepareEdit = (id, title, image, content) => {
+            document.getElementById('edit-post-id').value = id;
+            document.getElementById('title').value = title;
+            document.getElementById('image').value = image;
+            document.getElementById('content').value = content;
+            document.getElementById('panel-title').innerText = "تعديل المقال";
+            document.getElementById('pub-btn').innerText = "حفظ التعديلات 💾";
+            document.getElementById('cancel-edit').style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
 
-        try {
-            await addDoc(collection(db, "posts"), {
-                title: t,
-                content: c,
-                image: i,
-                timestamp: serverTimestamp()
-            });
-            alert("✅ تم النشر بنجاح!");
-            location.reload();
-        } catch (err) {
-            console.error(err);
-            alert("فشل النشر: " + err.message);
-            btn.disabled = false;
-            btn.innerText = "نشر الآن ✅";
-        }
-    };
-</script>
+        window.deletePost = async (id) => {
+            if (confirm("هل أنت متأكد من حذف هذا المقال؟")) {
+                try {
+                    await deleteDoc(doc(db, "posts", id));
+                    alert("🗑️ تم الحذف بنجاح.");
+                    loadPosts();
+                } catch (err) {
+                    alert("فشل الحذف: " + err.message);
+                }
+            }
+        };
 
+        window.resetForm = () => {
+            document.getElementById('edit-post-id').value = "";
+            document.getElementById('title').value = "";
+            document.getElementById('image').value = "";
+            document.getElementById('content').value = "";
+            document.getElementById('panel-title').innerText = "نشر أو تعديل مقال - EMOSHA";
+            document.getElementById('pub-btn').innerText = "نشر الآن ✅";
+            document.getElementById('pub-btn').disabled = false;
+            document.getElementById('cancel-edit').style.display = "none";
+        };
+    </script>
 </body>
 </html>
