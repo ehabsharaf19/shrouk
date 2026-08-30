@@ -44,6 +44,7 @@
     </script>
     <meta name="google-site-verification" content="kNjuxCEKk2BwQgWCt6FfHQMzv-J0aDZe_x-BLQ2I5RE" />
 
+
     <style>
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
@@ -85,6 +86,9 @@
         .admin-mode .admin-controls { display: flex !important; }
         .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
         
+        .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px auto; text-align: center; width: 90%; max-width: 500px; }
+        .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .company-btn { background: #222; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-size: 12px; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
         .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         
@@ -94,6 +98,184 @@
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
 
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
+    
+                            .                                function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            const homepagePosts = allPostsData.slice(0, 3);
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال — 📅 21 أغسطس 2026
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        }
+
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <br><br>
+                            <div style="text-align: center; color: #f1c40f; font-weight: bold; font-size: 14px; border-top: 1px dashed #444; padding-top: 15px; margin-top: 15px;">
+                                🖋️ القبطان إيهاب أبو رتال &nbsp;|&nbsp; 📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال  —  📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+
+              homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            <p style="color: #f1c40f; text-align: center; font-weight: bold; margin-top: 15px;">
+                                🖋️ القبطان إيهاب أبو رتال — 📅 ${todayDate}
+                            </p>
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال  —  📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال  —  📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+.article-content::after {
+    content: "🖋️ القبطان إيهاب أبو رتال  —  📅 2026 أغسطس 17";
+    display: block;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+    color: #f1c40f;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+
     </style>
     
     <link rel="manifest" href="manifest.json">
@@ -102,7 +284,7 @@
 </head>
 <body id="main-body">
 
- <div id="top-info-bar" style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999; width: 100%;">
+ <div id="top-info-bar" style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999;">
     <div style="margin-bottom: 5px;">🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
     <div style="font-weight: bold;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية</div>
 </div>
@@ -185,7 +367,7 @@
         </div>
     </div>
 
-    <!-- البرمجة والسكربتات -->
+    <!-- البرمجة -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -226,11 +408,6 @@
                         <div class="article-content">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                            
-                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
-                                🖋️ القبطان إيهاب أبو رتال
-                            </div>
-
                             <div class="admin-controls">
                                 <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
                             </div>
@@ -250,18 +427,23 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
+               // دالة الأسعار اللحظية الآمنة والسريعة المطابقة للصاغة
         async function updatePrices() {
             try {
+                // جلب سعر الدولار وسعر الذهب العالمي دفعة واحدة بطريقة آمنة
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
                 const currentUSD = data.rates.EGP;
 
+                // سعر الأونصة العالمي اللحظي (معتمد ومحدث)
                 const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
                 const goldData = await goldRes.json();
                 let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2400;
 
+                // إذا حدث أي تأخير، نجيب سعر احتياطي عالمي موثوق
                 if (!globalPriceOz) globalPriceOz = 2400;
 
+                // حساب سعر عيار 24 الصافي بمصر (السعر العالمي ÷ 31.1035 × سعر الدولار)
                 const p24Egypt = Math.round((globalPriceOz / 31.1035) * currentUSD);
 
                 const display = (id, text) => {
@@ -279,6 +461,7 @@
 
             } catch (e) {
                 console.log("خطأ في تحديث الأسعار:", e);
+                // أسعار احتياطية في حال انقطاع الشبكة
                 document.getElementById('p24').innerText = "7,374";
                 document.getElementById('p21').innerText = "6,452";
                 document.getElementById('p18').innerText = "5,530";
