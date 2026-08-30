@@ -1,15 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- الصفحات الأساسية فقط -->
-  <url><loc>https://shrouk-two.vercel.app/</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/prices.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/calculator.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/zakat.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/blog.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/about.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/privacy.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/terms.html</loc></url>
-  <url><loc>https://shrouk-two.vercel.app/contact.html</loc></url>
+    <!-- الصفحة الرئيسية -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/index.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>always</changefreq>
+        <priority>1.00</priority>
+    </url>
+
+    <!-- صفحة أسعار السبائك -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/prices.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>hourly</changefreq>
+        <priority>0.90</priority>
+    </url>
+
+    <!-- صفحة حاسبة الذهب -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/calculator.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.80</priority>
+    </url>
+
+    <!-- صفحة زكاة الذهب -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/zakat.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+
+    <!-- المدونة والمقالات -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/blog.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.85</priority>
+    </url>
+
+    <!-- صفحة من نحن -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/about.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.50</priority>
+    </url>
+
+    <!-- صفحة اتصل بنا -->
+    <url>
+        <loc>https://shrouk-two.vercel.app/contact.html</loc>
+        <lastmod>2026-08-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.50</priority>
+    </url>
 
 </urlset>
