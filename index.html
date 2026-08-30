@@ -4,118 +4,367 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شروق الذهب خان الجني | أسعار الذهب اليوم في مصر وتحديث مباشر</title>
+    <!-- وصف الموقع لمحركات البحث -->
     <meta name="description" content="موقع شروق الذهب لمتابعة أسعار الذهب اليوم بالجنيه المصري والدولار، تحديث لحظي لأسعار عيار 21، 24، 18 والجنيه الذهب وحاسبة الزكاة والسبائك.">
+    <!-- الكلمات المفتاحية -->
     <meta name="keywords" content="شروق الذهب, أسعار الذهب اليوم, سعر عيار 21, أسعار الذهب في مصر, سعر الجنيه الذهب, سبائك الذهب">
+    <!-- FontAwesome لأيقونات السوشيال ميديا -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
-        .ticker-wrap { width: 100%; background: #f1c40f; color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 17px; margin-bottom: 25px; border-bottom: 2px solid #fff; }
-        .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .market-stats { display: flex; justify-content: space-between; background: #1a1a1a; padding: 10px 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; width: 90%; max-width: 420px; }
-        .stat-item { text-align: center; flex: 1; }
-        .stat-label { color: #888; font-size: 11px; display: block; }
-        .stat-value { color: #2ecc71; font-size: 14px; font-weight: bold; }
-        .gold-container { width: 100%; max-width: 450px; margin: 0 auto 30px; }
-        .gold-card { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: center; position: relative; width: 90%; margin-left: auto; margin-right: auto; box-sizing: border-box; }
-        .gold-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #f1c40f; }
-        .card-price { color: #f1c40f; font-size: 42px; font-weight: 900; }
-        .main-layout { display: flex; gap: 20px; width: 95%; max-width: 1100px; margin-top: 20px; align-items: flex-start; margin-left: auto; margin-right: auto; }
-        .articles-main { flex: 2; width: 100%; }
-        .sidebar { flex: 1; position: sticky; top: 20px; }
-        .sidebar-box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; text-align: right; }
-        .sidebar-box h3 { color: #f1c40f; font-size: 19px; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 15px; }
-        .article-item { display: none; border-bottom: 1px solid #333; margin-bottom: 15px; background: #111; border-radius: 12px; overflow: hidden; }
-        .article-item.visible { display: block; }
-        .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; cursor: pointer; font-weight: bold; font-size: 18px; border-right: 4px solid transparent; transition: 0.3s; text-align: right; }
-        .article-header:hover { border-right-color: #f1c40f; background: #222; }
-        .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.4s ease-out; overflow: hidden; text-align: right; }
-        .article-item.active .article-content { max-height: none; padding: 25px; border-top: 1px solid #333; }
-        .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
-        .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; box-sizing: border-box; }
-        .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; justify-content: flex-end; }
-        @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* شريط الأخبار المتحرك */
+        .ticker-wrap {
+            width: 100%;
+            background: #f1c40f;
+            color: #000;
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #ffffff;
+        }
+        .ticker-move {
+            display: inline-block;
+            animation: ticker 150s linear infinite;
+            padding-left: 100%;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* إحصائيات السوق */
+        .market-stats {
+            display: flex;
+            justify-content: space-between;
+            background: #1a1a1a;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            width: 90%;
+            max-width: 420px;
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 11px;
+            display: block;
+        }
+        .stat-value {
+            color: #2ecc71;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* حاوية كروت الأسعار */
+        .gold-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto 30px auto;
+        }
+
+        .gold-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        .gold-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #f1c40f;
+        }
+
+        .card-price {
+            color: #f1c40f;
+            font-size: 42px;
+            font-weight: 900;
+            margin-top: 5px;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+        }
+
+        /* تخطيط الصفحة الرئيسي */
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            width: 95%;
+            max-width: 1100px;
+            margin-top: 20px;
+            align-items: flex-start;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .articles-main {
+            flex: 2;
+            width: 100%;
+        }
+
+        .sidebar {
+            flex: 1;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-box {
+            background: #111;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .sidebar-box h3 {
+            color: #f1c40f;
+            font-size: 19px;
+            margin-top: 0;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* المقالات (الأكورديون) */
+        .article-item {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .article-header {
+            background: #1a1a1a;
+            color: #f1c40f;
+            padding: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            border-right: 4px solid transparent;
+            transition: 0.3s;
+            text-align: right;
+        }
+
+        .article-header:hover {
+            border-right-color: #f1c40f;
+            background: #222;
+        }
+
+        .article-content {
+            max-height: 0;
+            padding: 0 15px;
+            color: #ccc;
+            background: #0a0a0a;
+            transition: max-height 0.4s ease-out;
+            overflow: hidden;
+            text-align: right;
+        }
+
+        .article-item.active .article-content {
+            max-height: 2000px;
+            padding: 25px;
+            border-top: 1px solid #333;
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* الفوتر */
+        .footer-gold {
+            background: #000;
+            color: #f1c40f;
+            text-align: center;
+            padding: 45px;
+            border-top: 2px solid #f1c40f;
+            width: 100%;
+            margin-top: 60px;
+            box-sizing: border-box;
+        }
+
+        .social-link-btn {
+            color: #f1c40f;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+            justify-content: flex-end;
+        }
+        .social-link-btn:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 850px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+            }
+        }
     </style>
+    <!-- Sitemap Link -->
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 </head>
 <body>
 
-    <div style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; width: 100%;">
-        <div>🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
+    <!-- شريط التوقيت والتنبيه -->
+    <div style="background: #000000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; width: 100%; box-sizing: border-box;">
+        <div>🕒 توقيت القاهرة: <span id="egypt-time" style="color: #ffffff; font-weight: bold;">--:--:--</span></div>
         <div style="font-weight: bold; margin-top: 5px;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية</div>
     </div>
 
-    <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f; width: 100%;">
+    <!-- ترويسة الموقع -->
+    <div style="background: #000000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f; width: 100%;">
         <h1 style="color: #f1c40f; margin: 0; font-size: 24px;">✨ شروق الذهب ✨</h1>
-        <p style="color: #fff; margin: 5px 0 0; font-size: 14px;">إيموشا جولد - Emousha Gold</p>
+        <p style="color: #ffffff; margin: 5px 0 0 0; font-size: 14px;">إيموشا جولد - Emousha Gold</p>
     </div>
 
-    <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">جاري التحميل...</div></div>
-    
+    <!-- شريط الأخبار المتحرك -->
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="news-ticker">جاري تحميل أحدث الأخبار والتحليلات...</div>
+    </div>
+
+    <!-- إحصائيات السوق -->
     <div class="market-stats">
-        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
+        <div class="stat-item">
+            <span class="stat-label">الأونصة عالمياً</span>
+            <span class="stat-value" id="global-ounce">$...</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">سعر الدولار</span>
+            <span class="stat-value" id="usd-rate">...</span>
+        </div>
     </div>
 
+    <!-- كروت أسعار الذهب -->
     <div class="gold-container">
-        <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
-        <div class="gold-card"><span style="color:#888">عيار 22</span><br><span class="card-price" id="p22">...</span></div>
-        <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
-        <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
+        <div class="gold-card">
+            <span style="color:#888888; font-size: 16px;">عيار 24</span><br>
+            <span class="card-price" id="p24">...</span>
+        </div>
+        <div class="gold-card">
+            <span style="color:#888888; font-size: 16px;">عيار 22</span><br>
+            <span class="card-price" id="p22">...</span>
+        </div>
+        <div class="gold-card">
+            <span style="color:#888888; font-size: 16px;">عيار 21</span><br>
+            <span class="card-price" id="p21">...</span>
+        </div>
+        <div class="gold-card">
+            <span style="color:#888888; font-size: 16px;">عيار 18</span><br>
+            <span class="card-price" id="p18">...</span>
+        </div>
     </div>
 
+    <!-- الهيكل الرئيسي للموقع -->
     <div class="main-layout">
+        <!-- قسم المقالات -->
         <div class="articles-main">
-            <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
-            <div id="posts-container">جاري التحميل...</div>
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="blog.html" style="background: #f1c40f; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+            <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px; margin-bottom: 20px;">📰 أحدث تحليلات القبطان</h2>
+            
+            <div id="posts-container">
+                <p style="text-align: center; color: #888;">جاري تحميل التحليلات...</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 25px;">
+                <a href="blog.html" style="background: #f1c40f; color: #000; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
                     مشاهدة كل المقالات 👈
                 </a>
             </div>
         </div>
 
+        <!-- الشريط الجانبي (Sidebar) -->
         <aside class="sidebar">
             <div class="sidebar-box">
                 <h3>👤 عن القبطان</h3>
-                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان إيهاب أبو رتال، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
+                <p style="font-size: 14px; color: #bbb; line-height: 1.8; margin: 0;">منصة "شروق الذهب" بإشراف القبطان إيهاب أبو رتال، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
             </div>
+
             <div class="sidebar-box">
                 <h3>📌 خدمات شروق الذهب</h3>
-                <ul style="list-style: none; padding: 0; text-align: right;">
-                    <li style="margin-bottom: 10px;"><a href="prices.html" style="color: #f1c40f; text-decoration: none;">💎 تحديث أسعار السبائك اليومي</a></li>
-                    <li style="margin-bottom: 10px;"><a href="calculator.html" style="color: #f1c40f; text-decoration: none;">🧮 حاسبة الذهب الذكية</a></li>
-                    <li style="margin-bottom: 10px;"><a href="zakat.html" style="color: #f1c40f; text-decoration: none;">🕌 حساب زكاة الذهب</a></li>
-                    <li style="margin-bottom: 10px;"><a href="blog.html" style="color: #f1c40f; text-decoration: none;">📰 مدونة تحليلات القبطان</a></li>
+                <ul style="list-style: none; padding: 0; text-align: right; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="prices.html" style="color: #f1c40f; text-decoration: none;">💎 تحديث أسعار السبائك اليومي</a></li>
+                    <li style="margin-bottom: 12px;"><a href="calculator.html" style="color: #f1c40f; text-decoration: none;">🧮 حاسبة الذهب الذكية</a></li>
+                    <li style="margin-bottom: 12px;"><a href="zakat.html" style="color: #f1c40f; text-decoration: none;">🕌 حساب زكاة الذهب</a></li>
+                    <li style="margin-bottom: 0;"><a href="blog.html" style="color: #f1c40f; text-decoration: none;">📰 مدونة تحليلات القبطان</a></li>
                 </ul>
             </div>
+
             <div class="sidebar-box">
                 <h3>📱 منصاتنا</h3>
-                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك الشخصي</a>
-                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
-                <a href="https://www.facebook.com/groups/1322491319816622/?ref=share_group_link" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
-                <a href="https://chat.whatsapp.com/GjN9Q8lQ2k0K8X" target="_blank" class="social-link-btn">💬 جروب الواتساب</a>
+                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك الشخصي <i class="fab fa-facebook"></i></a>
+                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب <i class="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/groups/1322491319816622/?ref=share_group_link" target="_blank" class="social-link-btn">👥 جروب شروق الذهب <i class="fab fa-facebook-f"></i></a>
+                <a href="https://chat.whatsapp.com/GjN9Q8lQ2k0K8X" target="_blank" class="social-link-btn" style="margin-bottom: 0;">💬 جروب الواتساب <i class="fab fa-whatsapp"></i></a>
             </div>
         </aside>
     </div>
 
+    <!-- الفوتر -->
     <div class="footer-gold">
-        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
-        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
-        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        <div>
+            <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+            <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+            <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        </div>
         <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب أبو رتال</p>
     </div>
 
-    <!-- جافاسكريبت عرض المقالات والأسعار -->
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
+        // إعدادات فايربيس
+        const firebaseConfig = {
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/"
+        };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         
         let allPostsData = []; 
 
+        // جلب المقالات من قاعدة البيانات
         database.ref('posts').on('value', (snapshot) => {
             const data = snapshot.val();
             if(data) {
@@ -125,9 +374,12 @@
                 })).reverse();
                 renderPosts();
                 updateTicker();
+            } else {
+                document.getElementById('posts-container').innerHTML = '<p style="text-align: center; color: #888;">لا توجد مقالات مضافة حالياً.</p>';
             }
         });
 
+        // عرض المقالات في الصفحة الرئيسية (أحدث 3 مقالات فقط)
         function renderPosts() {
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
@@ -135,13 +387,13 @@
             
             homepagePosts.forEach((post) => {
                 container.innerHTML += `
-                    <div class="article-item visible">
+                    <div class="article-item">
                         <div class="article-header" onclick="toggleArticle(this)">
                             ${post.title} 🔗
                         </div>
                         <div class="article-content">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            <div style="white-space: pre-wrap; line-height: 1.9; font-size: 15px;">${post.content}</div>
                             <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
                                 🖋️ القبطان إيهاب أبو رتال
                             </div>
@@ -150,25 +402,31 @@
             });
         }
 
+        // فتح وإغلاق المقال
         function toggleArticle(header) {
-            header.parentElement.classList.toggle('active');
+            const item = header.parentElement;
+            item.classList.toggle('active');
         }
 
+        // تحديث شريط الأخبار المتحرك
         function updateTicker() {
             const ticker = document.getElementById('news-ticker');
             const titles = allPostsData.map(post => "🔱 " + post.title);
             ticker.innerText = titles.join(" . . . . ");
         }
 
+        // جلب وتحديث الأسعار اللحظية للذهب والدولار
         async function updatePrices() {
             try {
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
                 const currentUSD = data.rates.EGP;
-                const goldRes = addFetchSafe('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
-                const goldData = await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd')).json();
+
+                const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
+                const goldData = await goldRes.json();
                 let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2400;
                 if (!globalPriceOz) globalPriceOz = 2400;
+
                 const p24Egypt = Math.round((globalPriceOz / 31.1035) * currentUSD);
 
                 document.getElementById('p24').innerText = p24Egypt.toLocaleString();
@@ -181,9 +439,11 @@
                 console.log("خطأ في تحديث الأسعار:", e);
             }
         }
+        
         updatePrices();
         setInterval(updatePrices, 60000);
 
+        // تحديث توقيت القاهرة اللحظي
         setInterval(() => {
             const clockElement = document.getElementById('egypt-time');
             if (clockElement) {
