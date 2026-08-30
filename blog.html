@@ -190,6 +190,41 @@
         <span>الزكاة</span>
     </a>
 </div>
+<script>
+  // وظيفة لتوليد وتنزيل ملف sitemap.xml جاهز بضغطة واحدة
+  function generateSitemap() {
+    fetch('https://shrouk-ehab-default-rtdb.firebaseio.com/posts.json')
+      .then(res => res.json())
+      .then(data => {
+        let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+        
+        // الصفحات الرئيسية
+        const pages = ['index.html', 'prices.html', 'calculator.html', 'zakat.html', 'blog.html', 'about.html', 'contact.html', 'privacy.html'];
+        pages.forEach(p => {
+          xml += `  <url>\n    <loc>https://shrouk-two.vercel.app/${p}</loc>\n    <lastmod>2026-08-30</lastmod>\n    <priority>0.8</priority>\n  </url>\n`;
+        });
+
+        // جلب جميع المقالات وتوليد روابطها تلقائياً
+        for (let id in data) {
+          xml += `  <url>\n    <loc>https://shrouk-two.vercel.app/post.html?id=${id}</loc>\n    <lastmod>2026-08-30</lastmod>\n    <priority>0.7</priority>\n  </url>\n`;
+        }
+        
+        xml += `</urlset>`;
+        
+        // تحويل وتنزيل الملف
+        const blob = new Blob([xml], { type: 'text/xml' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'sitemap.xml';
+        a.click();
+      });
+  }
+</script>
+
+<!-- زر مؤقت لتنزيل الخريطة -->
+<button onclick="generateSitemap()" style="position:fixed; bottom:10px; left:10px; z-index:9999; padding:10px; background:#f1c40f; color:#000; font-weight:bold; border-none; border-radius:5px;">
+  📥 تحميل Sitemap الجاهز
+</button>
 
 </body>
 </html>
