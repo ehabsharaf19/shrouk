@@ -8,7 +8,7 @@
     <meta name="keywords" content="شروق الذهب, أسعار الذهب اليوم, سعر عيار 21, أسعار الذهب في مصر, سعر الجنيه الذهب, سبائك الذهب">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        html, body { background-color: #000 !important; color: #fff !important; background: #000 !important; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        body { background-color: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .ticker-wrap { width: 100%; background: #f1c40f; color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-weight: bold; font-size: 17px; margin-bottom: 25px; border-bottom: 2px solid #fff; }
         .ticker-move { display: inline-block; animation: ticker 150s linear infinite; padding-left: 100%; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -32,9 +32,6 @@
         .article-content { max-height: 0; padding: 0 15px; color: #ccc; background: #0a0a0a; transition: max-height 0.4s ease-out; overflow: hidden; text-align: right; }
         .article-item.active .article-content { max-height: none; padding: 25px; border-top: 1px solid #333; }
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
-        .admin-controls { display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid #333; padding-top: 15px; }
-        .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; text-align: center; text-decoration: none; }
-        .btn-delete { background: #e74c3c; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; box-sizing: border-box; }
         .social-link-btn { color: #f1c40f; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; transition: 0.3s; justify-content: flex-end; }
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
@@ -43,74 +40,70 @@
 </head>
 <body>
 
- <div style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; width: 100%; z-index: 9999;">
-    <div>🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
-    <div style="font-weight: bold; margin-top: 5px;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية</div>
-</div>
+    <div style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; width: 100%;">
+        <div>🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
+        <div style="font-weight: bold; margin-top: 5px;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية</div>
+    </div>
 
-    <div class="page-section active-page" style="width: 100%;">
-        <center>
-            <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f; width: 100%;">
-                <h1 style="color: #f1c40f; margin: 0; font-size: 24px;">✨ شروق الذهب ✨</h1>
-                <p style="color: #fff; margin: 5px 0 0; font-size: 14px;">إيموشا جولد - Emousha Gold</p>
+    <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f; width: 100%;">
+        <h1 style="color: #f1c40f; margin: 0; font-size: 24px;">✨ شروق الذهب ✨</h1>
+        <p style="color: #fff; margin: 5px 0 0; font-size: 14px;">إيموشا جولد - Emousha Gold</p>
+    </div>
+
+    <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">جاري التحميل...</div></div>
+    
+    <div class="market-stats">
+        <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
+        <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
+    </div>
+
+    <div class="gold-container">
+        <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
+        <div class="gold-card"><span style="color:#888">عيار 22</span><br><span class="card-price" id="p22">...</span></div>
+        <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
+        <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
+    </div>
+
+    <div class="main-layout">
+        <div class="articles-main">
+            <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
+            <div id="posts-container">جاري التحميل...</div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="blog.html" style="background: #f1c40f; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+                    مشاهدة كل المقالات 👈
+                </a>
             </div>
-        </center>
-
-        <div class="ticker-wrap"><div class="ticker-move" id="news-ticker">جاري التحميل...</div></div>
-        
-        <div class="market-stats" style="margin: 0 auto 20px;">
-            <div class="stat-item"><span class="stat-label">الأونصة عالمياً</span><span class="stat-value" id="global-ounce">$...</span></div>
-            <div class="stat-item"><span class="stat-label">سعر الدولار</span><span class="stat-value" id="usd-rate">...</span></div>
         </div>
 
-        <div class="gold-container">
-            <div class="gold-card"><span style="color:#888">عيار 24</span><br><span class="card-price" id="p24">...</span></div>
-            <div class="gold-card"><span style="color:#888">عيار 22</span><br><span class="card-price" id="p22">...</span></div>
-            <div class="gold-card"><span style="color:#888">عيار 21</span><br><span class="card-price" id="p21">...</span></div>
-            <div class="gold-card"><span style="color:#888">عيار 18</span><br><span class="card-price" id="p18">...</span></div>
-        </div>
-
-        <div class="main-layout">
-            <div class="articles-main">
-                <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
-                <div id="posts-container">جاري التحميل...</div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <a href="blog.html" style="background: #f1c40f; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
-                        مشاهدة كل المقالات 👈
-                    </a>
-                </div>
+        <aside class="sidebar">
+            <div class="sidebar-box">
+                <h3>👤 عن القبطان</h3>
+                <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان إيهاب أبو رتال، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
             </div>
+            <div class="sidebar-box">
+                <h3>📌 خدمات شروق الذهب</h3>
+                <ul style="list-style: none; padding: 0; text-align: right;">
+                    <li style="margin-bottom: 10px;"><a href="prices.html" style="color: #f1c40f; text-decoration: none;">💎 تحديث أسعار السبائك اليومي</a></li>
+                    <li style="margin-bottom: 10px;"><a href="calculator.html" style="color: #f1c40f; text-decoration: none;">🧮 حاسبة الذهب الذكية</a></li>
+                    <li style="margin-bottom: 10px;"><a href="zakat.html" style="color: #f1c40f; text-decoration: none;">🕌 حساب زكاة الذهب</a></li>
+                    <li style="margin-bottom: 10px;"><a href="blog.html" style="color: #f1c40f; text-decoration: none;">📰 مدونة تحليلات القبطان</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-box">
+                <h3>📱 منصاتنا</h3>
+                <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك الشخصي</a>
+                <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
+                <a href="https://www.facebook.com/groups/1322491319816622/?ref=share_group_link" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
+                <a href="https://chat.whatsapp.com/GjN9Q8lQ2k0K8X" target="_blank" class="social-link-btn">💬 جروب الواتساب</a>
+            </div>
+        </aside>
+    </div>
 
-            <aside class="sidebar">
-                <div class="sidebar-box">
-                    <h3>👤 عن القبطان</h3>
-                    <p style="font-size: 14px; color: #bbb; line-height: 1.8;">منصة "شروق الذهب" بإشراف القبطان إيهاب أبو رتال، نقدم أدق تحليلات سوق الذهب بخبرة حقيقية.</p>
-                </div>
-                <div class="sidebar-box">
-                    <h3>📌 خدمات شروق الذهب</h3>
-                    <ul style="list-style: none; padding: 0; text-align: right;">
-                        <li style="margin-bottom: 10px;"><a href="prices.html" style="color: #f1c40f; text-decoration: none;">💎 تحديث أسعار السبائك اليومي</a></li>
-                        <li style="margin-bottom: 10px;"><a href="calculator.html" style="color: #f1c40f; text-innerHeight: none; text-decoration: none;">🧮 حاسبة الذهب الذكية</a></li>
-                        <li style="margin-bottom: 10px;"><a href="zakat.html" style="color: #f1c40f; text-decoration: none;">🕌 حساب زكاة الذهب</a></li>
-                        <li style="margin-bottom: 10px;"><a href="blog.html" style="color: #f1c40f; text-decoration: none;">📰 مدونة تحليلات القبطان</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-box">
-                    <h3>📱 منصاتنا</h3>
-                    <a href="https://www.facebook.com/ehabsharaf19" target="_blank" class="social-link-btn">📘 فيسبوك الشخصي</a>
-                    <a href="https://youtube.com/@ehabsharaf19" target="_blank" class="social-link-btn">📺 يوتيوب</a>
-                    <a href="https://www.facebook.com/groups/1322491319816622/?ref=share_group_link" target="_blank" class="social-link-btn">👥 جروب شروق الذهب</a>
-                    <a href="https://chat.whatsapp.com/GjN9Q8lQ2k0K8X" target="_blank" class="social-link-btn">💬 جروب الواتساب</a>
-                </div>
-            </aside>
-        </div>
-
-        <div class="footer-gold">
-            <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
-            <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
-            <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
-            <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب أبو رتال</p>
-        </div>
+    <div class="footer-gold">
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | القبطان إيهاب أبو رتال</p>
     </div>
 
     <!-- جافاسكريبت عرض المقالات والأسعار -->
@@ -172,8 +165,8 @@
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
                 const currentUSD = data.rates.EGP;
-                const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
-                const goldData = await goldRes.json();
+                const goldRes = addFetchSafe('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
+                const goldData = await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd')).json();
                 let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2400;
                 if (!globalPriceOz) globalPriceOz = 2400;
                 const p24Egypt = Math.round((globalPriceOz / 31.1035) * currentUSD);
