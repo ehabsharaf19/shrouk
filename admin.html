@@ -76,27 +76,36 @@
         // مراقبة حالة تسجيل الدخول
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById('login-file' || 'login-form').style.display = 'none';
                 document.getElementById('login-form').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
-                loadAdminPosts(); // تحميل المقالات فور تسجيل الدخول
+                loadAdminPosts();
             } else {
                 document.getElementById('login-form').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
             }
         });
 
-        window.login = async () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
+        // ربط دالة تسجيل الدخول بنافذة المتصفح لضمان عملها مع الزر
+        window.login = async function() {
+            const emailInput = document.getElementById('email').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+
+            if (!emailInput || !passwordInput) {
+                alert("يرجى إدخال البريد الإلكتروني وكلمة المرور!");
+                return;
+            }
+
             try { 
-                await signInWithEmailAndPassword(auth, e, p); 
+                await signInWithEmailAndPassword(auth, emailInput, passwordInput); 
             } catch (err) { 
-                alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر."); 
+                console.error(err);
+                alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر. (الخطأ: " + err.message + ")"); 
             }
         };
 
-        window.logout = () => { signOut(auth); };
+        window.logout = function() { 
+            signOut(auth); 
+        };
 
         // دالة جلب وعرض المقالات في لوحة الأدمن مع أزرار التعديل والحذف
         async function loadAdminPosts() {
@@ -136,7 +145,7 @@
         }
 
         // دالة النشر أو حفظ التعديل
-        window.savePost = async () => {
+        window.savePost = async function() {
             const t = document.getElementById('title').value;
             const c = document.getElementById('content').value;
             const i = document.getElementById('image').value;
@@ -150,7 +159,6 @@
 
             try {
                 if (editId) {
-                    // تحديث مقال موجود
                     const postRef = doc(db, "posts", editId);
                     await updateDoc(postRef, {
                         title: t,
@@ -159,7 +167,6 @@
                     });
                     alert("✅ تم تعديل المقال بنجاح!");
                 } else {
-                    // إضافة مقال جديد
                     await addDoc(collection(db, "posts"), {
                         title: t,
                         content: c,
@@ -179,7 +186,7 @@
         };
 
         // تجهيز بيانات المقال للتعديل
-        window.prepareEdit = (id, title, image, content) => {
+        window.prepareEdit = function(id, title, image, content) {
             document.getElementById('edit-post-id').value = id;
             document.getElementById('title').value = title;
             document.getElementById('image').value = image;
@@ -192,7 +199,7 @@
         };
 
         // حذف مقال
-        window.deletePost = async (id) => {
+        window.deletePost = async function(id) {
             if (confirm("هل أنت متأكد من حذف هذا المقال نهائياً؟")) {
                 try {
                     await deleteDoc(doc(db, "posts", id));
@@ -205,7 +212,7 @@
         };
 
         // إعادة تعيين النموذج
-        window.resetForm = () => {
+        window.resetForm = function() {
             document.getElementById('edit-post-id').value = "";
             document.getElementById('title').value = "";
             document.getElementById('image').value = "";
