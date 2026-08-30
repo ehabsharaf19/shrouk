@@ -55,38 +55,42 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- جلب مكتبات Firebase (الإصدار 8 المتوافق مع Realtime Database والمصادقة) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+    <script>
+        // إعدادات الاتصال بقاعدة البيانات الفورية (Realtime Database)
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
             projectId: "shrouk-ehab",
             storageBucket: "shrouk-ehab.firebasestorage.app",
             messagingSenderId: "1015714183835",
             appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        // تهيئة الفايربيس
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
 
         // مراقبة حالة تسجيل الدخول
-        onAuthStateChanged(auth, (user) => {
+        auth.onAuthStateChanged((user) => {
             if (user) {
                 document.getElementById('login-form').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
-                loadAdminPosts();
+                loadAdminPosts(); // تحميل المقالات من الـ Realtime Database فوراً
             } else {
                 document.getElementById('login-form').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
             }
         });
 
-        // ربط دالة تسجيل الدخول بنافذة المتصفح لضمان عملها مع الزر
-        window.login = async function() {
+        // دالة تسجيل الدخول
+        window.login = function() {
             const emailInput = document.getElementById('email').value.trim();
             const passwordInput = document.getElementById('password').value.trim();
 
@@ -95,35 +99,39 @@
                 return;
             }
 
-            try { 
-                await signInWithEmailAndPassword(auth, emailInput, passwordInput); 
-            } catch (err) { 
-                console.error(err);
-                alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر. (الخطأ: " + err.message + ")"); 
-            }
+            auth.signInWithEmailAndPassword(emailInput, passwordInput)
+                .catch((err) => {
+                    console.error(err);
+                    alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر. (الخطأ: " + err.message + ")");
+                });
         };
 
+        // دالة تسجيل الخروج
         window.logout = function() { 
-            signOut(auth); 
+            auth.signOut(); 
         };
 
-        // دالة جلب وعرض المقالات في لوحة الأدمن مع أزرار التعديل والحذف
-        async function loadAdminPosts() {
+        // دالة جلب وعرض كل المقالات القديمة والجديدة من Realtime Database
+        function loadAdminPosts() {
             const listContainer = document.getElementById('admin-posts-list');
             listContainer.innerHTML = "<p style='color: #888; text-align: center;'>جاري التحميل...</p>";
-            try {
-                const querySnapshot = await getDocs(collection(db, "posts"));
+            
+            database.ref('posts').once('value', (snapshot) => {
+                const data = snapshot.val();
                 listContainer.innerHTML = "";
-                
-                if (querySnapshot.empty) {
+
+                if (!data) {
                     listContainer.innerHTML = "<p style='color: #888; text-align: center;'>لا توجد مقالات منشورة حالياً.</p>";
                     return;
                 }
 
-                querySnapshot.forEach((documentSnapshot) => {
-                    const post = documentSnapshot.data();
-                    const postId = documentSnapshot.id;
-                    
+                // عكس ترتيب المقالات عشان الجديد يظهر فوق
+                const postsArray = Object.keys(data).map(id => ({
+                    id: id,
+                    ...data[id]
+                })).reverse();
+
+                postsArray.forEach(post => {
                     const safeTitle = (post.title || "").replace(/'/g, "\\'");
                     const safeImage = (post.image || "").replace(/'/g, "\\'");
                     const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
@@ -132,23 +140,20 @@
                         <div class="post-row">
                             <span style="color: #fff; font-size: 14px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 10px; text-align: right;">${post.title}</span>
                             <div>
-                                <button class="btn-action btn-edit" onclick="prepareEdit('${postId}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
-                                <button class="btn-action btn-del" onclick="deletePost('${postId}')">حذف</button>
+                                <button class="btn-action btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                                <button class="btn-action btn-del" onclick="deletePost('${post.id}')">حذف</button>
                             </div>
                         </div>
                     `;
                 });
-            } catch (err) {
-                console.error(err);
-                listContainer.innerHTML = "<p style='color: #e74c3c; text-align: center;'>خطأ في جلب المقالات.</p>";
-            }
+            });
         }
 
-        // دالة النشر أو حفظ التعديل
-        window.savePost = async function() {
-            const t = document.getElementById('title').value;
-            const c = document.getElementById('content').value;
-            const i = document.getElementById('image').value;
+        // دالة النشر أو حفظ التعديل في Realtime Database
+        window.savePost = function() {
+            const t = document.getElementById('title').value.trim();
+            const c = document.getElementById('content').value.trim();
+            const i = document.getElementById('image').value.trim();
             const editId = document.getElementById('edit-post-id').value;
             const btn = document.getElementById('pub-btn');
 
@@ -157,31 +162,37 @@
             btn.innerText = "جاري الحفظ...";
             btn.disabled = true;
 
-            try {
-                if (editId) {
-                    const postRef = doc(db, "posts", editId);
-                    await updateDoc(postRef, {
-                        title: t,
-                        content: c,
-                        image: i
-                    });
+            if (editId) {
+                // تعديل مقال موجود
+                database.ref('posts/' + editId).update({
+                    title: t,
+                    content: c,
+                    image: i
+                }).then(() => {
                     alert("✅ تم تعديل المقال بنجاح!");
-                } else {
-                    await addDoc(collection(db, "posts"), {
-                        title: t,
-                        content: c,
-                        image: i,
-                        timestamp: serverTimestamp()
-                    });
+                    resetForm();
+                    loadAdminPosts();
+                }).catch(err => {
+                    alert("فشل التعديل: " + err.message);
+                    btn.disabled = false;
+                    btn.innerText = "نشر الآن ✅";
+                });
+            } else {
+                // إضافة مقال جديد
+                database.ref('posts').push({
+                    title: t,
+                    content: c,
+                    image: i,
+                    timestamp: Date.now()
+                }).then(() => {
                     alert("✅ تم نشر المقال بنجاح!");
-                }
-                resetForm();
-                loadAdminPosts();
-            } catch (err) {
-                console.error(err);
-                alert("فشل الحفظ: " + err.message);
-                btn.disabled = false;
-                btn.innerText = "نشر الآن ✅";
+                    resetForm();
+                    loadAdminPosts();
+                }).catch(err => {
+                    alert("فشل النشر: " + err.message);
+                    btn.disabled = false;
+                    btn.innerText = "نشر الآن ✅";
+                });
             }
         };
 
@@ -198,16 +209,15 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // حذف مقال
-        window.deletePost = async function(id) {
+        // حذف مقال من Realtime Database
+        window.deletePost = function(id) {
             if (confirm("هل أنت متأكد من حذف هذا المقال نهائياً؟")) {
-                try {
-                    await deleteDoc(doc(db, "posts", id));
+                database.ref('posts/' + id).remove().then(() => {
                     alert("🗑️ تم حذف المقال بنجاح.");
                     loadAdminPosts();
-                } catch (err) {
+                }).catch(err => {
                     alert("فشل الحذف: " + err.message);
-                }
+                });
             }
         };
 
