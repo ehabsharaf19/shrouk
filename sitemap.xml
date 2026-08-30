@@ -1,60 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-    <!-- الصفحة الرئيسية -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/index.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>always</changefreq>
-        <priority>1.00</priority>
-    </url>
+    <!-- 1. الصفحات الأساسية والأدوات -->
+    <url><loc>https://shrouk-two.vercel.app/index.html</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/prices.html</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/calculator.html</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/zakat.html</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/blog.html</loc></url>
 
-    <!-- صفحة أسعار السبائك -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/prices.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>hourly</changefreq>
-        <priority>0.90</priority>
-    </url>
+    <!-- 2. الصفحات القانونية -->
+    <url><loc>https://shrouk-two.vercel.app/about.html</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/contact.html</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/privacy.html</loc></url>
 
-    <!-- صفحة حاسبة الذهب -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/calculator.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.80</priority>
-    </url>
+    <!-- 3. الجزء الأول من المقالات -->
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSAISD0OWz_HoxnzKi</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSNzwhYyKOEzKSBvf-</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsV6y5SMhCdLWTU3_c</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsVVxxJ6uXEFN6vUBqx</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsXTwG1t08TBUeq9FU</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsZAWiQt7SmZsV_AdK</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsZRQ8sRYvLkvv0gzG</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsZjEXxG89PpW-Z_ib</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsS_MVSeZ39FBM9LC7D</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSa3WpgWMafUDnQCh6</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSaKHY3TypT9MyLH4I</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsScb91MeXxxv0_Auj1</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsScuzKd6eTVX8BOqMJ</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSdB--SJM8bx8DvKkq</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSdQkPaBJ_lYzWS0yO</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSdqeAYAOA2bADchs0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSeFSBiNeAInsQdO0B</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSeY2fhUs0Ht14TFoA</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSepHf0UYeKEafe20C</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSfKBxC9zXAYkNRVD0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSfirabwIxplHfj6cL</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSfykbNRcvhjovA9-k</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSi1nbalmPh3L_Ek0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSjhX13X0vU0m4RFkU</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSk5mv-RyxiGX-a6Vm</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSkNhhz62kp58MHDYf</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSkcT-XysikcW2S07T</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSo20XobchWC3a8RGY</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsSoHQ8YZ21Smf5p201</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsTUogp2TFKojz7FCWY</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsTX04ZNVRPSy63fJtD</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsTXH1gMV6Ubh5ONgy</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsTgWIISxATDl6veJf</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsMn1gRvD4P0GV000oA</loc></url>
 
-    <!-- صفحة زكاة الذهب -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/zakat.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.80</priority>
-    </url>
+    <!-- 4. الجزء الثاني من المقالات -->
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsX7z5cTW7_LRB357t-</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsXpHgVG_JISNn6aHMc</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsXpqW0JayrmPYLhvbc</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsYxo7OScJGTLE6QvYf</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsbvVdadRvk8EDjahx2</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsbvZ4T515qC1qaFnCz</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsbwOXoWfL850MUqaK</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsdPPRyr45jxSMGpVHj</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsdPcEJ5_VR4TSs3Fo8</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsdPtjaRpgB01VPL1Y7</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsdQ29nRuzBvAKvbJBQ</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfQK2wT2RULDByRCzy</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfQgSMpJp4dH2FZCzu</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfZ7KQE14op5Zy1bx</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfRpBzJ5bxRSI9oRnT</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfSRNCjARIkz34mb_</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Osf5eLLUDSslDMaLoA</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfT-0Yw_0mduqnMg53</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfTIKj2X3bVQKbtM1d</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfTeyE_EBuYH2Ei9kj</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfU40zYHOir2GwD1OS</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfUQ0uvFvs-bIFsYtV</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfUfMsK83CgLNZV2J8</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfUs50wZ5e8wA4Yjef</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfV7evNPXNvhAY_a1M</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfVNB0oXusqn5eq21T</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfVbOzR3VEVf7QnA3I</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfVkWizZ9GBtRd6kvZ</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfVup4dnFhkvGYgcfN</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsfW3uqO_YhqRqobgL-</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsxoN5c1_c4o0OQ42KM</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsxoNwfSwrH0wM1s4HD</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsxoMBOqWl8FiQSxV4b</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsxocC9_IxbsmSPndpX</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsxopL6Ch3VPzINwj2h</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OsxowqNyPzoMbTyynqE</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4T5K2nChb6Z6xV1GK</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4TH_laywXva2t1MJL</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4TQNJfQcCiJAzz6eh</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4TaQiT6WSHpzhFn8p</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4TkhQMkzHiCEK82g2</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4U1x7DRSYKc-F7uTQ</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4UAivTE_wZYbzy1J2</loc></url>
 
-    <!-- المدونة والمقالات -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/blog.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>0.85</priority>
-    </url>
-
-    <!-- صفحة من نحن -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/about.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.50</priority>
-    </url>
-
-    <!-- صفحة اتصل بنا -->
-    <url>
-        <loc>https://shrouk-two.vercel.app/contact.html</loc>
-        <lastmod>2026-08-30</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.50</priority>
-    </url>
+    <!-- 5. الجزء الثالث من المقالات -->
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4UBQPrItrLx733KE0s</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4UIaC2gsUz1UKN3pQ</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4UQEW_HcUDoxmcywz</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot4UWiEPfeUtz7Ou5F0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9k9fwp0SDkI_1fTc</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9k9hRoHIQcTlmgu0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kAmVNJJTP34et6k5</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kB9AY9IpICd41ZeF</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kBq8V1GB7-6L1LJC</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kCufotHRKCKShJA5</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kHIN6w17ZeyV0Ne-</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kHcPu1643LK-aWWE</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kQ8utRON8h1yf0XR</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kU0VZybFpk1FHfC0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kZ1MzPBMcp7DMK_n</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9kcVAJJK7Jo0NIhHA</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9l0pSezn4tqLQLzqP</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ot9slWYncuBLg3-wgKy</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OtA4GVSK8wI18JtO8om</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-OtA4nWEvPpvueMjqIYF</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ou44E6Kg5lihMpGU10b</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ou44Pq1_HKnqcRXMocz</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ou44f4poQlB08BThiGi</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ou44viq5iPveQxSzjWh</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ou458Fk1TznjwEV4YH0</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-Ou49_Q9h0AguiguI1A3</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-N0S155APwd80XKoXf</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-R5sy9gU8fq7O4WI4d</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-R5sVxTFb89Ct6fHsf</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-MZKCDzVsScXmJ33_Y</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-Mc8DSFeRDvk0Qko7M</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-MzIpKyMvwQvQpEFgq</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-Mtd7RD0JjAdqOBJu7</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-tgP4V9F5JvvNzPs7B</loc></url>
+    <url><loc>https://shrouk-two.vercel.app/post.html?id=-P-tgh7zd8mJQeO0K26</loc></url>
 
 </urlset>
