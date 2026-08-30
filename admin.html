@@ -6,188 +6,105 @@
     <title>إدارة إيموشا ⚓</title>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 600px; margin: auto; text-align: right; box-sizing: border-box; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; text-align: right; }
-        button { width: 100%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 400px; margin: auto; }
+        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; }
+        button { width: 95%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; font-size: 12px; width: auto; padding: 8px 20px; }
-        .post-card { background: #1a1a1a; padding: 15px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #333; text-align: right; }
-        .btn-action { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; margin-top: 8px; }
-        .btn-edit { background: #f1c40f; color: #000; margin-left: 5px; }
-        .btn-del { background: #e74c3c; color: #fff; }
-        #admin-panel { display: none; }
+        #admin-panel { display: none; } /* مخفي لحد ما تسجل دخول */
     </style>
 </head>
 <body>
 
-    <div style="max-width: 600px; margin: 0 auto 15px auto; text-align: right;">
-        <a href="index.html" style="color: #f1c40f; text-decoration: none; font-weight: bold;">⬅ العودة للموقع الرئيسي</a>
-    </div>
-
-    <!-- نموذج تسجيل الدخول -->
-    <div id="login-form" class="box" style="text-align: center;">
+    <div id="login-form" class="box">
         <h3>تسجيل دخول القبطان ⚓</h3>
-        <input type="email" id="email" placeholder="البريد الإلكتروني" style="text-align: center;">
-        <input type="password" id="password" placeholder="كلمة المرور" style="text-align: center;">
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
         <button onclick="login()">دخول</button>
     </div>
 
-    <!-- لوحة التحكم -->
     <div id="admin-panel" class="box">
-        <h3 id="panel-title" style="color: #f1c40f; text-align: center; margin-top: 0;">إدارة ونشر مقالات EMOSHA</h3>
-        
-        <input type="hidden" id="edit-post-id">
+        <h3>نشر مقال جديد - EMOSHA</h3>
         <input type="text" id="title" placeholder="عنوان المقال">
         <input type="text" id="image" placeholder="رابط الصورة (اختياري)">
-        <textarea id="content" rows="5" placeholder="اكتب التحليل هنا يا إيهاب..."></textarea>
-        
-        <button id="pub-btn" onclick="savePost()">نشر الآن ✅</button>
-        <button id="cancel-edit-btn" style="display:none; background:#444; color:#fff;" onclick="resetForm()">إلغاء التعديل</button>
-
-        <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
-
-        <h4 style="color: #f1c40f; text-align: right; margin-bottom: 10px;">المقالات الحالية:</h4>
-        <div id="admin-posts-list" style="max-height: 400px; overflow-y: auto;">
-            <p style="color: #888; text-align: center;">جاري التحميل...</p>
-        </div>
-
-        <div style="text-align: center;">
-            <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
-        </div>
+        <textarea id="content" rows="6" placeholder="اكتب التحليل هنا يا قبطان..."></textarea>
+        <button id="pub-btn" onclick="publish()">نشر الآن ✅</button>
+        <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة</button>
     </div>
 
-    <!-- مكتبات فايربيس 8 -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
-            authDomain: "shrouk-ehab.firebaseapp.com",
-            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
-            projectId: "shrouk-ehab",
-            storageBucket: "shrouk-ehab.firebasestorage.app",
-            messagingSenderId: "1015714183835",
-            appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
-        };
+    // 1. إعدادات الاتصال (مأخوذة من بياناتك الصحيحة)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
+        authDomain: "shrouk-ehab.firebaseapp.com",
+        projectId: "shrouk-ehab",
+        storageBucket: "shrouk-ehab.firebasestorage.app",
+        messagingSenderId: "1015714183835",
+        appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
+    };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
+    // 2. تهيئة التطبيق
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // حماية الصفحة: التحقق من تسجيل الدخول
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAdminPosts();
-            } else {
-                document.getElementById('login-form').style.display = 'block';
-                document.getElementById('admin-panel').style.display = 'none';
-            }
-        });
-
-        window.login = function() {
-            const emailInput = document.getElementById('email').value.trim();
-            const passwordInput = document.getElementById('password').value.trim();
-            if (!emailInput || !passwordInput) return alert("أدخل الإيميل والباسورد!");
-            auth.signInWithEmailAndPassword(emailInput, passwordInput).catch(err => alert("خطأ في البيانات: " + err.message));
-        };
-
-        window.logout = function() {
-            auth.signOut();
-        };
-
-        function loadAdminPosts() {
-            const listContainer = document.getElementById('admin-posts-list');
-            listContainer.innerHTML = "<p style='color: #888; text-align: center;'>جاري التحميل...</p>";
-            
-            database.ref('posts').once('value', (snapshot) => {
-                const data = snapshot.val();
-                listContainer.innerHTML = "";
-                if (!data) {
-                    listContainer.innerHTML = "<p style='color: #888; text-align: center;'>لا توجد مقالات منشورة حالياً.</p>";
-                    return;
-                }
-
-                const postsArray = Object.keys(data).map(id => ({ id: id, ...data[id] })).reverse();
-
-                postsArray.forEach(post => {
-                    const safeTitle = (post.title || "").replace(/'/g, "\\'");
-                    const safeImage = (post.image || "").replace(/'/g, "\\'");
-                    const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
-
-                    listContainer.innerHTML += `
-                        <div class="post-card">
-                            <h4 style="color: #f1c40f; margin: 0 0 5px 0;">${post.title}</h4>
-                            <p style="color: #ccc; font-size: 13px; margin: 0 0 10px 0; max-height: 50px; overflow: hidden;">${post.content}</p>
-                            <div>
-                                <button class="btn-action btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
-                                <button class="btn-action btn-del" onclick="deletePost('${post.id}')">حذف</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
+    // 3. التحكم في ظهور اللوحة بناءً على تسجيل الدخول
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+        } else {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('admin-panel').style.display = 'none';
         }
+    });
 
-        window.savePost = function() {
-            const t = document.getElementById('title').value.trim();
-            const c = document.getElementById('content').value.trim();
-            const i = document.getElementById('image').value.trim();
-            const editId = document.getElementById('edit-post-id').value;
-            const btn = document.getElementById('pub-btn');
+    // 4. وظيفة تسجيل الدخول
+    window.login = async () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('password').value;
+        try { 
+            await signInWithEmailAndPassword(auth, e, p); 
+        } catch (err) { 
+            alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر."); 
+        }
+    };
 
-            if (!t || !c) return alert("أكمل العنوان والمحتوى!");
+    // 5. وظيفة تسجيل الخروج
+    window.logout = () => { signOut(auth); };
 
-            btn.innerText = "جاري الحفظ...";
-            btn.disabled = true;
+    // 6. وظيفة النشر في Firestore
+    window.publish = async () => {
+        const t = document.getElementById('title').value;
+        const c = document.getElementById('content').value;
+        const i = document.getElementById('image').value;
+        const btn = document.getElementById('pub-btn');
 
-            if (editId) {
-                database.ref('posts/' + editId).update({ title: t, content: c, image: i }).then(() => {
-                    alert("✅ تم التعديل بنجاح!");
-                    resetForm();
-                    loadAdminPosts();
-                });
-            } else {
-                database.ref('posts').push({ title: t, content: c, image: i, timestamp: Date.now() }).then(() => {
-                    alert("✅ تم النشر بنجاح!");
-                    resetForm();
-                    loadAdminPosts();
-                });
-            }
-        };
+        if(!t || !c) return alert("أكمل البيانات أولاً!");
 
-        window.prepareEdit = function(id, title, image, content) {
-            document.getElementById('edit-post-id').value = id;
-            document.getElementById('title').value = title;
-            document.getElementById('image').value = image;
-            document.getElementById('content').value = content;
-            document.getElementById('panel-title').innerText = "تعديل المقال";
-            document.getElementById('pub-btn').innerText = "حفظ التعديلات 💾";
-            document.getElementById('cancel-edit-btn').style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        btn.innerText = "جاري النشر...";
+        btn.disabled = true;
 
-        window.deletePost = function(id) {
-            if (confirm("هل أنت متأكد من الحذف؟")) {
-                database.ref('posts/' + id).remove().then(() => {
-                    alert("🗑️ تم الحذف.");
-                    loadAdminPosts();
-                });
-            }
-        };
+        try {
+            await addDoc(collection(db, "posts"), {
+                title: t,
+                content: c,
+                image: i,
+                timestamp: serverTimestamp()
+            });
+            alert("✅ تم النشر بنجاح!");
+            location.reload();
+        } catch (err) {
+            console.error(err);
+            alert("فشل النشر: " + err.message);
+            btn.disabled = false;
+            btn.innerText = "نشر الآن ✅";
+        }
+    };
+</script>
 
-        window.resetForm = function() {
-            document.getElementById('edit-post-id').value = "";
-            document.getElementById('title').value = "";
-            document.getElementById('image').value = "";
-            document.getElementById('content').value = "";
-            document.getElementById('panel-title').innerText = "إدارة ونشر مقالات EMOSHA";
-            document.getElementById('pub-btn').innerText = "نشر الآن ✅";
-            document.getElementById('pub-btn').disabled = false;
-            document.getElementById('cancel-edit-btn').style.display = "none";
-        };
-    </script>
 </body>
 </html>
