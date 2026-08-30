@@ -5,70 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة إيموشا المحمية ⚓</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .box { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #f1c40f; max-width: 600px; margin: auto; text-align: right; box-sizing: border-box; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; text-align: right; }
-        button { width: 100%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .logout-btn { background: #e74c3c; color: #fff; margin-top: 20px; font-size: 12px; width: auto; padding: 8px 20px; }
+        * { box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; text-align: center; }
+        .top-nav { max-width: 600px; margin: 0 auto 15px auto; text-align: right; }
+        .top-nav a { color: #f1c40f; text-decoration: none; font-weight: bold; font-size: 14px; }
         
-        /* تصميم روابط المقالات المرتبة في لوحة التحكم */
-        .post-link-row { background: #1a1a1a; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
-        .post-link-title { color: #f1c40f; text-decoration: none; font-size: 15px; font-weight: bold; cursor: pointer; flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 10px; }
-        .post-link-title:hover { text-decoration: underline; }
-        .action-buttons { display: flex; gap: 5px; }
-        .btn-action { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; }
-        .btn-edit { background: #f1c40f; color: #000; }
-        .btn-del { background: #e74c3c; color: #fff; }
+        .box { background: #111; padding: 20px; border-radius: 12px; border: 1px solid #f1c40f; max-width: 600px; margin: auto; text-align: right; }
         
-        .more-btn { background: #333; color: #f1c40f; border: 1px dashed #f1c40f; margin-top: 10px; }
-
-        /* إخفاء اللوحة افتراضياً لحين تسجيل الدخول */
-        #admin-panel { display: none; }
-        #login-form { display: block; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #333; background: #000; color: #fff; text-align: right; font-size: 14px; }
+        
+        .main-btn { width: 100%; padding: 12px; background: #f1c40f; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px; margin-top: 10px; }
+        .main-btn:hover { background: #d4ac0d; }
+        
+        .cancel-btn { background: #444; color: #fff; width: 100%; padding: 10px; border: none; border-radius: 6px; cursor: pointer; margin-top: 5px; font-weight: bold; }
+        .logout-btn { background: #e74c3c; color: #fff; margin-top: 25px; font-size: 13px; width: auto; padding: 8px 20px; border: none; border-radius: 6px; cursor: pointer; display: inline-block; }
+        
+        /* تصميم روابط المقالات المرتبة بدقة في لوحة التحكم */
+        .posts-container { margin-top: 20px; border-top: 1px solid #333; padding-top: 15px; }
+        .post-item-row { background: #1a1a1a; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .post-title-link { color: #f1c40f; text-decoration: none; font-size: 14px; font-weight: bold; cursor: pointer; flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 10px; }
+        .post-title-link:hover { text-decoration: underline; }
+        
+        .actions-group { display: flex; gap: 5px; flex-shrink: 0; }
+        .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; }
+        .edit-action { background: #f1c40f; color: #000; }
+        .delete-action { background: #e74c3c; color: #fff; }
+        
+        .more-btn { background: #222; color: #f1c40f; border: 1px dashed #f1c40f; width: 100%; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        
+        /* التحكم في إظهار وإخفاء الحماية واللوحة */
+        #admin-auth-box { display: block; }
+        #admin-dashboard { display: none; }
     </style>
 </head>
 <body>
 
-    <div style="max-width: 600px; margin: 0 auto 15px auto; text-align: right;">
-        <a href="index.html" style="color: #f1c40f; text-decoration: none; font-weight: bold;">⬅ العودة للموقع الرئيسي</a>
+    <div class="top-nav">
+        <a href="index.html">⬅ العودة للموقع الرئيسي</a>
     </div>
 
-    <!-- نموذج تسجيل الدخول (محمي وصارم) -->
-    <div id="login-form" class="box" style="text-align: center;">
-        <h3>تسجيل دخول القبطان الآمن ⚓</h3>
-        <p style="color: #888; font-size: 13px;">يرجى تسجيل الدخول للوصول إلى لوحة التحكم</p>
-        <input type="email" id="email" placeholder="البريد الإلكتروني" style="text-align: center;">
-        <input type="password" id="password" placeholder="كلمة المرور" style="text-align: center;">
-        <button onclick="login()">دخول للوحة التحكم</button>
+    <!-- صندوق تسجيل الدخول (حماية صارمة) -->
+    <div id="admin-auth-box" class="box" style="text-align: center;">
+        <h3 style="color: #f1c40f; margin-top: 0;">تسجيل دخول لوحة التحكم ⚓</h3>
+        <p style="color: #888; font-size: 13px;">يرجى إدخال البريد الإلكتروني وكلمة المرور للمتابعة</p>
+        <input type="email" id="auth-email" placeholder="البريد الإلكتروني" style="text-align: center;">
+        <input type="password" id="auth-password" placeholder="كلمة المرور" style="text-align: center;">
+        <button class="main-btn" onclick="executeLogin()">دخول للوحة التحكم</button>
     </div>
 
-    <!-- لوحة التحكم وإدارة المقالات -->
-    <div id="admin-panel" class="box">
-        <h3 id="panel-title" style="color: #f1c40f; text-align: center; margin-top: 0;">إدارة ونشر مقالات EMOSHA</h3>
+    <!-- لوحة التحكم الفعلية (تظهر بعد الباسورد فقط) -->
+    <div id="admin-dashboard" class="box">
+        <h3 id="panel-main-title" style="color: #f1c40f; text-align: center; margin-top: 0;">إدارة ونشر مقالات EMOSHA</h3>
         
-        <input type="hidden" id="edit-post-id">
-        <input type="text" id="title" placeholder="عنوان المقال">
-        <input type="text" id="image" placeholder="رابط الصورة (اختياري)">
-        <textarea id="content" rows="5" placeholder="اكتب التحليل هنا يا إيهاب..."></textarea>
+        <input type="hidden" id="current-edit-id">
+        <input type="text" id="post-title" placeholder="عنوان المقال">
+        <input type="text" id="post-image" placeholder="رابط الصورة (اختياري)">
+        <textarea id="post-content" rows="5" placeholder="اكتب التحليل هنا يا إيهاب..."></textarea>
         
-        <button id="pub-btn" onclick="savePost()">نشر الآن ✅</button>
-        <button id="cancel-edit-btn" style="display:none; background:#444; color:#fff;" onclick="resetForm()">إلغاء التعديل</button>
+        <button id="publish-btn" class="main-btn" onclick="saveOrUpdatePost()">نشر الآن ✅</button>
+        <button id="cancel-edit-btn" class="cancel-btn" style="display: none;" onclick="clearForm()">إلغاء التعديل</button>
 
-        <hr style="border:0; border-top:1px solid #333; margin:20px 0;">
-
-        <h4 style="color: #f1c40f; text-align: right; margin-bottom: 10px;">إدارة المقالات (روابط سريعة):</h4>
-        <div id="admin-posts-list">
-            <p style="color: #888; text-align: center;">جاري التحميل...</p>
+        <div class="posts-container">
+            <h4 style="color: #f1c40f; margin-bottom: 10px;">المقالات الحالية (تعديل / حذف):</h4>
+            <div id="admin-posts-list">
+                <p style="color: #888; text-align: center;">جاري التحميل...</p>
+            </div>
+            <button id="load-more-btn" class="more-btn" style="display: none;" onclick="loadMorePosts()">عرض المزيد من المقالات ⬇</button>
         </div>
-        
-        <button id="load-more-btn" class="more-btn" style="display: none;" onclick="showMorePosts()">عرض المزيد من المقالات ⬇</button>
 
         <div style="text-align: center;">
-            <button class="logout-btn" onclick="logout()">تسجيل خروج وتأمين اللوحة 🔒</button>
+            <button class="logout-btn" onclick="executeLogout()">تسجيل خروج وتأمين اللوحة 🔒</button>
         </div>
     </div>
 
-    <!-- مكتبات فايربيس للإصدار 8 (المتوافق مع الإيميل/الباسورد والـ Realtime Database) -->
+    <!-- مكتبات فايربيس (إصدار 8 المتوافق) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -84,65 +94,68 @@
             appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
         const auth = firebase.auth();
         const database = firebase.database();
 
-        let allPostsGlobal = [];
-        let displayLimit = 5; // عرض 5 مقالات كبداية
+        let allPostsArray = [];
+        let visibleCount = 5; // عرض 5 مقالات كبداية لترتيب الصفحة
 
-        // مراقبة أمان وحالة تسجيل الدخول بدقة
+        // مراقبة حالة الأمان وتسجيل الدخول
         auth.onAuthStateChanged((user) => {
+            const authBox = document.getElementById('admin-auth-box');
+            const dashboardBox = document.getElementById('admin-dashboard');
+
             if (user) {
-                // مسجل دخول -> اظهر لوحة التحكم واخفي نموذج الباسورد
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAdminPosts();
+                authBox.style.display = 'none';
+                dashboardBox.style.display = 'block';
+                fetchAdminPosts();
             } else {
-                // غير مسجل دخول -> اخفي اللوحة واعرض صفحة الدخول حصرياً
-                document.getElementById('admin-panel').style.display = 'none';
-                document.getElementById('login-form').style.display = 'block';
+                dashboardBox.style.display = 'none';
+                authBox.style.display = 'block';
             }
         });
 
         // دالة تسجيل الدخول
-        window.login = function() {
-            const emailInput = document.getElementById('email').value.trim();
-            const passwordInput = document.getElementById('password').value.trim();
+        window.executeLogin = function() {
+            const email = document.getElementById('auth-email').value.trim();
+            const pass = document.getElementById('auth-password').value.trim();
 
-            if (!emailInput || !passwordInput) {
+            if (!email || !pass) {
                 alert("يرجى إدخال البريد الإلكتروني وكلمة المرور!");
                 return;
             }
 
-            auth.signInWithEmailAndPassword(emailInput, passwordInput)
-                .catch((err) => {
-                    console.error(err);
-                    alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر.");
-                });
+            auth.signInWithEmailAndPassword(email, pass).catch((error) => {
+                alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر.");
+                console.error(error);
+            });
         };
 
         // تسجيل الخروج
-        window.logout = function() {
+        window.executeLogout = function() {
             auth.signOut().then(() => {
                 location.reload();
             });
         };
 
-        // جلب المقالات وعرضها كروابط منظمة (5 مقالات في البداية)
-        function loadAdminPosts() {
-            const listContainer = document.getElementById('admin-posts-list');
-            listContainer.innerHTML = "<p style='color: #888; text-align: center;'>جاري تحميل المقالات...</p>";
-            
+        // جلب المقالات
+        function fetchAdminPosts() {
+            const listEl = document.getElementById('admin-posts-list');
+            listEl.innerHTML = "<p style='color: #888; text-align: center;'>جاري التحميل...</p>";
+
             database.ref('posts').once('value', (snapshot) => {
                 const data = snapshot.val();
                 if (!data) {
-                    listContainer.innerHTML = "<p style='color: #888; text-align: center;'>لا توجد مقالات منشورة حالياً.</p>";
+                    listEl.innerHTML = "<p style='color: #888; text-align: center;'>لا توجد مقالات منشورة حالياً.</p>";
                     document.getElementById('load-more-btn').style.display = 'none';
                     return;
                 }
 
-                allPostsGlobal = Object.keys(data).map(id => ({
+                allPostsArray = Object.keys(data).map(id => ({
                     id: id,
                     ...data[id]
                 })).reverse(); // الأحدث أولاً
@@ -151,104 +164,106 @@
             });
         }
 
-        // رسم قائمة المقالات (روابط مختصرة)
+        // رسم المقالات (روابط مختصرة + زر تعديل + زر حذف)
         function renderPostsList() {
-            const listContainer = document.getElementById('admin-posts-list');
-            listContainer.innerHTML = "";
+            const listEl = document.getElementById('admin-posts-list');
+            listEl.innerHTML = "";
 
-            const postsToShow = allPostsGlobal.slice(0, displayLimit);
+            const chunk = allPostsArray.slice(0, visibleCount);
 
-            postsToShow.forEach(post => {
-                const safeTitle = (post.title || "").replace(/'/g, "\\'");
-                const safeImage = (post.image || "").replace(/'/g, "\\'");
-                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+            chunk.forEach(post => {
+                const cleanTitle = (post.title || "").replace(/'/g, "\\'");
+                const cleanImage = (post.image || "").replace(/'/g, "\\'");
+                const cleanContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
 
-                listContainer.innerHTML += `
-                    <div class="post-link-row">
-                        <span class="post-link-title" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)" title="اضغط للتعديل">${post.title}</span>
-                        <div class="action-buttons">
-                            <button class="btn-action btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
-                            <button class="btn-action btn-del" onclick="deletePost('${post.id}')">حذف</button>
+                listEl.innerHTML += `
+                    <div class="post-item-row">
+                        <span class="post-title-link" onclick="setupEditForm('${post.id}', '${cleanTitle}', '${cleanImage}', \`${cleanContent}\`)" title="اضغط لتعديل المقال">${post.title}</span>
+                        <div class="actions-group">
+                            <button class="action-btn edit-action" onclick="setupEditForm('${post.id}', '${cleanTitle}', '${cleanImage}', \`${cleanContent}\`)">تعديل</button>
+                            <button class="action-btn delete-action" onclick="deleteSpecificPost('${post.id}')">حذف</button>
                         </div>
                     </div>
                 `;
             });
 
-            // التحكم في ظهور زر "عرض المزيد"
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            if (allPostsGlobal.length > displayLimit) {
-                loadMoreBtn.style.display = 'block';
+            const moreBtn = document.getElementById('load-more-btn');
+            if (allPostsArray.length > visibleCount) {
+                moreBtn.style.display = 'block';
             } else {
-                loadMoreBtn.style.display = 'none';
+                moreBtn.style.display = 'none';
             }
         }
 
-        // زيادة عدد المقالات المعروضة عند الضغط على المزيد
-        window.showMorePosts = function() {
-            displayLimit += 5;
+        // زر عرض المزيد
+        window.loadMorePosts = function() {
+            visibleCount += 5;
             renderPostsList();
         };
 
         // حفظ أو تعديل مقال
-        window.savePost = function() {
-            const t = document.getElementById('title').value.trim();
-            const c = document.getElementById('content').value.trim();
-            const i = document.getElementById('image').value.trim();
-            const editId = document.getElementById('edit-post-id').value;
-            const btn = document.getElementById('pub-btn');
+        window.saveOrUpdatePost = function() {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const image = document.getElementById('post-image').value.trim();
+            const editId = document.getElementById('current-edit-id').value;
+            const btn = document.getElementById('publish-btn');
 
-            if(!t || !c) return alert("أكمل العنوان والمحتوى أولاً!");
+            if (!title || !content) {
+                alert("يرجى كتابة العنوان والمحتوى أولاً!");
+                return;
+            }
 
             btn.innerText = "جاري الحفظ...";
             btn.disabled = true;
 
             if (editId) {
-                database.ref('posts/' + editId).update({ title: t, content: c, image: i }).then(() => {
+                database.ref('posts/' + editId).update({ title, content, image }).then(() => {
                     alert("✅ تم تعديل المقال بنجاح!");
-                    resetForm();
-                    loadAdminPosts();
+                    clearForm();
+                    fetchAdminPosts();
                 });
             } else {
-                database.ref('posts').push({ title: t, content: c, image: i, timestamp: Date.now() }).then(() => {
+                database.ref('posts').push({ title, content, image, timestamp: Date.now() }).then(() => {
                     alert("✅ تم نشر المقال بنجاح!");
-                    resetForm();
-                    loadAdminPosts();
+                    clearForm();
+                    fetchAdminPosts();
                 });
             }
         };
 
-        // تجهيز التعديل
-        window.prepareEdit = function(id, title, image, content) {
-            document.getElementById('edit-post-id').value = id;
-            document.getElementById('title').value = title;
-            document.getElementById('image').value = image;
-            document.getElementById('content').value = content;
+        // تجهيز النموذج للتعديل
+        window.setupEditForm = function(id, title, image, content) {
+            document.getElementById('current-edit-id').value = id;
+            document.getElementById('post-title').value = title;
+            document.getElementById('post-image').value = image;
+            document.getElementById('post-content').value = content;
 
-            document.getElementById('panel-title').innerText = "تعديل مقال: " + title;
-            document.getElementById('pub-btn').innerText = "حفظ التعديلات 💾";
+            document.getElementById('panel-main-title').innerText = "تعديل المقال: " + title;
+            document.getElementById('publish-btn').innerText = "حفظ التعديلات 💾";
             document.getElementById('cancel-edit-btn').style.display = "block";
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         // حذف مقال
-        window.deletePost = function(id) {
+        window.deleteSpecificPost = function(id) {
             if (confirm("هل أنت متأكد من حذف هذا المقال نهائياً؟")) {
                 database.ref('posts/' + id).remove().then(() => {
                     alert("🗑️ تم حذف المقال بنجاح.");
-                    loadAdminPosts();
+                    fetchAdminPosts();
                 });
             }
         };
 
-        // إعادة تعيين النموذج
-        window.resetForm = function() {
-            document.getElementById('edit-post-id').value = "";
-            document.getElementById('title').value = "";
-            document.getElementById('image').value = "";
-            document.getElementById('content').value = "";
-            document.getElementById('panel-title').innerText = "إدارة ونشر مقالات EMOSHA";
-            document.getElementById('pub-btn').innerText = "نشر الآن ✅";
-            document.getElementById('pub-btn').disabled = false;
+        // تفريغ النموذج
+        window.clearForm = function() {
+            document.getElementById('current-edit-id').value = "";
+            document.getElementById('post-title').value = "";
+            document.getElementById('post-image').value = "";
+            document.getElementById('post-content').value = "";
+            document.getElementById('panel-main-title').innerText = "إدارة ونشر مقالات EMOSHA";
+            document.getElementById('publish-btn').innerText = "نشر الآن ✅";
+            document.getElementById('publish-btn').disabled = false;
             document.getElementById('cancel-edit-btn').style.display = "none";
         };
     </script>
