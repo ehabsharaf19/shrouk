@@ -15,6 +15,7 @@
         .btn-edit { background: #f1c40f; color: #000; margin-left: 5px; }
         .btn-del { background: #e74c3c; color: #fff; }
         #admin-panel { display: none; }
+        #login-form { display: block; }
     </style>
 </head>
 <body>
@@ -29,7 +30,7 @@
 
     <!-- لوحة التحكم -->
     <div id="admin-panel" class="box">
-        <h3 id="panel-title" style="text-align: center; color: #f1c40f;">نشر أو تعديل مقال - EMOSHA</h3>
+        <h3 id="panel-title" style="text-align: center; color: #f1c40f;">إدارة مقالات EMOSHA</h3>
         
         <input type="hidden" id="edit-post-id">
         <input type="text" id="title" placeholder="عنوان المقال">
@@ -51,25 +52,28 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- مكتبات فايربيس الإصدار 8 (الأكثر استقراراً للريال تايم داتا بيز) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCp-m2DkIIwIoKUeuntHLvDbEclB041pz4",
             authDomain: "shrouk-ehab.firebaseapp.com",
+            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/",
             projectId: "shrouk-ehab",
             storageBucket: "shrouk-ehab.firebasestorage.app",
             messagingSenderId: "1015714183835",
             appId: "1:1015714183835:web:3d5e2b0f60e781e3f7643e"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
 
-        onAuthStateChanged(auth, (user) => {
+        // حماية الصفحة والتأكد من حالة الدخول
+        auth.onAuthStateChanged((user) => {
             if (user) {
                 document.getElementById('login-form').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
@@ -80,31 +84,32 @@
             }
         });
 
-        window.login = async () => {
+        window.login = function() {
             const e = document.getElementById('email').value.trim();
             const p = document.getElementById('password').value.trim();
-            try { 
-                await signInWithEmailAndPassword(auth, e, p); 
-            } catch (err) { 
-                alert("خطأ في بيانات الدخول! تأكد من الإيميل وكلمة السر."); 
-            }
+            if(!e || !p) return alert("اكتب الإيميل والباسورد!");
+            auth.signInWithEmailAndPassword(e, p).catch(err => alert("خطأ في بيانات الدخول: " + err.message));
         };
 
-        window.logout = () => { signOut(auth); };
+        window.logout = function() {
+            auth.signOut();
+        };
 
-        async function loadPosts() {
+        function loadPosts() {
             const listContainer = document.getElementById('posts-list');
             listContainer.innerHTML = "<p style='color: #888; text-align: center;'>جاري التحميل...</p>";
-            try {
-                const querySnapshot = await getDocs(collection(db, "posts"));
+            
+            database.ref('posts').once('value', (snapshot) => {
+                const data = snapshot.val();
                 listContainer.innerHTML = "";
-                if (querySnapshot.empty) {
+                if (!data) {
                     listContainer.innerHTML = "<p style='color: #888; text-align: center;'>لا توجد مقالات حالياً.</p>";
                     return;
                 }
-                querySnapshot.forEach((documentSnapshot) => {
-                    const post = documentSnapshot.data();
-                    const id = documentSnapshot.id;
+
+                const postsArray = Object.keys(data).map(id => ({ id: id, ...data[id] })).reverse();
+
+                postsArray.forEach(post => {
                     const safeTitle = (post.title || "").replace(/'/g, "\\'");
                     const safeImage = (post.image || "").replace(/'/g, "\\'");
                     const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
@@ -114,19 +119,16 @@
                             <h4 style="color: #f1c40f; margin: 0 0 5px 0;">${post.title}</h4>
                             <p style="color: #ccc; font-size: 12px; margin: 0 0 8px 0; max-height: 40px; overflow: hidden;">${post.content}</p>
                             <div>
-                                <button class="btn-action btn-edit" onclick="prepareEdit('${id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
-                                <button class="btn-action btn-del" onclick="deletePost('${id}')">حذف</button>
+                                <button class="btn-action btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                                <button class="btn-action btn-del" onclick="deletePost('${post.id}')">حذف</button>
                             </div>
                         </div>
                     `;
                 });
-            } catch (err) {
-                console.error(err);
-                listContainer.innerHTML = "<p style='color: #e74c3c; text-align: center;'>فشل تحميل المقالات.</p>";
-            }
+            });
         }
 
-        window.savePost = async () => {
+        window.savePost = function() {
             const t = document.getElementById('title').value.trim();
             const c = document.getElementById('content').value.trim();
             const i = document.getElementById('image').value.trim();
@@ -138,34 +140,22 @@
             btn.innerText = "جاري الحفظ...";
             btn.disabled = true;
 
-            try {
-                if (editId) {
-                    await updateDoc(doc(db, "posts", editId), {
-                        title: t,
-                        content: c,
-                        image: i
-                    });
+            if (editId) {
+                database.ref('posts/' + editId).update({ title: t, content: c, image: i }).then(() => {
                     alert("✅ تم التعديل بنجاح!");
-                } else {
-                    await addDoc(collection(db, "posts"), {
-                        title: t,
-                        content: c,
-                        image: i,
-                        timestamp: serverTimestamp()
-                    });
+                    resetForm();
+                    loadPosts();
+                }).catch(err => { alert("خطأ: " + err.message); resetForm(); });
+            } else {
+                database.ref('posts').push({ title: t, content: c, image: i, timestamp: Date.now() }).then(() => {
                     alert("✅ تم النشر بنجاح!");
-                }
-                resetForm();
-                loadPosts();
-            } catch (err) {
-                console.error(err);
-                alert("حدث خطأ: " + err.message);
-                btn.disabled = false;
-                btn.innerText = editId ? "حفظ التعديلات 💾" : "نشر الآن ✅";
+                    resetForm();
+                    loadPosts();
+                }).catch(err => { alert("خطأ: " + err.message); resetForm(); });
             }
         };
 
-        window.prepareEdit = (id, title, image, content) => {
+        window.prepareEdit = function(id, title, image, content) {
             document.getElementById('edit-post-id').value = id;
             document.getElementById('title').value = title;
             document.getElementById('image').value = image;
@@ -176,24 +166,21 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        window.deletePost = async (id) => {
+        window.deletePost = function(id) {
             if (confirm("هل أنت متأكد من حذف هذا المقال؟")) {
-                try {
-                    await deleteDoc(doc(db, "posts", id));
+                database.ref('posts/' + id).remove().then(() => {
                     alert("🗑️ تم الحذف بنجاح.");
                     loadPosts();
-                } catch (err) {
-                    alert("فشل الحذف: " + err.message);
-                }
+                }).catch(err => alert("فشل الحذف: " + err.message));
             }
         };
 
-        window.resetForm = () => {
+        window.resetForm = function() {
             document.getElementById('edit-post-id').value = "";
             document.getElementById('title').value = "";
             document.getElementById('image').value = "";
             document.getElementById('content').value = "";
-            document.getElementById('panel-title').innerText = "نشر أو تعديل مقال - EMOSHA";
+            document.getElementById('panel-title').innerText = "إدارة مقالات EMOSHA";
             document.getElementById('pub-btn').innerText = "نشر الآن ✅";
             document.getElementById('pub-btn').disabled = false;
             document.getElementById('cancel-edit').style.display = "none";
