@@ -13,24 +13,26 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#f1c40f">
-    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
-
-    <!-- Schema.org Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FinancialProduct",
-      "name": "أسعار الذهب اليوم في مصر - شروق الذهب",
-      "description": "تحديث لحظي لسعر الذهب عيار 21، 24، 18 وسعر الأونصة والسبائك في مصر.",
-      "provider": {
-        "@type": "Organization",
-        "name": "شروق الذهب",
-        "url": "https://shrouk-two.vercel.app"
-      }
-    }
-    </script>
+    <style>
+        html, body {
+            background-color: #000 !important;
+            color: #fff !important;
+            background: #000 !important;
+        }
+    </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FinancialProduct",
+  "name": "أسعار الذهب اليوم في مصر - شروق الذهب",
+  "description": "تحديث لحظي لسعر الذهب عيار 21، 24، 18 وسعر الأونصة والسبائك في مصر.",
+  "provider": {
+    "@type": "Organization",
+    "name": "شروق الذهب",
+    "url": "https://shrouk-two.vercel.app"
+  }
+}
+</script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
@@ -42,39 +44,9 @@
     </script>
     <meta name="google-site-verification" content="kNjuxCEKk2BwQgWCt6FfHQMzv-J0aDZe_x-BLQ2I5RE" />
 
+
     <style>
-        html, body {
-            background-color: #000 !important;
-            color: #fff !important;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 80px !important;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* تنسيق زر تحميل التطبيق الـ PWA */
-        .pwa-install-button {
-            background: linear-gradient(135deg, #d4af37, #aa7c11);
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-        }
-        .pwa-install-button:hover {
-            background: linear-gradient(135deg, #aa7c11, #d4af37);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-        }
-
-        /* تنسيقات الموقع الرئيسية */
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
         .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
         
@@ -114,6 +86,9 @@
         .admin-mode .admin-controls { display: flex !important; }
         .btn-edit { background: #f1c40f; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
         
+        .bullion-box { background: #1a1a1a; border: 1px solid #333; border-radius: 15px; padding: 20px; margin: 15px auto; text-align: center; width: 90%; max-width: 500px; }
+        .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .company-btn { background: #222; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-size: 12px; }
         .input-style { width: 94%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; text-align: center; }
         .btn-gold { background: #f1c40f; color: #000; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         
@@ -122,40 +97,199 @@
 
         #admin-panel-emosha { display: none; width: 90%; max-width: 450px; margin: 20px auto; background: #1a1a1a; padding: 25px; border-radius: 15px; border: 2px solid #f1c40f; }
 
-        /* شريط التنقل السفلي */
-        .shrouk-bottom-nav {
-            position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important;
-            background: #111 !important; display: flex !important; justify-content: space-around !important;
-            padding: 10px 0 !important; border-top: 2px solid #f1c40f !important; z-index: 9999999 !important; margin: 0 !important;
-        }
-        .shrouk-bottom-nav a {
-            color: #fff !important; text-decoration: none !important; text-align: center !important; flex: 1 !important;
-            display: flex !important; flex-direction: column !important; align-items: center !important; font-size: 11px !important;
-            background: #222 !important; margin: 0 4px !important; padding: 8px 0 !important; border-radius: 8px !important; border: 1px solid #444 !important;
-        }
-        .shrouk-bottom-nav a i { font-size: 20px !important; margin-bottom: 4px !important; color: #f1c40f !important; }
-        .shrouk-bottom-nav a.active { background: #1f1f1f !important; color: #f1c40f !important; border-color: #f1c40f !important; }
-        .shrouk-bottom-nav a.active i { color: #f1c40f !important; }
-
         @media (max-width: 850px) { .main-layout { flex-direction: column; align-items: center; } .sidebar { position: static; width: 100%; } }
+    
+                            .                                function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            const homepagePosts = allPostsData.slice(0, 3);
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال — 📅 21 أغسطس 2026
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        }
+
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <br><br>
+                            <div style="text-align: center; color: #f1c40f; font-weight: bold; font-size: 14px; border-top: 1px dashed #444; padding-top: 15px; margin-top: 15px;">
+                                🖋️ القبطان إيهاب أبو رتال &nbsp;|&nbsp; 📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال  —  📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+
+              homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            <p style="color: #f1c40f; text-align: center; font-weight: bold; margin-top: 15px;">
+                                🖋️ القبطان إيهاب أبو رتال — 📅 ${todayDate}
+                            </p>
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+            
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال  —  📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+            homepagePosts.forEach((post) => {
+                const safeTitle = post.title.replace(/'/g, "\\'");
+                const safeImage = (post.image || "").replace(/'/g, "\\'");
+                const safeContent = (post.content || "").replace(/`/g, "\\`").replace(/'/g, "\\'");
+
+                container.innerHTML += `
+                    <div class="article-item visible">
+                        <div class="article-header" onclick="toggleArticle(this)">
+                            ${post.title} 🔗
+                        </div>
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
+                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
+                            
+                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
+                                🖋️ القبطان إيهاب أبو رتال  —  📅 ${todayDate}
+                            </div>
+
+                            <div class="admin-controls">
+                                <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+.article-content::after {
+    content: "🖋️ القبطان إيهاب أبو رتال  —  📅 2026 أغسطس 17";
+    display: block;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+    color: #f1c40f;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+
     </style>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f1c40f">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 </head>
 <body id="main-body">
 
-    <!-- زر تحميل التطبيق في أعلى الواجهة -->
-    <div id="install-container" style="display: none; width: 100%; text-align: center; padding: 10px 0; background-color: #111; border-bottom: 1px solid #f1c40f;">
-      <button id="install-btn" class="pwa-install-button">
-        📱 تحميل تطبيق شروق الذهب
-      </button>
-    </div>
+ <div id="top-info-bar" style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999;">
+    <div style="margin-bottom: 5px;">🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
+    <div style="font-weight: bold;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية</div>
+</div>
 
-    <!-- شريط معلومات الوقت والتنبيه -->
-    <div id="top-info-bar" style="width: 100%; background: #000; color: #f1c40f; padding: 12px 0; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999;">
-        <div style="margin-bottom: 5px;">🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
-        <div style="font-weight: bold;">⚠️ تنبيه: الأسعار لحظية | طبقاً للصاغة المصرية</div>
-    </div>
-
-    <!-- 1. الصفحة الرئيسية -->
+    <!-- 1. صفحة الرئيسية -->
     <div id="home-page" class="page-section active-page">
         <center>
             <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f;">
@@ -233,16 +367,7 @@
         </div>
     </div>
 
-    <!-- شريط القائمة السفلي -->
-    <div class="shrouk-bottom-nav">
-        <a href="index.html" class="active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="prices.html"><i class="fas fa-cube"></i><span>السبائك</span></a>
-        <a href="blog.html"><i class="fas fa-newspaper"></i><span>المقالات</span></a>
-        <a href="calculator.html"><i class="fas fa-calculator"></i><span>الحاسبة</span></a>
-        <a href="zakat.html"><i class="fas fa-mosque"></i><span>الزكاة</span></a>
-    </div>
-
-    <!-- البرمجة السحابية وإدارة البيانات -->
+    <!-- البرمجة -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -269,7 +394,6 @@
             const container = document.getElementById('posts-container');
             container.innerHTML = "";
             const homepagePosts = allPostsData.slice(0, 3);
-            const todayDate = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
             
             homepagePosts.forEach((post) => {
                 const safeTitle = post.title.replace(/'/g, "\\'");
@@ -284,11 +408,6 @@
                         <div class="article-content">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                            
-                            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #333; color: #f1c40f; font-size: 13px; font-weight: bold; text-align: center;">
-                                🖋️ القبطان إيهاب أبو رتال — 📅 ${todayDate}
-                            </div>
-
                             <div class="admin-controls">
                                 <button class="btn-edit" onclick="prepareEdit('${post.id}', '${safeTitle}', '${safeImage}', \`${safeContent}\`)">تعديل</button>
                             </div>
@@ -308,19 +427,23 @@
             ticker.innerText = titles.join(" . . . . ");
         }
 
-        // دالة الأسعار اللحظية المطابقة للصاغة
+               // دالة الأسعار اللحظية الآمنة والسريعة المطابقة للصاغة
         async function updatePrices() {
             try {
+                // جلب سعر الدولار وسعر الذهب العالمي دفعة واحدة بطريقة آمنة
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
                 const currentUSD = data.rates.EGP;
 
+                // سعر الأونصة العالمي اللحظي (معتمد ومحدث)
                 const goldRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether-gold&vs_currencies=usd');
                 const goldData = await goldRes.json();
                 let globalPriceOz = goldData['tether-gold'] ? goldData['tether-gold'].usd : 2400;
 
+                // إذا حدث أي تأخير، نجيب سعر احتياطي عالمي موثوق
                 if (!globalPriceOz) globalPriceOz = 2400;
 
+                // حساب سعر عيار 24 الصافي بمصر (السعر العالمي ÷ 31.1035 × سعر الدولار)
                 const p24Egypt = Math.round((globalPriceOz / 31.1035) * currentUSD);
 
                 const display = (id, text) => {
@@ -338,6 +461,7 @@
 
             } catch (e) {
                 console.log("خطأ في تحديث الأسعار:", e);
+                // أسعار احتياطية في حال انقطاع الشبكة
                 document.getElementById('p24').innerText = "7,374";
                 document.getElementById('p21').innerText = "6,452";
                 document.getElementById('p18').innerText = "5,530";
@@ -407,38 +531,30 @@
         }
         startEgyptClock();
     </script>
-
-    <!-- سكريبت تثبيت التطبيق PWA -->
-    <script>
-      let deferredPrompt;
-      const installContainer = document.getElementById('install-container');
-      const installBtn = document.getElementById('install-btn');
-
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installContainer.style.display = 'block';
-      });
-
-      installBtn.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
         
-        if (outcome === 'accepted') {
-          console.log('تم تثبيت التطبيق بنجاح');
-        }
-        
-        deferredPrompt = null;
-        installContainer.style.display = 'none';
-      });
+    <style>
+      .shrouk-bottom-nav {
+        position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important;
+        background: #111 !important; display: flex !important; justify-content: space-around !important;
+        padding: 10px 0 !important; border-top: 2px solid #f1c40f !important; z-index: 9999999 !important; margin: 0 !important;
+      }
+      .shrouk-bottom-nav a {
+        color: #fff !important; text-decoration: none !important; text-align: center !important; flex: 1 !important;
+        display: flex !important; flex-direction: column !important; align-items: center !important; font-size: 11px !important;
+        background: #222 !important; margin: 0 4px !important; padding: 8px 0 !important; border-radius: 8px !important; border: 1px solid #444 !important;
+      }
+      .shrouk-bottom-nav a i { font-size: 20px !important; margin-bottom: 4px !important; color: #f1c40f !important; }
+      .shrouk-bottom-nav a.active { background: #1f1f1f !important; color: #f1c40f !important; border-color: #f1c40f !important; }
+      .shrouk-bottom-nav a.active i { color: #f1c40f !important; }
+      body { padding-bottom: 80px !important; }
+    </style>
 
-      window.addEventListener('appinstalled', () => {
-        installContainer.style.display = 'none';
-        deferredPrompt = null;
-      });
-    </script>
-
+    <div class="shrouk-bottom-nav">
+        <a href="index.html" class="active"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+        <a href="prices.html"><i class="fas fa-cube"></i><span>السبائك</span></a>
+        <a href="blog.html"><i class="fas fa-newspaper"></i><span>المقالات</span></a>
+        <a href="calculator.html"><i class="fas fa-calculator"></i><span>الحاسبة</span></a>
+        <a href="zakat.html"><i class="fas fa-mosque"></i><span>الزكاة</span></a>
+    </div>
 </body>
-</html>
+    </html>
