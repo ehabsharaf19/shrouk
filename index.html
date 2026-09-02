@@ -283,6 +283,12 @@
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 </head>
 <body id="main-body">
+<!-- زر تحميل التطبيق في أعلى الصفحة -->
+<div id="install-container" style="display: none; text-align: center; padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #e0e0e0;">
+  <button id="install-btn" class="pwa-install-button">
+    📱 تحميل تطبيق شروق الذهب
+  </button>
+</div>
 
  <div id="top-info-bar" style="background: #000; color: #f1c40f; padding: 12px; text-align: center; font-size: 13px; border-bottom: 2px solid #f1c40f; position: relative; z-index: 9999;">
     <div style="margin-bottom: 5px;">🕒 توقيت القاهرة: <span id="egypt-time" style="color: #fff; font-weight: bold;">--:--:--</span></div>
@@ -556,5 +562,49 @@
         <a href="calculator.html"><i class="fas fa-calculator"></i><span>الحاسبة</span></a>
         <a href="zakat.html"><i class="fas fa-mosque"></i><span>الزكاة</span></a>
     </div>
+    <script>
+  let deferredPrompt;
+  const installContainer = document.getElementById('install-container');
+  const installBtn = document.getElementById('install-btn');
+
+  // الاستماع لحدث جاهزية تثبيت التطبيق
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // منع المتصفح من إظهار النافذة الافتراضية
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // إظهار زر التحميل في أعلى الواجهة
+    installContainer.style.display = 'block';
+  });
+
+  // عند النقر على زر التحميل
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+
+    // إظهار نافذة التثبيت للزائر
+    deferredPrompt.prompt();
+
+    // انتظار استجابة المستخدم
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      console.log('تم قبول تثبيت التطبيق');
+    } else {
+      console.log('تم رفض تثبيت التطبيق');
+    }
+
+    // إعادة تعيين المتغير وإخفاء الزر
+    deferredPrompt = null;
+    installContainer.style.display = 'none';
+  });
+
+  // إخفاء الزر تلقائياً إذا تم تثبيت التطبيق بنجاح
+  window.addEventListener('appinstalled', () => {
+    installContainer.style.display = 'none';
+    deferredPrompt = null;
+    console.log('تطبيق شروق الذهب مثبت بالفعل');
+  });
+</script>
+
 </body>
 </html>
