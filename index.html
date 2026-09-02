@@ -349,6 +349,14 @@
             </aside>
         </div>
 
+        <!-- زر تثبيت التطبيق الذكي -->
+        <div id="pwa-install-container" style="display: none; text-align: center; margin: 15px auto; width: 90%; max-width: 400px;">
+            <button id="pwa-install-btn" style="background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 4px 15px rgba(241, 196, 15, 0.4); display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fas fa-download" style="font-size: 18px;"></i>
+                <span>تثبيت تطبيق شروق الذهب</span>
+            </button>
+        </div>
+
         <div id="admin-panel-emosha">
             <h3 id="admin-title" style="color: #f1c40f; text-align: center;">إدارة المحتوى</h3>
             <input type="hidden" id="edit-post-id">
@@ -530,6 +538,36 @@
             }
         }
         startEgyptClock();
+
+        // سكريبت تشغيل زر تثبيت التطبيق الذكي
+        let deferredPrompt;
+        const installContainer = document.getElementById('pwa-install-container');
+        const installBtn = document.getElementById('pwa-install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installContainer) {
+                installContainer.style.display = 'block';
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installContainer.style.display = 'none';
+                }
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (installContainer) {
+                installContainer.style.display = 'none';
+            }
+        });
     </script>
         
     <style>
