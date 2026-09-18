@@ -22,7 +22,7 @@
     </script>
 
     <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; padding-bottom: 90px; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; padding-bottom: 100px; }
         .blog-header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #f1c40f; padding-bottom: 15px; }
         .blog-header h1 { color: #f1c40f; font-size: 26px; margin: 0; }
         .blog-header p { color: #aaa; font-size: 14px; margin-top: 5px; }
@@ -39,6 +39,11 @@
         .read-more-btn { display: inline-block; background: #f1c40f; color: #000; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 14px; transition: 0.2s; }
         .read-more-btn:hover { background: #fff; }
 
+        .load-more-container { text-align: center; margin-top: 30px; }
+        .load-more-btn { background: #f1c40f; color: #000; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .load-more-btn:hover { background: #fff; }
+
+        /* القائمة السفلية الثابتة */
         .shrouk-bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important; background: #111 !important; display: flex !important; justify-content: space-around !important; padding: 10px 0 !important; border-top: 2px solid #f1c40f !important; z-index: 9999999 !important; margin: 0 !important; }
         .shrouk-bottom-nav a { color: #fff !important; text-decoration: none !important; text-align: center !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; font-size: 11px !important; background: #222 !important; margin: 0 4px !important; padding: 8px 0 !important; border-radius: 8px !important; border: 1px solid #444 !important; }
         .shrouk-bottom-nav a i { font-size: 20px !important; margin-bottom: 4px !important; color: #f1c40f !important; }
@@ -57,6 +62,10 @@
         <p style="text-align:center; color:#f1c40f;">🕒 جاري تحميل المقالات...</p>
     </div>
 
+    <div class="load-more-container" id="load-more-box" style="display: none;">
+        <button class="load-more-btn" onclick="loadMorePosts()">عرض المزيد من المقالات 👈</button>
+    </div>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -69,35 +78,22 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        let allPosts = [];
+        let currentIndex = 0;
+        const postsPerPage = 5;
+
         database.ref('posts').once('value').then((snapshot) => {
             const data = snapshot.val();
             const container = document.getElementById('blog-posts-container');
             
             if (data) {
                 container.innerHTML = "";
-                const postsList = Object.keys(data).map(id => ({
+                allPosts = Object.keys(data).map(id => ({
                     id: id,
                     ...data[id]
                 })).reverse();
 
-                postsList.forEach(post => {
-                    const postTitle = post.title || "مقالة بدون عنوان";
-                    const postContent = post.content || "";
-                    const postImage = post.image || "";
-                    const postDate = post.date || "2026-09-19";
-
-                    container.innerHTML += `
-                        <div class="post-card">
-                            <h2>${postTitle}</h2>
-                            ${postImage ? `<img src="${postImage}" alt="${postTitle}">` : ''}
-                            <div class="post-excerpt">${postContent}</div>
-                            <div class="post-meta">
-                                <span>📅 ${postDate} | ✍️ إيهاب شرف</span>
-                                <a href="post.html?id=${post.id}" class="read-more-btn">اقرأ المقال كاملاً 👈</a>
-                            </div>
-                        </div>
-                    `;
-                });
+                renderNextBatch();
             } else {
                 container.innerHTML = "<h3 style='text-align:center;'>لا توجد مقالات حالياً</h3>";
             }
@@ -105,6 +101,42 @@
             console.error(error);
             document.getElementById('blog-posts-container').innerHTML = "<p style='text-align:center;'>حدث خطأ أثناء تحميل المقالات.</p>";
         });
+
+        function renderNextBatch() {
+            const container = document.getElementById('blog-posts-container');
+            const nextBatch = allPosts.slice(currentIndex, currentIndex + postsPerPage);
+
+            nextBatch.forEach(post => {
+                const postTitle = post.title || "مقالة بدون عنوان";
+                const postContent = post.content || "";
+                const postImage = post.image || "";
+                const postDate = post.date || "2026-09-19";
+
+                container.innerHTML += `
+                    <div class="post-card">
+                        <h2>${postTitle}</h2>
+                        ${postImage ? `<img src="${postImage}" alt="${postTitle}">` : ''}
+                        <div class="post-excerpt">${postContent}</div>
+                        <div class="post-meta">
+                            <span>📅 ${postDate} | ✍️ إيهاب شرف</span>
+                            <a href="post.html?id=${post.id}" class="read-more-btn">اقرأ المقال كاملاً 👈</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            currentIndex += postsPerPage;
+
+            if (currentIndex < allPosts.length) {
+                document.getElementById('load-more-box').style.display = 'block';
+            } else {
+                document.getElementById('load-more-box').style.display = 'none';
+            }
+        }
+
+        function loadMorePosts() {
+            renderNextBatch();
+        }
     </script>
 
     <!-- القائمة السفلية -->
