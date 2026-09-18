@@ -87,7 +87,8 @@
             
             allPostsData.forEach((post, index) => {
                 const isVisible = index < visibleCount ? 'visible' : '';
-                const postDate = post.date ? post.date : "2026-05-14"; 
+                const postDate = post.date ? post.date : new Date().toISOString().split('T')[0];
+
                 // اقتطاع ملخص بسيط للمقال لعرضه في الكارت
                 const snippet = post.content ? post.content.substring(0, 150) + "..." : "";
 
