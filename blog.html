@@ -1,18 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدونة شروق الذهب | أحدث المقالات والتحليلات</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#f1c40f">
+    <link rel="canonical" href="https://www.emosha.online/blog.html" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- شفرة إعلانات أدسينس -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3563860658939764" crossorigin="anonymous"></script>
-
-    <!-- Google Analytics -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NVYG4VND5"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -20,28 +12,30 @@
       gtag('js', new Date());
       gtag('config', 'G-5NVYG4VND5');
     </script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقالات شروق الذهب - EMOSHA Gold</title>
     <style>
-        body { background: #000; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; padding-bottom: 100px; }
-        .blog-header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #f1c40f; padding-bottom: 15px; }
-        .blog-header h1 { color: #f1c40f; font-size: 26px; margin: 0; }
-        .blog-header p { color: #aaa; font-size: 14px; margin-top: 5px; }
-
-        .posts-grid { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-        .post-card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; transition: 0.3s; position: relative; }
-        .post-card:hover { border-color: #f1c40f; }
-        .post-card h2 { color: #f1c40f; font-size: 20px; margin-top: 0; margin-bottom: 10px; line-height: 1.4; }
-        .post-card img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; border: 1px solid #222; }
-        .post-excerpt { color: #ccc; font-size: 15px; line-height: 1.7; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 90px !important; }
+        .main-title { font-size: 50px; font-weight: bold; color: #f1c40f; text-shadow: 0 0 20px rgba(241, 196, 15, 0.7); margin-top: 20px; }
+        .gateway-text { color: #666; font-size: 14px; letter-spacing: 3px; margin-bottom: 20px; }
+        .articles-main { width: 95%; max-width: 1100px; margin-top: 20px; }
         
-        .post-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #222; padding-top: 12px; font-size: 13px; color: #888; }
+        .article-item { display: none; border: 1px solid #333; margin-bottom: 20px; background: #111; border-radius: 12px; overflow: hidden; }
+        .article-item.visible { display: block; }
         
-        .read-more-btn { display: inline-block; background: #f1c40f; color: #000; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 14px; transition: 0.2s; }
-        .read-more-btn:hover { background: #fff; }
+        .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; font-weight: bold; font-size: 18px; border-right: 4px solid #f1c40f; text-align: right; display: flex; justify-content: space-between; align-items: center; }
+        
+        .article-content { padding: 20px; color: #ccc; background: #0a0a0a; text-align: right; border-top: 1px solid #222; }
+        .article-excerpt { font-size: 15px; line-height: 1.8; color: #ddd; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .article-image { width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
+        
+        .read-btn { display: inline-block; background: #f1c40f; color: #000; text-decoration: none; padding: 8px 18px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-top: 10px; }
+        .read-btn:hover { background: #fff; }
 
-        .load-more-container { text-align: center; margin-top: 30px; }
-        .load-more-btn { background: #f1c40f; color: #000; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .load-more-btn:hover { background: #fff; }
+        .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
+        .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; box-sizing: border-box; }
+        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid #222; color: #888; font-size: 13px; }
 
         /* القائمة السفلية الثابتة */
         .shrouk-bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important; background: #111 !important; display: flex !important; justify-content: space-around !important; padding: 10px 0 !important; border-top: 2px solid #f1c40f !important; z-index: 9999999 !important; margin: 0 !important; }
@@ -50,102 +44,109 @@
         .shrouk-bottom-nav a.active { background: #f1c40f !important; color: #000 !important; border-color: #fff !important; }
         .shrouk-bottom-nav a.active i { color: #000 !important; }
     </style>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3563860658939764" crossorigin="anonymous"></script>
 </head>
 <body>
 
-    <div class="blog-header">
-        <h1>📰 مدونة شروق الذهب</h1>
-        <p>تحليلات يومية وأخبار أسعار الذهب وسوق المال</p>
+    <center style="width:100%;">
+        <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f; width:100%;">
+            <h1 style="color: #f1c40f; margin: 0; font-size: 24px;">✨ شروق الذهب ✨</h1>
+            <p style="color: #fff; margin: 5px 0 0; font-size: 14px;">إيموشا جولد - Emosha Gold</p>
+        </div>
+    </center>
+
+    <div class="articles-main">
+        <h2 style="color: #f1c40f; text-align: right; border-right: 6px solid #f1c40f; padding-right: 15px;">📰 أحدث تحليلات القبطان</h2>
+        <div id="posts-container">جاري التحميل...</div>
+        <center><button id="load-more-btn" class="load-more-btn" onclick="loadThreeMore()">عرض 3 مقالات أخرى</button></center>
     </div>
 
-    <div class="posts-grid" id="blog-posts-container">
-        <p style="text-align:center; color:#f1c40f;">🕒 جاري تحميل المقالات...</p>
+    <div class="footer-gold">
+        <a href="about.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">من نحن</a> | 
+        <a href="contact.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">اتصل بنا</a> | 
+        <a href="privacy.html" style="color:#f1c40f; text-decoration:none; margin:0 10px;">سياسة الخصوصية</a>
+        <p style="margin-top:20px; color:#666; font-size:12px;">جميع الحقوق محفوظة © 2026 | إيهاب شرف</p>
     </div>
 
-    <div class="load-more-container" id="load-more-box" style="display: none;">
-        <button class="load-more-btn" onclick="loadMorePosts()">عرض المزيد من المقالات 👈</button>
-    </div>
-
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        const firebaseConfig = { 
-            databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" 
-        };
-        
+        const firebaseConfig = { databaseURL: "https://shrouk-ehab-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        
+        let visibleCount = 3; 
+        let allPostsData = []; 
 
-        let allPosts = [];
-        let currentIndex = 0;
-        const postsPerPage = 5;
-
-        database.ref('posts').once('value').then((snapshot) => {
+        database.ref('posts').on('value', (snapshot) => {
             const data = snapshot.val();
-            const container = document.getElementById('blog-posts-container');
-            
-            if (data) {
-                container.innerHTML = "";
-                allPosts = Object.keys(data).map(id => ({
-                    id: id,
-                    ...data[id]
-                })).reverse();
-
-                renderNextBatch();
-            } else {
-                container.innerHTML = "<h3 style='text-align:center;'>لا توجد مقالات حالياً</h3>";
+            if(data) {
+                allPostsData = Object.keys(data).map(id => ({ id: id, ...data[id] })).reverse();
+                renderPosts();
             }
-        }).catch(error => {
-            console.error(error);
-            document.getElementById('blog-posts-container').innerHTML = "<p style='text-align:center;'>حدث خطأ أثناء تحميل المقالات.</p>";
         });
 
-        function renderNextBatch() {
-            const container = document.getElementById('blog-posts-container');
-            const nextBatch = allPosts.slice(currentIndex, currentIndex + postsPerPage);
-
-            nextBatch.forEach(post => {
-                const postTitle = post.title || "مقالة بدون عنوان";
-                const postContent = post.content || "";
-                const postImage = post.image || "";
-                const postDate = post.date || "2026-09-19";
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = "";
+            
+            allPostsData.forEach((post, index) => {
+                const isVisible = index < visibleCount ? 'visible' : '';
+                const postDate = post.date ? post.date : "2026-09-19"; 
 
                 container.innerHTML += `
-                    <div class="post-card">
-                        <h2>${postTitle}</h2>
-                        ${postImage ? `<img src="${postImage}" alt="${postTitle}">` : ''}
-                        <div class="post-excerpt">${postContent}</div>
-                        <div class="post-meta">
-                            <span>📅 ${postDate} | ✍️ إيهاب شرف</span>
-                            <a href="post.html?id=${post.id}" class="read-more-btn">اقرأ المقال كاملاً 👈</a>
+                    <div class="article-item ${isVisible}">
+                        <div class="article-header">
+                            <a href="post.html?id=${post.id}" style="color:inherit; text-decoration:none; width:100%;">
+                                ${post.title} 🔗
+                            </a>
                         </div>
-                    </div>
-                `;
+                        <div class="article-content">
+                            ${post.image ? `<img src="${post.image}" class="article-image" alt="${post.title}">` : ""}
+                            <div class="article-excerpt">${post.content}</div>
+                            <a href="post.html?id=${post.id}" class="read-btn">اقرأ المقال كاملاً 👈</a>
+                            <div class="meta-info">
+                                <span>📅 تاريخ النشر: ${postDate}</span>
+                                <span>✍️ إيهاب شرف</span>
+                            </div>
+                        </div>
+                    </div>`;
             });
 
-            currentIndex += postsPerPage;
-
-            if (currentIndex < allPosts.length) {
-                document.getElementById('load-more-box').style.display = 'block';
-            } else {
-                document.getElementById('load-more-box').style.display = 'none';
-            }
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            loadMoreBtn.style.display = visibleCount < allPostsData.length ? 'block' : 'none';
         }
 
-        function loadMorePosts() {
-            renderNextBatch();
+        function loadThreeMore() {
+            visibleCount += 3;
+            renderPosts();
         }
     </script>
 
     <!-- القائمة السفلية -->
     <div class="shrouk-bottom-nav">
-        <a href="index.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-        <a href="prices.html"><i class="fas fa-cube"></i><span>السبائك</span></a>
-        <a href="blog.html" class="active"><i class="fas fa-newspaper"></i><span>المقالات</span></a>
-        <a href="calculator.html"><i class="fas fa-calculator"></i><span>الحاسبة</span></a>
-        <a href="zakat.html"><i class="fas fa-mosque"></i><span>الزكاة</span></a>
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="prices.html">
+            <i class="fas fa-cube"></i>
+            <span>السبائك</span>
+        </a>
+        <a href="blog.html" class="active">
+            <i class="fas fa-newspaper"></i>
+            <span>المقالات</span>
+        </a>
+        <a href="calculator.html">
+            <i class="fas fa-calculator"></i>
+            <span>الحاسبة</span>
+        </a>
+        <a href="zakat.html">
+            <i class="fas fa-mosque"></i>
+            <span>الزكاة</span>
+        </a>
     </div>
 
 </body>
