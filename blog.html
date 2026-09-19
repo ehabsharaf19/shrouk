@@ -22,10 +22,22 @@
         .articles-main { width: 95%; max-width: 1100px; margin-top: 20px; }
         .article-item { display: none; border-bottom: 1px solid #333; margin-bottom: 15px; background: #111; border-radius: 12px; overflow: hidden; }
         .article-item.visible { display: block; }
-        .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; cursor: pointer; font-weight: bold; font-size: 18px; border-right: 4px solid transparent; transition: 0.3s; text-align: right; }
+        
+        .article-header { background: #1a1a1a; padding: 0; border-right: 4px solid transparent; transition: 0.3s; text-align: right; }
         .article-header:hover { border-right-color: #f1c40f; background: #222; }
         
-        /* ضبط التنسيق ليفتح عند النقر دون التأثير على شكل كارتك */
+        /* جعل العنوان رابطاً يحافظ على نفس تصميمك تماماً */
+        .article-header a {
+            display: block;
+            padding: 18px;
+            color: #f1c40f;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .article-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.3s ease; padding: 0 15px; color: #ccc; background: #0a0a0a; text-align: right; }
         .article-content.open { max-height: 2000px; padding: 15px; border-top: 1px solid #222; }
         
@@ -86,27 +98,16 @@
 
                 container.innerHTML += `
                     <div class="article-item ${isVisible}">
-                        <div class="article-header" onclick="toggleArticle('${post.id}')">
-                            ${post.title} 🔗
-                        </div>
-                        <div class="article-content" id="content-${post.id}">
-                            ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
-                            <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
-                            <div class="meta-info">
-                                <span style="color:#666;">📅 تاريخ النشر: ${postDate}</span>
-                                <span>✍️ إيهاب شرف</span>
-                            </div>
+                        <div class="article-header">
+                            <a href="post.html?id=${post.id}">
+                                ${post.title} 🔗
+                            </a>
                         </div>
                     </div>`;
             });
 
             const loadMoreBtn = document.getElementById('load-more-btn');
             loadMoreBtn.style.display = visibleCount < allPostsData.length ? 'block' : 'none';
-        }
-
-        function toggleArticle(id) {
-            const content = document.getElementById(`content-${id}`);
-            content.classList.toggle('open');
         }
 
         function loadThreeMore() {
