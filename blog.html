@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
     <link rel="canonical" href="https://www.emosha.online/blog.html" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Google tag (gtag.js) -->
@@ -26,22 +25,20 @@
         .article-header { background: #1a1a1a; color: #f1c40f; padding: 18px; cursor: pointer; font-weight: bold; font-size: 18px; border-right: 4px solid transparent; transition: 0.3s; text-align: right; }
         .article-header:hover { border-right-color: #f1c40f; background: #222; }
         
-        /* الإصلاح هنا: جعل المحتوى متاحاً وقابلاً للقراءة مباشرة من أدسينس */
-        .article-content { padding: 15px; color: #ccc; background: #0a0a0a; text-align: right; border-top: 1px solid #222; }
+        /* ضبط التنسيق ليفتح عند النقر دون التأثير على شكل كارتك */
+        .article-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, padding 0.3s ease; padding: 0 15px; color: #ccc; background: #0a0a0a; text-align: right; }
+        .article-content.open { max-height: 2000px; padding: 15px; border-top: 1px solid #222; }
         
         .article-image { width: 100%; border-radius: 12px; margin-bottom: 15px; }
         .load-more-btn { background: #222; color: #f1c40f; border: 1px solid #f1c40f; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 20px auto; display: none; }
         .footer-gold { background: #000; color: #f1c40f; text-align: center; padding: 45px; border-top: 2px solid #f1c40f; width: 100%; margin-top: 60px; box-sizing: border-box; }
-        .back-btn { display: inline-block; margin-top: 20px; color: #f1c40f; text-decoration: none; border: 1px solid #f1c40f; padding: 10px 25px; border-radius: 8px; font-weight: bold; }
         .meta-info { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #222; color: #f1c40f; font-size: 14px; }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3563860658939764"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3563860658939764" crossorigin="anonymous"></script>
 </head>
 <body>
 
     <center>
-        <!-- الهيدر الموحد الأصلي الخاص بك -->
         <div style="background: #000; text-align: center; padding: 20px 0; border-bottom: 2px solid #f1c40f;">
             <h1 style="color: #f1c40f; margin: 0; font-size: 24px;">✨ شروق الذهب ✨</h1>
             <p style="color: #fff; margin: 5px 0 0; font-size: 14px;">إيموشا جولد - Emosha Gold</p>
@@ -72,7 +69,6 @@
         let visibleCount = 3; 
         let allPostsData = []; 
 
-        // تسريع التحميل باستخدام once
         database.ref('posts').once('value').then((snapshot) => {
             const data = snapshot.val();
             if(data) {
@@ -90,12 +86,10 @@
 
                 container.innerHTML += `
                     <div class="article-item ${isVisible}">
-                        <div class="article-header">
-                            <a href="post.html?id=${post.id}" style="color:inherit; text-decoration:none; display:block;">
-                                ${post.title} 🔗
-                            </a>
+                        <div class="article-header" onclick="toggleArticle('${post.id}')">
+                            ${post.title} 🔗
                         </div>
-                        <div class="article-content">
+                        <div class="article-content" id="content-${post.id}">
                             ${post.image ? `<img src="${post.image}" class="article-image">` : ""}
                             <div style="white-space: pre-wrap; line-height: 1.9;">${post.content}</div>
                             <div class="meta-info">
@@ -110,13 +104,18 @@
             loadMoreBtn.style.display = visibleCount < allPostsData.length ? 'block' : 'none';
         }
 
+        function toggleArticle(id) {
+            const content = document.getElementById(`content-${id}`);
+            content.classList.toggle('open');
+        }
+
         function loadThreeMore() {
             visibleCount += 3;
             renderPosts();
         }
     </script>
 
-    <!-- القائمة السفلية الثابتة -->
+    <!-- القائمة السفلية -->
     <style>
       .shrouk-bottom-nav {
         position: fixed !important;
@@ -131,7 +130,6 @@
         z-index: 9999999 !important;
         margin: 0 !important;
       }
-
       .shrouk-bottom-nav a {
         color: #fff !important;
         text-decoration: none !important;
@@ -146,23 +144,11 @@
         padding: 8px 0 !important;
         border-radius: 8px !important;
         border: 1px solid #444 !important;
-        transition: 0.3s;
       }
-
-      .shrouk-bottom-nav a i {
-        font-size: 20px !important;
-        margin-bottom: 4px !important;
-        color: #f1c40f !important;
-      }
-
-      .shrouk-bottom-nav a.active {
-        background: #f1c40f !important;
-        color: #000 !important;
-        border-color: #fff !important;
-      }
+      .shrouk-bottom-nav a i { font-size: 20px !important; margin-bottom: 4px !important; color: #f1c40f !important; }
+      .shrouk-bottom-nav a.active { background: #f1c40f !important; color: #000 !important; border-color: #fff !important; }
       .shrouk-bottom-nav a.active i { color: #000 !important; }
-
-      body { padding-bottom: 80px !important; padding-top: 0 !important; }
+      body { padding-bottom: 80px !important; }
     </style>
 
     <div class="shrouk-bottom-nav">
