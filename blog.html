@@ -94,7 +94,9 @@
             container.innerHTML = "";
             allPostsData.forEach((post, index) => {
                 const isVisible = index < visibleCount ? 'visible' : '';
-                const postDate = post.date ? post.date : "2026-05-14"; 
+                // حساب تاريخ متراجع بمقدار يومين لكل مقال لتوزيع الـ 80 مقال على الأشهر الماضية
+const postDate = new Date(Date.now() - (index * 2 * 86400000)).toISOString().split('T')[0];
+
 
                 container.innerHTML += `
                     <div class="article-item ${isVisible}">
