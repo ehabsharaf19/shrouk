@@ -68,7 +68,7 @@
                         ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ""}
                         <div class="content">${post.content}</div>
                         <div style="margin-top:20px; padding-top:15px; border-top:1px solid #333; color:#f1c40f; font-size:14px; text-align:center;">
-                            📅 تاريخ النشر: ${post.date ? post.date : "2026-08-30"} | ✍️ بقلم: إيهاب شرف
+                           📅 تاريخ النشر: ${post.date ? post.date : new Date(Date.now() - (Math.abs(postId.split('').reduce((a,b)=>a+b.charCodeAt(0),0)) % 60 * 86400000)).toISOString().split('T')[0]} | ✍️ بقلم: إيهاب شرف
                         </div>
                         <div style="text-align:center;">
                             <a href="blog.html" class="back-btn"><i class="fas fa-arrow-right"></i> العودة لقائمة المقالات</a>
